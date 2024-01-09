@@ -7,13 +7,13 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.databinding.ActivityForgotPasswordBinding
 import com.nhathao.e_commerce.models.User
 
 private lateinit var binding: ActivityForgotPasswordBinding
+
 class ForgotPasswordActivity : AppCompatActivity() {
-    private lateinit var dbRef : DatabaseReference
+    private lateinit var dbRef: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
@@ -30,9 +30,9 @@ class ForgotPasswordActivity : AppCompatActivity() {
             val userAccountName = binding.layoutEdtAccountName.editText?.text.toString()
             val secretCode = binding.layoutEdtSecretCode.editText?.text.toString()
 
-            val isNotEmpty = checkEmpty(userAccountName,secretCode)
+            val isNotEmpty = checkEmpty(userAccountName, secretCode)
 
-            if (isNotEmpty){
+            if (isNotEmpty) {
                 resetPassword(userAccountName, secretCode)
             }
         }
@@ -59,17 +59,18 @@ class ForgotPasswordActivity : AppCompatActivity() {
                     )
                     if (user.secretCode == secretCode) {
                         val intent = Intent(this, ResetPasswordActivity::class.java)
+                        val bundle = Bundle()
+                        bundle.putSerializable("user", user)
+                        intent.putExtras(bundle)
                         startActivity(intent)
-                    }
-                    else{
+                    } else {
                         binding.layoutEdtSecretCode.error = "SecretCode doesn't match"
                     }
-                }
-                else {
+                } else {
                     binding.layoutEdtAccountName.error = "Account doesn't exist"
                 }
             }
-            .addOnFailureListener {err ->
+            .addOnFailureListener { err ->
                 Toast.makeText(this, "Error ${err.message}", Toast.LENGTH_SHORT)
                     .show()
             }
@@ -78,20 +79,18 @@ class ForgotPasswordActivity : AppCompatActivity() {
     private fun checkEmpty(userAccountName: String, secretCode: String): Boolean {
         var isNotEmpty = true
 
-        if (userAccountName.isEmpty()){
+        if (userAccountName.isEmpty()) {
             isNotEmpty = false
             binding.layoutEdtAccountName.error = "Field can't be empty"
             binding.layoutEdtAccountName.isEndIconVisible = false
-        }
-        else {
+        } else {
             binding.layoutEdtAccountName.error = ""
             binding.layoutEdtAccountName.isEndIconVisible = true
         }
-        if (secretCode.isEmpty()){
+        if (secretCode.isEmpty()) {
             isNotEmpty = false
             binding.layoutEdtSecretCode.error = "Field can't be empty"
-        }
-        else {
+        } else {
             binding.layoutEdtSecretCode.error = ""
         }
         return isNotEmpty

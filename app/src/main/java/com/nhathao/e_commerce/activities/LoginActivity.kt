@@ -1,19 +1,12 @@
 package com.nhathao.e_commerce.activities
 
 import android.content.Intent
-import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.getValue
-import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.databinding.ActivityLoginBinding
 import com.nhathao.e_commerce.models.User
 

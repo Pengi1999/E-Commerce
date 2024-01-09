@@ -3,12 +3,10 @@ package com.nhathao.e_commerce.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.databinding.ActivitySignUpBinding
 import com.nhathao.e_commerce.models.User
 
