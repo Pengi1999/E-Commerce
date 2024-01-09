@@ -3,15 +3,24 @@ package com.nhathao.e_commerce.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.databinding.ActivitySignUpBinding
+import com.nhathao.e_commerce.models.User
 
 private lateinit var binding: ActivitySignUpBinding
 class SignUpActivity : AppCompatActivity() {
+    private lateinit var dbRef : DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        dbRef = FirebaseDatabase.getInstance().getReference("Users")
 
         binding.layoutEdtName.isEndIconVisible = false
         binding.layoutEdtAccountName.isEndIconVisible = false
@@ -32,12 +41,13 @@ class SignUpActivity : AppCompatActivity() {
             val confirmPWD = binding.layoutEdtConfirmPWD.editText?.text.toString()
             val userSecretCode = binding.layoutEdtSecretCode.editText?.text.toString()
 
+            val user = User(userAccountName, userPWD, userName, userSecretCode)
+
             val isNotEmpty = checkEmpty(userName,userAccountName,userPWD,confirmPWD,userSecretCode)
 
             if (isNotEmpty){
                 if (userPWD == confirmPWD) {
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
+                    insertUser(user)
                 }
                 else {
                     binding.layoutEdtConfirmPWD.error = "Confirm Password doesn't match with Password"
@@ -52,6 +62,51 @@ class SignUpActivity : AppCompatActivity() {
         binding.btnSignUpByFacebook.setOnClickListener {
 
         }
+
+        binding.layoutEdtName.editText?.doOnTextChanged { text, start, before, count ->
+            binding.layoutEdtName.error = ""
+        }
+
+        binding.layoutEdtAccountName.editText?.doOnTextChanged { text, start, before, count ->
+            binding.layoutEdtAccountName.error = ""
+        }
+
+        binding.layoutEdtPWD.editText?.doOnTextChanged { text, start, before, count ->
+            binding.layoutEdtPWD.error = ""
+        }
+
+        binding.layoutEdtConfirmPWD.editText?.doOnTextChanged { text, start, before, count ->
+            binding.layoutEdtConfirmPWD.error = ""
+        }
+
+        binding.layoutEdtSecretCode.editText?.doOnTextChanged { text, start, before, count ->
+            binding.layoutEdtSecretCode.error = ""
+        }
+    }
+
+    private fun insertUser(user: User) {
+        // Check Account already exists
+        dbRef.child(user.userAccountName).get()
+            .addOnSuccessListener {
+                if(it.value != null)
+                    binding.layoutEdtAccountName.error = "Account already exists"
+                else {
+                    //Insert User
+                    dbRef.child(user.userAccountName).setValue(user)
+                        .addOnCompleteListener {
+                            val intent = Intent(this, LoginActivity::class.java)
+                            startActivity(intent)
+                        }
+                        .addOnFailureListener { err ->
+                            Toast.makeText(this, "Error ${err.message}", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                }
+            }
+            .addOnFailureListener { err ->
+                    Toast.makeText(this, "Error ${err.message}", Toast.LENGTH_SHORT)
+                        .show()
+            }
     }
 
     private fun checkEmpty(userName: String, userAccountName: String, userPWD: String, confirmPWD: String, userSecretCode: String): Boolean {
@@ -68,6 +123,7 @@ class SignUpActivity : AppCompatActivity() {
         if (userAccountName.isEmpty()){
             isNotEmpty = false
             binding.layoutEdtAccountName.error = "Field can't be empty"
+            binding.layoutEdtAccountName.isEndIconVisible = false
         }
         else {
             binding.layoutEdtAccountName.error = ""

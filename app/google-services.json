@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1003327570463",
+    "firebase_url": "https://e-commerce-a6056-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "e-commerce-a6056",
+    "storage_bucket": "e-commerce-a6056.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1003327570463:android:fd6327f2da68543d770b2a",
+        "android_client_info": {
+          "package_name": "com.nhathao.e_commerce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBg-hqMyb-qs6AbWCVTthsZeFFfttlq3zs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
