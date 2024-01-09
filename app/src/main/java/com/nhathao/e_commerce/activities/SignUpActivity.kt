@@ -88,7 +88,7 @@ class SignUpActivity : AppCompatActivity() {
         // Check Account already exists
         dbRef.child(user.userAccountName).get()
             .addOnSuccessListener {
-                if(it.value != null)
+                if(it.exists())
                     binding.layoutEdtAccountName.error = "Account already exists"
                 else {
                     //Insert User
