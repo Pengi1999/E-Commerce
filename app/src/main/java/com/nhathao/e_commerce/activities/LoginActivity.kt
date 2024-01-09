@@ -44,31 +44,7 @@ class LoginActivity : AppCompatActivity() {
             val isNotEmpty = checkEmpty(userAccountName,userPWD)
 
             if (isNotEmpty){
-                dbRef.child(userAccountName).get()
-                    .addOnSuccessListener {
-                        if (it.exists()) {
-                            val user = User(
-                                it.child("userAccountName").value.toString(),
-                                it.child("userPWD").value.toString(),
-                                it.child("userName").value.toString(),
-                                it.child("secretCode").value.toString()
-                            )
-                            if (user.userPWD == userPWD) {
-                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                                startActivity(intent)
-                            }
-                            else{
-                                binding.layoutEdtPWD.error = "Password doesn't match"
-                            }
-                        }
-                        else {
-                            binding.layoutEdtAccountName.error = "Account doesn't exist"
-                        }
-                    }
-                    .addOnFailureListener {err ->
-                        Toast.makeText(this, "Error ${err.message}", Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                Login(userAccountName, userPWD)
             }
         }
 
@@ -93,6 +69,35 @@ class LoginActivity : AppCompatActivity() {
             binding.layoutEdtPWD.error = ""
         }
 
+    }
+
+    private fun Login(userAccountName: String, userPWD: String) {
+        dbRef.child(userAccountName).get()
+            .addOnSuccessListener {
+                if (it.exists()) {
+                    val user = User(
+                        it.child("userAccountName").value.toString(),
+                        it.child("userPWD").value.toString(),
+                        it.child("userName").value.toString(),
+                        it.child("secretCode").value.toString(),
+                        it.child("birthday").value.toString()
+                    )
+                    if (user.userPWD == userPWD) {
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+                    }
+                    else{
+                        binding.layoutEdtPWD.error = "Password doesn't match"
+                    }
+                }
+                else {
+                    binding.layoutEdtAccountName.error = "Account doesn't exist"
+                }
+            }
+            .addOnFailureListener {err ->
+                Toast.makeText(this, "Error ${err.message}", Toast.LENGTH_SHORT)
+                    .show()
+            }
     }
 
     private fun checkEmpty(userAccountName: String, userPWD: String): Boolean {
