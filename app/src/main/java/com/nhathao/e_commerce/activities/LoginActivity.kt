@@ -1,6 +1,8 @@
 package com.nhathao.e_commerce.activities
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -11,8 +13,13 @@ import com.nhathao.e_commerce.databinding.ActivityLoginBinding
 import com.nhathao.e_commerce.models.User
 
 private lateinit var binding: ActivityLoginBinding
+
 class LoginActivity : AppCompatActivity() {
-    private lateinit var dbRef : DatabaseReference
+    private lateinit var dbRef: DatabaseReference
+    private lateinit var sharedPreferences: SharedPreferences
+    private var accountName: String? = null
+    private var password: String? = null
+    private var isRemember: Boolean? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -34,9 +41,9 @@ class LoginActivity : AppCompatActivity() {
             val userAccountName = binding.layoutEdtAccountName.editText?.text.toString()
             val userPWD = binding.layoutEdtPWD.editText?.text.toString()
 
-            val isNotEmpty = checkEmpty(userAccountName,userPWD)
+            val isNotEmpty = checkEmpty(userAccountName, userPWD)
 
-            if (isNotEmpty){
+            if (isNotEmpty) {
                 Login(userAccountName, userPWD)
             }
         }
@@ -61,7 +68,6 @@ class LoginActivity : AppCompatActivity() {
         binding.layoutEdtPWD.editText?.doOnTextChanged { text, start, before, count ->
             binding.layoutEdtPWD.error = ""
         }
-
     }
 
     private fun Login(userAccountName: String, userPWD: String) {
@@ -76,40 +82,69 @@ class LoginActivity : AppCompatActivity() {
                         it.child("birthday").value.toString()
                     )
                     if (user.userPWD == userPWD) {
+                        saveAccount()
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
-                    }
-                    else{
+                    } else {
                         binding.layoutEdtPWD.error = "Password doesn't match"
                     }
-                }
-                else {
+                } else {
                     binding.layoutEdtAccountName.error = "Account doesn't exist"
                 }
             }
-            .addOnFailureListener {err ->
+            .addOnFailureListener { err ->
                 Toast.makeText(this, "Error ${err.message}", Toast.LENGTH_SHORT)
                     .show()
             }
     }
 
+    private fun saveAccount() {
+        isRemember = binding.chkRemember.isChecked
+        sharedPreferences = this.getSharedPreferences("saveAccount", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("key_isRemember", isRemember!!)
+        if (isRemember!!) {
+            accountName = binding.layoutEdtAccountName.editText?.text.toString()
+            password = binding.layoutEdtPWD.editText?.text.toString()
+            editor.putString("key_accountName", accountName)
+            editor.putString("key_password", password)
+        }
+        editor.apply()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadAccount()
+    }
+
+    private fun loadAccount() {
+        sharedPreferences = this.getSharedPreferences("saveAccount", Context.MODE_PRIVATE)
+        isRemember = sharedPreferences.getBoolean("key_isRemember", false)
+        binding.chkRemember.isChecked = isRemember!!
+        if (isRemember!!) {
+            accountName = sharedPreferences.getString("key_accountName", "")
+            password = sharedPreferences.getString("key_password", "")
+
+            binding.layoutEdtAccountName.editText?.setText(accountName)
+            binding.layoutEdtPWD.editText?.setText(password)
+        }
+    }
+
     private fun checkEmpty(userAccountName: String, userPWD: String): Boolean {
         var isNotEmpty = true
 
-        if (userAccountName.isEmpty()){
+        if (userAccountName.isEmpty()) {
             isNotEmpty = false
             binding.layoutEdtAccountName.error = "Field can't be empty"
             binding.layoutEdtAccountName.isEndIconVisible = false
-        }
-        else {
+        } else {
             binding.layoutEdtAccountName.error = ""
             binding.layoutEdtAccountName.isEndIconVisible = true
         }
-        if (userPWD.isEmpty()){
+        if (userPWD.isEmpty()) {
             isNotEmpty = false
             binding.layoutEdtPWD.error = "Field can't be empty"
-        }
-        else {
+        } else {
             binding.layoutEdtPWD.error = ""
         }
         return isNotEmpty
