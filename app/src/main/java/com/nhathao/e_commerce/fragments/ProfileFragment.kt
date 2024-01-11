@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.cardview.widget.CardView
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.activities.LoginActivity
+import com.nhathao.e_commerce.activities.SettingActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,7 +44,7 @@ class ProfileFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         val areaSetting = view.findViewById<CardView>(R.id.areaSetting)
         areaSetting.setOnClickListener {
-            val intent = Intent(this.activity, LoginActivity::class.java)
+            val intent = Intent(this.activity, SettingActivity::class.java)
             startActivity(intent)
         }
         return view
