@@ -38,11 +38,11 @@
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
+                android:id="@+id/imgAvatar"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_marginStart="17dp"
-                android:src="@drawable/profile_test"
+                android:src="@mipmap/ic_launcher_round"
                 app:civ_border_color="#FF000000"
                 app:civ_border_width="0dp" />
 
@@ -53,6 +53,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/txtFullName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Matilda Brown"
@@ -61,6 +62,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txtEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="matildabrown@gmail.com"
@@ -370,6 +372,17 @@
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLogOut"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_button_maxwidth"
+            android:text="LOG OUT"
+            android:textColor="@color/white" />
+
     </LinearLayout>
 
 </FrameLayout>

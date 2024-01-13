@@ -1,15 +1,21 @@
 package com.nhathao.e_commerce.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.databinding.ActivityMainBinding
 import com.nhathao.e_commerce.fragments.HomeFragment
 import com.nhathao.e_commerce.fragments.ProfileFragment
+import com.nhathao.e_commerce.models.User
 
 private lateinit var binding: ActivityMainBinding
 class MainActivity : AppCompatActivity() {
+    private lateinit var dbRef : DatabaseReference
+    private var isLogin = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -17,12 +23,32 @@ class MainActivity : AppCompatActivity() {
 
         replaceFragment(HomeFragment())
 
+        val bundle = intent.extras
+        if (bundle != null) {
+            val user = bundle.getSerializable("user") as User
+            isLogin = bundle.getBoolean("isLogin", false)
+        }
+
+        dbRef = FirebaseDatabase.getInstance().getReference("Users")
+
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.home -> replaceFragment(HomeFragment())
-                R.id.profile -> replaceFragment(ProfileFragment())
+                R.id.home -> {
+                    binding.bottomNavigationView.menu.findItem(R.id.home).setChecked(true)
+                    replaceFragment(HomeFragment())
+                }
+                R.id.profile -> {
+                    if (!isLogin){
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
+                    else {
+                        binding.bottomNavigationView.menu.findItem(R.id.profile).setChecked(true)
+                        replaceFragment(ProfileFragment())
+                    }
+                }
             }
-            true
+            false
         }
     }
 

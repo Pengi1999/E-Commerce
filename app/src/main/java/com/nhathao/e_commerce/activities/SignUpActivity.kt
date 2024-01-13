@@ -39,7 +39,7 @@ class SignUpActivity : AppCompatActivity() {
             val confirmPWD = binding.layoutEdtConfirmPWD.editText?.text.toString()
             val userSecretCode = binding.layoutEdtSecretCode.editText?.text.toString()
 
-            val user = User(userAccountName, userPWD, userName, userSecretCode, "")
+            val user = User(userAccountName, userPWD, userName, userSecretCode)
 
             val isNotEmpty = checkEmpty(userName,userAccountName,userPWD,confirmPWD,userSecretCode)
 

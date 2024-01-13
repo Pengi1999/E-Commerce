@@ -8,6 +8,8 @@ class User(
     var userPWD: String,
     var userName:String,
     var secretCode:String,
-    var birthday:String
+    var birthday:String? = "",
+    var avatar:String? = "",
+    var email:String? =""
 ) : Serializable {
 }

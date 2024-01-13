@@ -79,12 +79,19 @@ class LoginActivity : AppCompatActivity() {
                         it.child("userPWD").value.toString(),
                         it.child("userName").value.toString(),
                         it.child("secretCode").value.toString(),
-                        it.child("birthday").value.toString()
+                        it.child("birthday").value.toString(),
+                        it.child("avatar").value.toString(),
+                        it.child("email").value.toString()
                     )
                     if (user.userPWD == userPWD) {
                         saveAccount()
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        val bundle = Bundle()
+                        bundle.putSerializable("user", user)
+                        bundle.putBoolean("isLogin", true)
+                        intent.putExtras(bundle)
                         startActivity(intent)
+                        finish()
                     } else {
                         binding.layoutEdtPWD.error = "Password doesn't match"
                     }
