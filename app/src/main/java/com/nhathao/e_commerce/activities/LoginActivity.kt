@@ -3,12 +3,15 @@ package com.nhathao.e_commerce.activities
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.databinding.ActivityLoginBinding
 import com.nhathao.e_commerce.models.User
 
@@ -27,7 +30,6 @@ class LoginActivity : AppCompatActivity() {
 
         dbRef = FirebaseDatabase.getInstance().getReference("Users")
         binding.layoutEdtAccountName.isEndIconVisible = false
-
         binding.btnBack.setOnClickListener {
             finish()
         }

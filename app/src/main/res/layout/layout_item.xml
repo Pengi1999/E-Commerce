@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imgProduct"
+            android:layout_width="148dp"
+            android:layout_height="184dp"
+            android:src="@drawable/blouse1" />
+
+    </androidx.cardview.widget.CardView>
+
+    <RatingBar
+        android:id="@+id/ratingProduct"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        app:layout_constraintBottom_toBottomOf="@id/txtRatingQuantity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/txtRatingQuantity" />
+
+    <TextView
+        android:id="@+id/txtRatingQuantity"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/cardImage"
+        app:layout_constraintLeft_toRightOf="@id/ratingProduct"
+        android:text="(0)"
+        android:textSize="10sp"
+        android:textColor="@color/text_color_hint"/>
+
+    <TextView
+        android:id="@+id/txtProductDes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:text="OVS"
+        android:textColor="@color/text_color_hint"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ratingProduct" />
+
+    <TextView
+        android:id="@+id/txtProductName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Blouse"
+        android:textColor="@color/black_custom"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtProductDes" />
+
+    <TextView
+        android:id="@+id/txtProductPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:text="30$"
+        android:textColor="@color/black_custom"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtProductName" />
+
+    <TextView
+        android:id="@+id/txtProductMode"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="40dp"
+        android:layout_height="24dp"
+        android:background="@drawable/bg_new"
+        app:layout_constraintStart_toStartOf="@id/cardImage"
+        app:layout_constraintTop_toTopOf="@+id/cardImage"
+        android:translationZ="90dp"
+        android:gravity="center"
+        android:text="NEW"
+        android:textSize="11sp"
+        android:textColor="@color/white"/>
+
+
+    <ImageButton
+        android:id="@+id/btnFavorite"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="164dp"
+        app:layout_constraintEnd_toEndOf="@id/cardImage"
+        app:layout_constraintTop_toTopOf="@id/cardImage"
+        android:translationZ="90dp"
+        android:src="@drawable/ic_favorite_gray"
+        android:elevation="5dp"
+        android:background="@drawable/bg_btn_favorite"
+        android:contentDescription="Favorite" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,7 @@ import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.databinding.ActivityMainBinding
 import com.nhathao.e_commerce.fragments.HomeFragment
 import com.nhathao.e_commerce.fragments.ProfileFragment
+import com.nhathao.e_commerce.fragments.ShopFragment
 import com.nhathao.e_commerce.models.User
 
 private lateinit var binding: ActivityMainBinding
@@ -36,6 +37,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.home -> {
                     binding.bottomNavigationView.menu.findItem(R.id.home).setChecked(true)
                     replaceFragment(HomeFragment())
+                }
+                R.id.shop -> {
+                    binding.bottomNavigationView.menu.findItem(R.id.shop).setChecked(true)
+                    replaceFragment(ShopFragment())
                 }
                 R.id.profile -> {
                     if (!isLogin){

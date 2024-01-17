@@ -5,7 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.nhathao.e_commerce.R
+import com.nhathao.e_commerce.adapters.RvAdapterProduct
+import com.nhathao.e_commerce.models.Product
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,6 +27,8 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class HomeFragment : Fragment() {
+    private lateinit var dbRef : DatabaseReference
+    private lateinit var dsProduct: ArrayList<Product>
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -35,7 +46,50 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        val rvNew = view.findViewById<RecyclerView>(R.id.rvNew)
+
+        dbRef = FirebaseDatabase.getInstance().getReference("Products")
+        dsProduct = arrayListOf<Product>()
+
+        dbRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                dsProduct.clear()
+                if(snapshot.exists()){
+                    for (productSnap in snapshot.children){
+                        val productData = Product(
+                            productSnap.child("productId").value.toString(),
+                            productSnap.child("productName").value.toString(),
+                            productSnap.child("productDescribe").value.toString(),
+                            productSnap.child("productImage").value.toString(),
+                            productSnap.child("productSex").value.toString(),
+                            productSnap.child("productType").value.toString(),
+                            productSnap.child("productCategory").value.toString(),
+                            productSnap.child("productBrand").value.toString(),
+                            productSnap.child("productMode").value.toString(),
+                            productSnap.child("productPrice").value.toString().toInt(),
+                            productSnap.child("productRating").value.toString().toFloat(),
+                            productSnap.child("productRatingQuantity").value.toString().toInt(),
+                        )
+                        dsProduct.add(productData)
+                    }
+                    val mAdapter = RvAdapterProduct(dsProduct)
+                    rvNew.adapter = mAdapter
+                    rvNew.layoutManager = LinearLayoutManager(
+                        this@HomeFragment.context,
+                        LinearLayoutManager.HORIZONTAL,
+                        false
+                    )
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+        return view
     }
 
     companion object {
