@@ -79,6 +79,18 @@
         app:layout_constraintTop_toBottomOf="@id/txtProductName" />
 
     <TextView
+        android:id="@+id/txtProductPriceSale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="7dp"
+        android:text="30$"
+        android:textColor="@color/red_button"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/txtProductPrice"
+        app:layout_constraintTop_toBottomOf="@id/txtProductName" />
+
+    <TextView
         android:id="@+id/txtProductMode"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"

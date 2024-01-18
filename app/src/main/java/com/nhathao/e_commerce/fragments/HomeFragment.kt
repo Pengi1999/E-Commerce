@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -27,8 +30,19 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class HomeFragment : Fragment() {
-    private lateinit var dbRef : DatabaseReference
-    private lateinit var dsProduct: ArrayList<Product>
+    private lateinit var dbRef: DatabaseReference
+    private lateinit var dsProductSale: ArrayList<Product>
+    private lateinit var dsProductNew: ArrayList<Product>
+    private lateinit var smallBanner: RelativeLayout
+    private lateinit var bigBanner: RelativeLayout
+    private lateinit var btnCheckSale: Button
+    private lateinit var blockMain1: LinearLayout
+    private lateinit var blockMain2: LinearLayout
+    private lateinit var blockSale: RelativeLayout
+    private lateinit var blockNew: RelativeLayout
+    private lateinit var rvSale: RecyclerView
+    private lateinit var rvNew: RecyclerView
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -48,14 +62,24 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        val rvNew = view.findViewById<RecyclerView>(R.id.rvNew)
+        bigBanner = view.findViewById(R.id.bigBanner)
+        smallBanner = view.findViewById(R.id.smallBanner)
+        btnCheckSale = view.findViewById(R.id.btnCheckSale)
+        blockMain1 = view.findViewById(R.id.blockMain1)
+        blockMain2 = view.findViewById(R.id.blockMain2)
+        blockSale = view.findViewById(R.id.blockSale)
+        blockNew = view.findViewById(R.id.blockNew)
+        rvSale = view.findViewById<RecyclerView>(R.id.rvSale)
+        rvNew = view.findViewById<RecyclerView>(R.id.rvNew)
 
         dbRef = FirebaseDatabase.getInstance().getReference("Products")
-        dsProduct = arrayListOf<Product>()
+        dsProductSale = arrayListOf<Product>()
+        dsProductNew = arrayListOf<Product>()
 
         dbRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                dsProduct.clear()
+                dsProductSale.clear()
+                dsProductNew.clear()
                 if(snapshot.exists()){
                     for (productSnap in snapshot.children){
                         val productData = Product(
@@ -72,10 +96,22 @@ class HomeFragment : Fragment() {
                             productSnap.child("productRating").value.toString().toFloat(),
                             productSnap.child("productRatingQuantity").value.toString().toInt(),
                         )
-                        dsProduct.add(productData)
+                        if (productData.productMode == "NEW"){
+                            dsProductNew.add(productData)
+                        }
+                        else {
+                            dsProductSale.add(productData)
+                        }
                     }
-                    val mAdapter = RvAdapterProduct(dsProduct)
-                    rvNew.adapter = mAdapter
+                    val mAdapterNew = RvAdapterProduct(dsProductNew)
+                    val mAdapterSale = RvAdapterProduct(dsProductSale)
+                    rvSale.adapter = mAdapterSale
+                    rvSale.layoutManager = LinearLayoutManager(
+                        this@HomeFragment.context,
+                        LinearLayoutManager.HORIZONTAL,
+                        false
+                    )
+                    rvNew.adapter = mAdapterNew
                     rvNew.layoutManager = LinearLayoutManager(
                         this@HomeFragment.context,
                         LinearLayoutManager.HORIZONTAL,
@@ -83,12 +119,23 @@ class HomeFragment : Fragment() {
                     )
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
 
         })
+
+        btnCheckSale.setOnClickListener {
+            bigBanner.visibility = View.GONE
+            smallBanner.visibility = View.VISIBLE
+            blockSale.visibility = View.VISIBLE
+        }
+
+        smallBanner.setOnClickListener {
+            blockMain2.visibility = View.VISIBLE
+            blockMain1.visibility = View.GONE
+        }
+
         return view
     }
 

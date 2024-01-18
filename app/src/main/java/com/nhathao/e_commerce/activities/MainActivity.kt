@@ -8,6 +8,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.databinding.ActivityMainBinding
+import com.nhathao.e_commerce.fragments.BagFragment
+import com.nhathao.e_commerce.fragments.FavoriteFragment
 import com.nhathao.e_commerce.fragments.HomeFragment
 import com.nhathao.e_commerce.fragments.ProfileFragment
 import com.nhathao.e_commerce.fragments.ShopFragment
@@ -41,6 +43,14 @@ class MainActivity : AppCompatActivity() {
                 R.id.shop -> {
                     binding.bottomNavigationView.menu.findItem(R.id.shop).setChecked(true)
                     replaceFragment(ShopFragment())
+                }
+                R.id.bag -> {
+                    binding.bottomNavigationView.menu.findItem(R.id.bag).setChecked(true)
+                    replaceFragment(BagFragment())
+                }
+                R.id.favorite -> {
+                    binding.bottomNavigationView.menu.findItem(R.id.favorite).setChecked(true)
+                    replaceFragment(FavoriteFragment())
                 }
                 R.id.profile -> {
                     if (!isLogin){
