@@ -53,7 +53,6 @@ class RvAdapterProduct (private var ds:List<Product>) : RecyclerView.Adapter<RvA
             if (ds[position].productMode == "NEW"){
                 txtProductMode.setBackgroundResource(R.drawable.bg_new)
                 txtProductPrice.text = "${ds[position].productPrice}$"
-                txtProductPriceSale.visibility = View.INVISIBLE
             }
             else {
                 txtProductMode.setBackgroundResource(R.drawable.bg_sale)
@@ -67,7 +66,6 @@ class RvAdapterProduct (private var ds:List<Product>) : RecyclerView.Adapter<RvA
             ratingProduct.rating = ds[position].productRating!!
             txtRatingQuantity.text = "(${ds[position].productRatingQuantity})"
             txtProductName.text = ds[position].productName
-
 
             btnFavorite.setOnClickListener {
 

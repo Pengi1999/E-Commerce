@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginTop="7dp"
-        android:text="30$"
+        android:text=""
         android:textColor="@color/red_button"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/txtProductPrice"

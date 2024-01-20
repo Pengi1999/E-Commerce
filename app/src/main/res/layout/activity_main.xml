@@ -10,8 +10,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/bottomNavigationView">
+        android:layout_above="@+id/bottomNavigationView"
+        android:layout_alignParentTop="true">
 
         <FrameLayout
             android:id="@+id/frame_layout"
@@ -20,19 +20,18 @@
             android:background="@color/background_default">
 
         </FrameLayout>
-
     </ScrollView>
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
+        style="@style/Widget.MaterialComponents.BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="25dp"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/bg_bottomnavigationview"
-        style="@style/Widget.MaterialComponents.BottomNavigationView"
+        android:paddingBottom="25dp"
         app:itemIconTint="@color/color_item_bottom_nav"
         app:itemTextColor="@color/red_button"
-        app:menu="@menu/bottom_nav"
-        android:layout_alignParentBottom="true"/>
+        app:menu="@menu/bottom_nav" />
 </RelativeLayout>
