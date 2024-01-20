@@ -5,8 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nhathao.e_commerce.R
+import com.nhathao.e_commerce.adapters.RvAdapterCategory
+import com.nhathao.e_commerce.models.Product
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -19,7 +24,10 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class CatalogFragment : Fragment() {
-    private lateinit var txtView:TextView
+    private lateinit var btnBack: ImageButton
+    private lateinit var txtCategory: TextView
+    private lateinit var rcvCategory: RecyclerView
+    private lateinit var dsCategory: ArrayList<String>
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -38,10 +46,30 @@ class CatalogFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_catalog, container, false)
-        txtView = view.findViewById(R.id.txtView)
+
+        btnBack = view.findViewById(R.id.btnBack)
+        txtCategory = view.findViewById(R.id.txtCategory)
+        rcvCategory = view.findViewById(R.id.rcvCategory)
+
         val sex = this.activity?.intent?.getStringExtra("Sex")
         val category = this.activity?.intent?.getStringExtra("Category")
-        txtView.setText("${sex} ${category}")
+
+        txtCategory.setText("$sex $category")
+
+        dsCategory = arrayListOf("T-shirts", "Crop tops", "Sleeveless", "Shirts", "Blouse")
+
+        val adapterCategory = RvAdapterCategory(dsCategory)
+        rcvCategory.adapter = adapterCategory
+        rcvCategory.layoutManager = LinearLayoutManager(
+            this.requireContext(),
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
+
+        btnBack.setOnClickListener {
+            this.activity?.supportFragmentManager?.popBackStack()
+        }
+
         return view
     }
 

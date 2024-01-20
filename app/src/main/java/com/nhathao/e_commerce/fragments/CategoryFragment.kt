@@ -43,13 +43,17 @@ class CategoryFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_category, container, false)
+
         btnBack = view.findViewById(R.id.btnBack)
         listViewCategory = view.findViewById(R.id.listViewCategory)
 
         val sex = this.activity?.intent?.getStringExtra("Sex")
         val type = this.activity?.intent?.getStringExtra("Type")
+
         if(type == "Clothes" && sex == "Women")
             listCategory = listOf<String>("Tops", "Shirts & Blouses", "Cardigans & Sweaters", "Knitwear", "Blazers", "Outerwear", "Pants", "Jeans", "Shorts", "Skirts", "Dresses")
+        else
+            listCategory = listOf()
 
         listViewCategory.adapter = ArrayAdapter(
             this.requireContext(),
@@ -61,7 +65,7 @@ class CategoryFragment : Fragment() {
         }
 
         listViewCategory.setOnItemClickListener { parent, view, position, id ->
-            this.activity?.intent?.putExtra("Sex", "Women")
+            this.activity?.intent?.putExtra("Sex", sex)
             this.activity?.intent?.putExtra("Category", listCategory[position])
             this.activity?.supportFragmentManager?.beginTransaction()?.apply {
                 addToBackStack(null)

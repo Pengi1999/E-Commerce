@@ -34,7 +34,11 @@ class ShopFragment : Fragment() {
     private lateinit var underWomen:LinearLayout
     private lateinit var underMen:LinearLayout
     private lateinit var underKids:LinearLayout
+    private lateinit var cardNew:CardView
     private lateinit var cardClothes:CardView
+    private lateinit var cardShoes:CardView
+    private lateinit var cardAccessories:CardView
+    private lateinit var sex:String
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -62,7 +66,12 @@ class ShopFragment : Fragment() {
         underWomen = view.findViewById(R.id.underWomen)
         underMen = view.findViewById(R.id.underMen)
         underKids = view.findViewById(R.id.underKids)
+        cardNew = view.findViewById(R.id.cardNew)
         cardClothes = view.findViewById(R.id.cardClothes)
+        cardShoes = view.findViewById(R.id.cardShoes)
+        cardAccessories = view.findViewById(R.id.cardAccessories)
+
+        sex = txtWomen.text.toString()
 
         btnBack.setOnClickListener {
             this.activity?.supportFragmentManager?.popBackStack()
@@ -75,6 +84,8 @@ class ShopFragment : Fragment() {
             underWomen.visibility = View.VISIBLE
             underMen.visibility = View.INVISIBLE
             underKids.visibility = View.INVISIBLE
+
+            sex = txtWomen.text.toString()
         }
 
         txtMen.setOnClickListener {
@@ -84,6 +95,8 @@ class ShopFragment : Fragment() {
             underWomen.visibility = View.INVISIBLE
             underMen.visibility = View.VISIBLE
             underKids.visibility = View.INVISIBLE
+
+            sex = txtMen.text.toString()
         }
 
         txtKids.setOnClickListener {
@@ -93,18 +106,36 @@ class ShopFragment : Fragment() {
             underWomen.visibility = View.INVISIBLE
             underMen.visibility = View.INVISIBLE
             underKids.visibility = View.VISIBLE
+
+            sex = txtKids.text.toString()
+        }
+
+        cardNew.setOnClickListener {
+            replaceFragment("New")
         }
 
         cardClothes.setOnClickListener {
-            this.activity?.intent?.putExtra("Sex", "Women")
-            this.activity?.intent?.putExtra("Type", "Clothes")
-            this.activity?.supportFragmentManager?.beginTransaction()?.apply {
-                addToBackStack(null)
-                replace(R.id.frame_layout, CategoryFragment())
-                commit()
-            }
+            replaceFragment("Clothes")
+        }
+
+        cardShoes.setOnClickListener {
+            replaceFragment("Shoes")
+        }
+
+        cardAccessories.setOnClickListener {
+            replaceFragment("Accessories")
         }
         return view
+    }
+
+    private fun replaceFragment(type: String) {
+        this.activity?.intent?.putExtra("Sex", sex)
+        this.activity?.intent?.putExtra("Type", type)
+        this.activity?.supportFragmentManager?.beginTransaction()?.apply {
+            addToBackStack(null)
+            replace(R.id.frame_layout, CategoryFragment())
+            commit()
+        }
     }
 
     companion object {
