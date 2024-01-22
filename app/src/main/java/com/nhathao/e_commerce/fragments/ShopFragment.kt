@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DatabaseReference
@@ -25,7 +26,6 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ShopFragment : Fragment() {
-    private lateinit var dbRef: DatabaseReference
     private lateinit var btnBack:ImageButton
     private lateinit var btnSearch:ImageButton
     private lateinit var txtWomen:TextView
@@ -38,7 +38,7 @@ class ShopFragment : Fragment() {
     private lateinit var cardClothes:CardView
     private lateinit var cardShoes:CardView
     private lateinit var cardAccessories:CardView
-    private lateinit var sex:String
+    private var sex:String = "Women"
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -58,6 +58,7 @@ class ShopFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_shop, container, false)
+
         btnBack = view.findViewById(R.id.btnBack)
         btnSearch = view.findViewById(R.id.btnSearch)
         txtWomen = view.findViewById(R.id.txtWomen)
@@ -70,8 +71,6 @@ class ShopFragment : Fragment() {
         cardClothes = view.findViewById(R.id.cardClothes)
         cardShoes = view.findViewById(R.id.cardShoes)
         cardAccessories = view.findViewById(R.id.cardAccessories)
-
-        sex = txtWomen.text.toString()
 
         btnBack.setOnClickListener {
             this.activity?.supportFragmentManager?.popBackStack()
@@ -157,5 +156,4 @@ class ShopFragment : Fragment() {
                 }
             }
     }
-
 }

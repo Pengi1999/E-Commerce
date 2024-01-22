@@ -17,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:paddingBottom="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="10dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -54,80 +54,91 @@
                 android:id="@+id/txtCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
                 android:text="Women's tops"
+                android:textColor="@color/black_custom"
                 android:textSize="34sp"
-                android:textStyle="bold"
-                android:textColor="@color/black_custom"/>
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvCategory"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"/>
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
                 android:layout_marginHorizontal="16dp"
-                android:paddingVertical="5dp"
-                android:background="#F9F9F9">
-                
+                android:layout_marginTop="18dp"
+                android:background="#F9F9F9"
+                android:paddingVertical="5dp">
+
                 <LinearLayout
                     android:id="@+id/blockFilters"
-                    android:layout_alignParentStart="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
+
                     <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/ic_filter_list"/>
+                        android:background="@drawable/ic_filter_list" />
+
                     <TextView
-                        android:layout_marginStart="7dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Filters"/>
+                        android:layout_marginStart="7dp"
+                        android:text="Filters" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/blockSort"
-                    android:layout_toEndOf="@+id/blockFilters"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="60dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginStart="60dp"
+                    android:layout_toEndOf="@+id/blockFilters"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
+
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ic_swap_vert"/>
+                        android:background="@drawable/ic_swap_vert" />
+
                     <TextView
-                        android:layout_marginStart="7dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Price: lowest to high"/>
+                        android:layout_marginStart="7dp"
+                        android:text="Price: lowest to high" />
                 </LinearLayout>
 
                 <ImageButton
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
                     android:id="@+id/btnStyleShowList"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="2dp"
-                    android:background="@drawable/ic_view_module"/>
+                    android:background="@drawable/ic_view_module" />
             </RelativeLayout>
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="16dp" />
 
     </LinearLayout>
 

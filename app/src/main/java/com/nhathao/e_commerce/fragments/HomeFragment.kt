@@ -103,8 +103,8 @@ class HomeFragment : Fragment() {
                             dsProductSale.add(productData)
                         }
                     }
-                    val mAdapterNew = RvAdapterProduct(dsProductNew)
-                    val mAdapterSale = RvAdapterProduct(dsProductSale)
+                    val mAdapterNew = RvAdapterProduct(dsProductNew, R.layout.layout_item)
+                    val mAdapterSale = RvAdapterProduct(dsProductSale, R.layout.layout_item)
                     rvSale.adapter = mAdapterSale
                     rvSale.layoutManager = LinearLayoutManager(
                         this@HomeFragment.context,

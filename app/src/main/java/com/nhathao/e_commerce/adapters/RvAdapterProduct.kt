@@ -18,12 +18,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.models.Product
 
-class RvAdapterProduct (private var ds:List<Product>) : RecyclerView.Adapter<RvAdapterProduct.ProductViewHolder>(){
+class RvAdapterProduct (private var ds:List<Product>, private var layout:Int) : RecyclerView.Adapter<RvAdapterProduct.ProductViewHolder>(){
 
     class ProductViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return ProductViewHolder(view)
     }
 
