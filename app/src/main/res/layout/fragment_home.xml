@@ -5,204 +5,209 @@
     android:layout_height="match_parent"
     tools:context=".fragments.HomeFragment">
 
-    <LinearLayout
-        android:id="@+id/blockMain1"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#F9F9F9"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:id="@+id/smallBanner"
+        <LinearLayout
+            android:id="@+id/blockMain1"
             android:layout_width="match_parent"
-            android:layout_height="196dp"
-            android:visibility="gone">
+            android:layout_height="wrap_content"
+            android:background="#F9F9F9"
+            android:orientation="vertical">
 
-            <ViewFlipper
+            <RelativeLayout
+                android:id="@+id/smallBanner"
+                android:layout_width="match_parent"
+                android:layout_height="196dp"
+                android:visibility="gone">
+
+                <ViewFlipper
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autoStart="true"
+                    android:flipInterval="2000"
+                    android:inAnimation="@android:anim/slide_in_left"
+                    android:outAnimation="@android:anim/slide_out_right">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/banner_sale" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/banner_street_clothes" />
+
+                </ViewFlipper>
+
+                <TextView
+                    android:id="@+id/txtStreet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="120dp"
+                    android:text="Street clothes"
+                    android:textColor="@color/white"
+                    android:textSize="34sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/bigBanner"
+                android:layout_width="match_parent"
+                android:layout_height="536dp">
+
+                <ViewFlipper
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autoStart="true"
+                    android:flipInterval="2000"
+                    android:inAnimation="@android:anim/slide_in_left"
+                    android:outAnimation="@android:anim/slide_out_right">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/banner_sale" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/banner_street_clothes" />
+
+                </ViewFlipper>
+
+                <TextView
+                    android:id="@+id/txtFashionSale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="310dp"
+                    android:text="Fashion\nsale"
+                    android:textColor="@color/white"
+                    android:textSize="48sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnCheckSale"
+                    android:layout_width="160dp"
+                    android:layout_height="36dp"
+                    android:layout_below="@id/txtFashionSale"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="18dp"
+                    android:background="@drawable/bg_button_maxwidth"
+                    android:text="Check"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/blockSale"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:autoStart="true"
-                android:flipInterval="2000"
-                android:inAnimation="@android:anim/slide_in_left"
-                android:outAnimation="@android:anim/slide_out_right">
+                android:visibility="gone">
 
-                <ImageView
+                <TextView
+                    android:id="@+id/txtSale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="33dp"
+                    android:text="Sale"
+                    android:textColor="@color/black_custom"
+                    android:textSize="34sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtDesSale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtSale"
+                    android:layout_marginStart="14dp"
+                    android:text="Super summer sale"
+                    android:textColor="@color/text_color_hint"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/txtViewSale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="13dp"
+                    android:text="View all"
+                    android:textColor="@color/black_custom"
+                    android:textSize="11sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvSale"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/banner_sale" />
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtDesSale"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="20dp" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/banner_street_clothes" />
+            </RelativeLayout>
 
-            </ViewFlipper>
-
-            <TextView
-                android:id="@+id/txtStreet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="120dp"
-                android:text="Street clothes"
-                android:textColor="@color/white"
-                android:textSize="34sp"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/bigBanner"
-            android:layout_width="match_parent"
-            android:layout_height="536dp">
-
-            <ViewFlipper
+            <RelativeLayout
+                android:id="@+id/blockNew"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:autoStart="true"
-                android:flipInterval="2000"
-                android:inAnimation="@android:anim/slide_in_left"
-                android:outAnimation="@android:anim/slide_out_right">
+                android:layout_height="match_parent">
 
-                <ImageView
+                <TextView
+                    android:id="@+id/txtNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="33dp"
+                    android:text="New"
+                    android:textColor="@color/black_custom"
+                    android:textSize="34sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtDesNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtNew"
+                    android:layout_marginStart="14dp"
+                    android:text="you've never seen it before"
+                    android:textColor="@color/text_color_hint"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/txtViewNew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginEnd="13dp"
+                    android:text="View all"
+                    android:textColor="@color/black_custom"
+                    android:textSize="11sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvNew"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/banner_sale" />
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtDesNew"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="20dp" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/banner_street_clothes" />
-
-            </ViewFlipper>
-
-            <TextView
-                android:id="@+id/txtFashionSale"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="310dp"
-                android:text="Fashion\nsale"
-                android:textColor="@color/white"
-                android:textSize="48sp"
-                android:textStyle="bold" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnCheckSale"
-                android:layout_width="160dp"
-                android:layout_height="36dp"
-                android:layout_below="@id/txtFashionSale"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="18dp"
-                android:background="@drawable/bg_button_maxwidth"
-                android:text="Check"
-                android:textColor="@color/white" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/blockSale"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/txtSale"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="33dp"
-                android:text="Sale"
-                android:textColor="@color/black_custom"
-                android:textSize="34sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtDesSale"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtSale"
-                android:layout_marginStart="14dp"
-                android:text="Super summer sale"
-                android:textColor="@color/text_color_hint"
-                android:textSize="11sp" />
-
-            <TextView
-                android:id="@+id/txtViewSale"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="60dp"
-                android:layout_marginEnd="13dp"
-                android:text="View all"
-                android:textColor="@color/black_custom"
-                android:textSize="11sp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvSale"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txtDesSale"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="20dp" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/blockNew"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/txtNew"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="33dp"
-                android:text="New"
-                android:textColor="@color/black_custom"
-                android:textSize="34sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtDesNew"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtNew"
-                android:layout_marginStart="14dp"
-                android:text="you've never seen it before"
-                android:textColor="@color/text_color_hint"
-                android:textSize="11sp" />
-
-            <TextView
-                android:id="@+id/txtViewNew"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="60dp"
-                android:layout_marginEnd="13dp"
-                android:text="View all"
-                android:textColor="@color/black_custom"
-                android:textSize="11sp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvNew"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txtDesNew"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="20dp" />
-
-        </RelativeLayout>
-    </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/blockMain2"
         android:layout_width="match_parent"
-        android:layout_height="760dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="gone"
         android:weightSum="2">

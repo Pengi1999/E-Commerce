@@ -99,6 +99,9 @@ class HomeFragment : Fragment() {
                         if (productData.productMode == "NEW"){
                             dsProductNew.add(productData)
                         }
+                        else if (productData.productMode == ""){
+
+                        }
                         else {
                             dsProductSale.add(productData)
                         }

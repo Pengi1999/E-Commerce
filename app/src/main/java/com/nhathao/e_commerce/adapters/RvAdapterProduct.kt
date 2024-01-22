@@ -49,19 +49,23 @@ class RvAdapterProduct (private var ds:List<Product>, private var layout:Int) : 
                 val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
                 imgProduct.setImageBitmap(bitmap)
             }
-            txtProductMode.text = ds[position].productMode
-            if (ds[position].productMode == "NEW"){
+            if (ds[position].productMode == "NEW" ){
                 txtProductMode.setBackgroundResource(R.drawable.bg_new)
-                txtProductPrice.text = "${ds[position].productPrice}$"
+                txtProductMode.visibility = View.VISIBLE
+            }
+            else if (ds[position].productMode == ""){
+                txtProductMode.visibility = View.INVISIBLE
             }
             else {
                 txtProductMode.setBackgroundResource(R.drawable.bg_sale)
+                txtProductMode.visibility = View.VISIBLE
                 val saleValue = ds[position].productMode.substring(1,3).toFloat() / 100
-                txtProductPrice.text = "${ds[position].productPrice}$"
                 txtProductPrice.setTextColor(R.color.text_color_hint)
                 txtProductPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                 txtProductPriceSale.text = "${ds[position].productPrice - (ds[position].productPrice * saleValue).toInt()}$"
             }
+            txtProductPrice.text = "${ds[position].productPrice}$"
+            txtProductMode.text = ds[position].productMode
             txtProductDes.text = ds[position].productDescribe
             ratingProduct.rating = ds[position].productRating!!
             txtRatingQuantity.text = "(${ds[position].productRatingQuantity})"

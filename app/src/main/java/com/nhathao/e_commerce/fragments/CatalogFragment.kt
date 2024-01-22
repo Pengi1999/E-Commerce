@@ -1,5 +1,7 @@
 package com.nhathao.e_commerce.fragments
 
+import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,7 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.nhathao.e_commerce.Interfaces.RvCategoryInterface
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.adapters.RvAdapterCategory
 import com.nhathao.e_commerce.adapters.RvAdapterProduct
@@ -37,12 +42,19 @@ class CatalogFragment : Fragment() {
     private lateinit var dbRef: DatabaseReference
     private lateinit var btnBack: ImageButton
     private lateinit var btnStyleShowList: ImageButton
+    private lateinit var blockFilters: LinearLayout
+    private lateinit var blockSort: LinearLayout
     private lateinit var txtCategory: TextView
     private lateinit var rcvCategory: RecyclerView
     private lateinit var dsCategory: ArrayList<String>
     private lateinit var dsProduct: ArrayList<Product>
+    private lateinit var dsProductAll: ArrayList<Product>
+    private lateinit var dsProductByCategory: ArrayList<Product>
+    private lateinit var dsProductTops: ArrayList<Product>
     private lateinit var rcvProduct: RecyclerView
+    private lateinit var adapterCategory:RvAdapterCategory
     private lateinit var adapterProduct:RvAdapterProduct
+    private var isViewList: Boolean = true
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -63,11 +75,11 @@ class CatalogFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_catalog, container, false)
 
         dbRef = FirebaseDatabase.getInstance().getReference("Products")
-        dsCategory = arrayListOf<String>()
-        dsProduct = arrayListOf<Product>()
 
         btnBack = view.findViewById(R.id.btnBack)
         btnStyleShowList = view.findViewById(R.id.btnStyleShowList)
+        blockFilters = view.findViewById(R.id.blockFilters)
+        blockSort = view.findViewById(R.id.blockSort)
         txtCategory = view.findViewById(R.id.txtCategory)
         rcvCategory = view.findViewById(R.id.rcvCategory)
         rcvProduct = view.findViewById(R.id.rcvProduct)
@@ -77,6 +89,17 @@ class CatalogFragment : Fragment() {
         val category = this.activity?.intent?.getStringExtra("Category")
 
         txtCategory.setText("$sex's $category")
+
+        dsCategory = arrayListOf<String>()
+        dsProduct = arrayListOf<Product>()
+        dsProductAll = arrayListOf<Product>()
+        dsProductByCategory = arrayListOf<Product>()
+        dsProductTops = arrayListOf<Product>()
+
+        if(type == "Clothes"){
+            dsCategory.add("All")
+            dsCategory.add("Tops")
+        }
 
         dbRef.get().addOnSuccessListener {
             if(it.exists()) {
@@ -97,20 +120,15 @@ class CatalogFragment : Fragment() {
                             productSnap.child("productRating").value.toString().toFloat(),
                             productSnap.child("productRatingQuantity").value.toString().toInt(),
                         )
-                        if (category == "All"){
-                            dsProduct.add(productData)
-                        }
-                        else if (category == "Tops") {
-                            if (productData.productCategory == "Shirt" ||
+                        dsProductAll.add(productData)
+
+                        if (productData.productCategory == "Shirt" ||
                                 productData.productCategory == "Blouse" ||
-                                productData.productCategory == "Dress") {
-                                dsProduct.add(productData)
-                            }
+                                productData.productCategory == "T-shirt") {
+                            dsProductTops.add(productData)
                         }
-                        else {
-                            if (productData.productCategory == category) {
-                                dsProduct.add(productData)
-                            }
+                        if (productData.productCategory == category) {
+                            dsProductByCategory.add(productData)
                         }
                         if (!dsCategory.contains(productSnap.child("productCategory").value.toString())) {
                             dsCategory.add(productSnap.child("productCategory").value.toString())
@@ -122,19 +140,26 @@ class CatalogFragment : Fragment() {
             Log.wtf("firebase", "Error getting data", it)
         }
 
-        val adapterCategory = RvAdapterCategory(dsCategory)
+        if(category == "All")
+            dsProduct = dsProductAll
+        else if (category == "Tops")
+            dsProduct = dsProductTops
+        else
+            dsProduct = dsProductByCategory
+
+        hienProductViewList()
+
+        adapterCategory = RvAdapterCategory(dsCategory, object :RvCategoryInterface{
+            override fun OnClickCategory(pos: Int) {
+                txtCategory.setText("$sex's ${dsCategory[pos]}")
+                xuLyClickCategory(dsCategory[pos])
+            }
+        })
+
         rcvCategory.adapter = adapterCategory
         rcvCategory.layoutManager = LinearLayoutManager(
             this.requireContext(),
             LinearLayoutManager.HORIZONTAL,
-            false
-        )
-
-        adapterProduct = RvAdapterProduct(dsProduct, R.layout.layout_item2)
-        rcvProduct.adapter = adapterProduct
-        rcvProduct.layoutManager = LinearLayoutManager(
-            this.requireContext(),
-            LinearLayoutManager.VERTICAL,
             false
         )
 
@@ -143,18 +168,72 @@ class CatalogFragment : Fragment() {
         }
 
         btnStyleShowList.setOnClickListener {
-
-            adapterProduct = RvAdapterProduct(dsProduct, R.layout.layout_item)
-            rcvProduct.adapter = adapterProduct
-            rcvProduct.layoutManager = GridLayoutManager(
-                this.requireContext(),
-                2,
-                GridLayoutManager.VERTICAL,
-                false
-            )
+            xuLyBoCucHienProduct()
         }
 
+        blockFilters.setOnClickListener {
+
+        }
+
+        blockSort.setOnClickListener {
+
+        }
         return view
+    }
+
+    private fun xuLyBoCucHienProduct() {
+        if (isViewList) {
+            btnStyleShowList.setBackgroundResource(R.drawable.ic_view_list)
+            isViewList = false
+            hienProductViewMode()
+        }
+        else {
+            btnStyleShowList.setBackgroundResource(R.drawable.ic_view_module)
+            isViewList = true
+            hienProductViewList()
+        }
+    }
+
+    private fun hienProductViewMode() {
+        adapterProduct = RvAdapterProduct(dsProduct, R.layout.layout_item)
+        rcvProduct.adapter = adapterProduct
+        rcvProduct.layoutManager = GridLayoutManager(
+            this.requireContext(),
+            2,
+            GridLayoutManager.VERTICAL,
+            false
+        )
+    }
+
+    private fun hienProductViewList() {
+        adapterProduct = RvAdapterProduct(dsProduct, R.layout.layout_item2)
+        rcvProduct.adapter = adapterProduct
+        rcvProduct.layoutManager = LinearLayoutManager(
+            this.requireContext(),
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+    }
+
+    private fun xuLyClickCategory(categorySelected: String) {
+        if (categorySelected == "All")
+            dsProduct = dsProductAll
+        else if (categorySelected == "Tops")
+            dsProduct = dsProductTops
+        else {
+            dsProductByCategory.clear()
+            for (product in dsProductAll){
+                if (product.productCategory == categorySelected)
+                    dsProductByCategory.add(product)
+            }
+            dsProduct = dsProductByCategory
+        }
+        if (isViewList) {
+            hienProductViewList()
+        }
+        else {
+            hienProductViewMode()
+        }
     }
 
     companion object {

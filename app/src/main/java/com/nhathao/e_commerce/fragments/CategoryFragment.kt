@@ -85,11 +85,6 @@ class CategoryFragment : Fragment() {
             Log.wtf("firebase", "Error getting data", it)
         }
 
-//        if(type == "Clothes" && sex == "Women")
-//            listCategory = listOf<String>("Tops", "Shirts & Blouses", "Cardigans & Sweaters", "Knitwear", "Blazers", "Outerwear", "Pants", "Jeans", "Shorts", "Skirts", "Dresses")
-//        else
-//            listCategory = listOf()
-
         listViewCategory.adapter = ArrayAdapter(
             this.requireContext(),
             android.R.layout.simple_list_item_1,
