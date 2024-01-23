@@ -96,72 +96,79 @@ class CatalogFragment : Fragment() {
         dsProductByCategory = arrayListOf<Product>()
         dsProductTops = arrayListOf<Product>()
 
-        if(type == "Clothes"){
-            dsCategory.add("All")
-            dsCategory.add("Tops")
-        }
+        dbRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                dsCategory.clear()
+                dsProductAll.clear()
+                dsProductTops.clear()
+                dsProductByCategory.clear()
+                if (snapshot.exists()) {
+                    if (type == "Clothes") {
+                        dsCategory.add("All")
+                        dsCategory.add("Tops")
+                    }
+                    for (productSnap in snapshot.children) {
+                        if (productSnap.child("productSex").value.toString() == sex &&
+                            productSnap.child("productType").value.toString() == type
+                        ) {
+                            val productData = Product(
+                                productSnap.child("productId").value.toString(),
+                                productSnap.child("productName").value.toString(),
+                                productSnap.child("productDescribe").value.toString(),
+                                productSnap.child("productImage").value.toString(),
+                                productSnap.child("productSex").value.toString(),
+                                productSnap.child("productType").value.toString(),
+                                productSnap.child("productCategory").value.toString(),
+                                productSnap.child("productBrand").value.toString(),
+                                productSnap.child("productMode").value.toString(),
+                                productSnap.child("productPrice").value.toString().toInt(),
+                                productSnap.child("productRating").value.toString().toFloat(),
+                                productSnap.child("productRatingQuantity").value.toString().toInt(),
+                            )
+                            dsProductAll.add(productData)
 
-        dbRef.get().addOnSuccessListener {
-            if(it.exists()) {
-                for (productSnap in it.children){
-                    if (productSnap.child("productSex").value.toString() == sex &&
-                        productSnap.child("productType").value.toString() == type) {
-                        val productData = Product(
-                            productSnap.child("productId").value.toString(),
-                            productSnap.child("productName").value.toString(),
-                            productSnap.child("productDescribe").value.toString(),
-                            productSnap.child("productImage").value.toString(),
-                            productSnap.child("productSex").value.toString(),
-                            productSnap.child("productType").value.toString(),
-                            productSnap.child("productCategory").value.toString(),
-                            productSnap.child("productBrand").value.toString(),
-                            productSnap.child("productMode").value.toString(),
-                            productSnap.child("productPrice").value.toString().toInt(),
-                            productSnap.child("productRating").value.toString().toFloat(),
-                            productSnap.child("productRatingQuantity").value.toString().toInt(),
-                        )
-                        dsProductAll.add(productData)
-
-                        if (productData.productCategory == "Shirt" ||
+                            if (productData.productCategory == "Shirt" ||
                                 productData.productCategory == "Blouse" ||
-                                productData.productCategory == "T-shirt") {
-                            dsProductTops.add(productData)
-                        }
-                        if (productData.productCategory == category) {
-                            dsProductByCategory.add(productData)
-                        }
-                        if (!dsCategory.contains(productSnap.child("productCategory").value.toString())) {
-                            dsCategory.add(productSnap.child("productCategory").value.toString())
+                                productData.productCategory == "T-shirt"
+                            ) {
+                                dsProductTops.add(productData)
+                            }
+                            if (productData.productCategory == category) {
+                                dsProductByCategory.add(productData)
+                            }
+                            if (!dsCategory.contains(productSnap.child("productCategory").value.toString())) {
+                                dsCategory.add(productSnap.child("productCategory").value.toString())
+                            }
                         }
                     }
+                    if(category == "All")
+                        dsProduct = dsProductAll
+                    else if (category == "Tops")
+                        dsProduct = dsProductTops
+                    else
+                        dsProduct = dsProductByCategory
+
+                    hienProductViewList()
+
+                    adapterCategory = RvAdapterCategory(dsCategory, object :RvCategoryInterface{
+                        override fun OnClickCategory(pos: Int) {
+                            txtCategory.setText("$sex's ${dsCategory[pos]}")
+                            xuLyClickCategory(dsCategory[pos])
+                        }
+                    })
+
+                    rcvCategory.adapter = adapterCategory
+                    rcvCategory.layoutManager = LinearLayoutManager(
+                        this@CatalogFragment.requireContext(),
+                        LinearLayoutManager.HORIZONTAL,
+                        false
+                    )
                 }
             }
-        }.addOnFailureListener{
-            Log.wtf("firebase", "Error getting data", it)
-        }
-
-        if(category == "All")
-            dsProduct = dsProductAll
-        else if (category == "Tops")
-            dsProduct = dsProductTops
-        else
-            dsProduct = dsProductByCategory
-
-        hienProductViewList()
-
-        adapterCategory = RvAdapterCategory(dsCategory, object :RvCategoryInterface{
-            override fun OnClickCategory(pos: Int) {
-                txtCategory.setText("$sex's ${dsCategory[pos]}")
-                xuLyClickCategory(dsCategory[pos])
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
             }
         })
-
-        rcvCategory.adapter = adapterCategory
-        rcvCategory.layoutManager = LinearLayoutManager(
-            this.requireContext(),
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
 
         btnBack.setOnClickListener {
             this.activity?.supportFragmentManager?.popBackStack()

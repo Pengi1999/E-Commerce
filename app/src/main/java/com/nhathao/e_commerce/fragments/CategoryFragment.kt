@@ -64,31 +64,35 @@ class CategoryFragment : Fragment() {
         val type = this.activity?.intent?.getStringExtra("Type")
 
         listCategory = mutableListOf()
-        if(type == "Clothes"){
-            listCategory.add("Tops")
-        }
 
-        dbRef.get().addOnSuccessListener {
-            if(it.exists()) {
-                for (productSnap in it.children){
-                    val productSnapSex = productSnap.child("productSex").value.toString()
-                    val productSnapType = productSnap.child("productType").value.toString()
-                    val productSnapCategory = productSnap.child("productCategory").value.toString()
-                    if (productSnapSex == sex && productSnapType == type) {
-                        if (!listCategory.contains(productSnapCategory)) {
-                            listCategory.add(productSnapCategory)
+        dbRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                listCategory.clear()
+                if(snapshot.exists()){
+                    if(type == "Clothes"){
+                        listCategory.add("Tops")
+                    }
+                    for (productSnap in snapshot.children){
+                        val productSnapSex = productSnap.child("productSex").value.toString()
+                        val productSnapType = productSnap.child("productType").value.toString()
+                        val productSnapCategory = productSnap.child("productCategory").value.toString()
+                        if (productSnapSex == sex && productSnapType == type) {
+                            if (!listCategory.contains(productSnapCategory)) {
+                                listCategory.add(productSnapCategory)
+                            }
                         }
                     }
+                    listViewCategory.adapter = ArrayAdapter(
+                        this@CategoryFragment.requireContext(),
+                        android.R.layout.simple_list_item_1,
+                        listCategory)
                 }
             }
-        }.addOnFailureListener{
-            Log.wtf("firebase", "Error getting data", it)
-        }
 
-        listViewCategory.adapter = ArrayAdapter(
-            this.requireContext(),
-            android.R.layout.simple_list_item_1,
-            listCategory)
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
 
         btnBack.setOnClickListener {
             this.activity?.supportFragmentManager?.popBackStack()

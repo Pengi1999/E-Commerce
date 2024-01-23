@@ -4,15 +4,21 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.nhathao.e_commerce.R
+import com.nhathao.e_commerce.adapters.RvAdapterProduct
 import com.nhathao.e_commerce.databinding.ActivityMainBinding
 import com.nhathao.e_commerce.fragments.BagFragment
 import com.nhathao.e_commerce.fragments.FavoriteFragment
 import com.nhathao.e_commerce.fragments.HomeFragment
 import com.nhathao.e_commerce.fragments.ProfileFragment
 import com.nhathao.e_commerce.fragments.ShopFragment
+import com.nhathao.e_commerce.models.Product
 import com.nhathao.e_commerce.models.User
 
 private lateinit var binding: ActivityMainBinding
@@ -32,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             isLogin = bundle.getBoolean("isLogin", false)
         }
 
-        dbRef = FirebaseDatabase.getInstance().getReference("Users")
+        dbRef = FirebaseDatabase.getInstance().getReference("Products")
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
