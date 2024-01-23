@@ -54,6 +54,7 @@ class CatalogFragment : Fragment() {
     private lateinit var txtSortByPriceHighest: TextView
     private lateinit var dbRef: DatabaseReference
     private lateinit var btnBack: ImageButton
+    private lateinit var txtCategoryActionBar: TextView
     private lateinit var btnStyleShowList: ImageButton
     private lateinit var blockFilters: LinearLayout
     private lateinit var blockSort: LinearLayout
@@ -91,6 +92,7 @@ class CatalogFragment : Fragment() {
         dbRef = FirebaseDatabase.getInstance().getReference("Products")
 
         btnBack = view.findViewById(R.id.btnBack)
+        txtCategoryActionBar = view.findViewById(R.id.txtCategoryActionBar)
         btnStyleShowList = view.findViewById(R.id.btnStyleShowList)
         blockFilters = view.findViewById(R.id.blockFilters)
         blockSort = view.findViewById(R.id.blockSort)
@@ -280,11 +282,16 @@ class CatalogFragment : Fragment() {
 
     private fun xuLyBoCucHienProduct() {
         if (isViewList) {
+            txtCategoryActionBar.text = txtCategory.text
+            txtCategoryActionBar.visibility = View.VISIBLE
+            txtCategory.visibility = View.GONE
             btnStyleShowList.setBackgroundResource(R.drawable.ic_view_list)
             isViewList = false
             hienProductViewMode()
         }
         else {
+            txtCategoryActionBar.visibility = View.INVISIBLE
+            txtCategory.visibility = View.VISIBLE
             btnStyleShowList.setBackgroundResource(R.drawable.ic_view_module)
             isViewList = true
             hienProductViewList()

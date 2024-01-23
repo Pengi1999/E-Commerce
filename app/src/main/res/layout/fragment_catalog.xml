@@ -36,6 +36,16 @@
                     android:background="@drawable/ic_chevron_left"
                     android:contentDescription="Back" />
 
+                <TextView
+                    android:id="@+id/txtCategoryActionBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="invisible"
+                    android:text="Categories"
+                    android:textColor="@color/black_custom"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <ImageButton
                     android:id="@+id/btnSearch"
