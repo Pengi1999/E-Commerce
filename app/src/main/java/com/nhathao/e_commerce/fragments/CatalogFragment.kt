@@ -1,20 +1,27 @@
 package com.nhathao.e_commerce.fragments
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -39,18 +46,25 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class CatalogFragment : Fragment() {
+    private lateinit var dialog: BottomSheetDialog
+    private lateinit var txtSortByPopular: TextView
+    private lateinit var txtSortByNewest: TextView
+    private lateinit var txtSortByReview: TextView
+    private lateinit var txtSortByPriceLowest: TextView
+    private lateinit var txtSortByPriceHighest: TextView
     private lateinit var dbRef: DatabaseReference
     private lateinit var btnBack: ImageButton
     private lateinit var btnStyleShowList: ImageButton
     private lateinit var blockFilters: LinearLayout
     private lateinit var blockSort: LinearLayout
+    private lateinit var txtViewSort: TextView
     private lateinit var txtCategory: TextView
     private lateinit var rcvCategory: RecyclerView
-    private lateinit var dsCategory: ArrayList<String>
-    private lateinit var dsProduct: ArrayList<Product>
-    private lateinit var dsProductAll: ArrayList<Product>
-    private lateinit var dsProductByCategory: ArrayList<Product>
-    private lateinit var dsProductTops: ArrayList<Product>
+    private lateinit var dsCategory: MutableList<String>
+    private lateinit var dsProduct: MutableList<Product>
+    private lateinit var dsProductAll: MutableList<Product>
+    private lateinit var dsProductByCategory: MutableList<Product>
+    private lateinit var dsProductTops: MutableList<Product>
     private lateinit var rcvProduct: RecyclerView
     private lateinit var adapterCategory:RvAdapterCategory
     private lateinit var adapterProduct:RvAdapterProduct
@@ -80,6 +94,7 @@ class CatalogFragment : Fragment() {
         btnStyleShowList = view.findViewById(R.id.btnStyleShowList)
         blockFilters = view.findViewById(R.id.blockFilters)
         blockSort = view.findViewById(R.id.blockSort)
+        txtViewSort = view.findViewById(R.id.txtViewSort)
         txtCategory = view.findViewById(R.id.txtCategory)
         rcvCategory = view.findViewById(R.id.rcvCategory)
         rcvProduct = view.findViewById(R.id.rcvProduct)
@@ -90,11 +105,11 @@ class CatalogFragment : Fragment() {
 
         txtCategory.setText("$sex's $category")
 
-        dsCategory = arrayListOf<String>()
-        dsProduct = arrayListOf<Product>()
-        dsProductAll = arrayListOf<Product>()
-        dsProductByCategory = arrayListOf<Product>()
-        dsProductTops = arrayListOf<Product>()
+        dsCategory = mutableListOf<String>()
+        dsProduct = mutableListOf<Product>()
+        dsProductAll = mutableListOf<Product>()
+        dsProductByCategory = mutableListOf<Product>()
+        dsProductTops = mutableListOf<Product>()
 
         dbRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -148,6 +163,7 @@ class CatalogFragment : Fragment() {
                     else
                         dsProduct = dsProductByCategory
 
+                    dsProduct.sortBy { it.productPrice }
                     hienProductViewList()
 
                     adapterCategory = RvAdapterCategory(dsCategory, object :RvCategoryInterface{
@@ -183,9 +199,83 @@ class CatalogFragment : Fragment() {
         }
 
         blockSort.setOnClickListener {
-
+            showBottomSheetSort()
         }
         return view
+    }
+
+    private fun showBottomSheetSort() {
+        val dialogView = layoutInflater.inflate(R.layout.bottom_sheet_sort, null)
+        dialog = BottomSheetDialog(this.requireContext())
+        dialog.setContentView(dialogView)
+        txtSortByPopular = dialogView.findViewById<TextView>(R.id.txtSortByPopular)
+        txtSortByNewest = dialogView.findViewById<TextView>(R.id.txtSortByNewest)
+        txtSortByReview = dialogView.findViewById<TextView>(R.id.txtSortByReview)
+        txtSortByPriceLowest = dialogView.findViewById<TextView>(R.id.txtSortByPriceLowest)
+        txtSortByPriceHighest = dialogView.findViewById<TextView>(R.id.txtSortByPriceHighest)
+
+        txtSortByPopular.setOnClickListener {
+            txtViewSort.text = txtSortByPopular .text
+            dialog.dismiss()
+        }
+
+        txtSortByNewest.setOnClickListener {
+            txtViewSort.text = txtSortByNewest.text
+            dialog.dismiss()
+        }
+
+        txtSortByReview.setOnClickListener {
+            txtViewSort.text = txtSortByReview.text
+            dialog.dismiss()
+        }
+
+        txtSortByPriceLowest.setOnClickListener {
+            dsProduct.sortBy { it.productPrice }
+            if (isViewList) {
+                hienProductViewList()
+            }
+            else {
+                hienProductViewMode()
+            }
+            txtViewSort.text = txtSortByPriceLowest.text
+            dialog.dismiss()
+        }
+
+        txtSortByPriceHighest.setOnClickListener {
+            dsProduct.sortByDescending { it.productPrice }
+            if (isViewList) {
+                hienProductViewList()
+            }
+            else {
+                hienProductViewMode()
+            }
+            txtViewSort.text = txtSortByPriceHighest.text
+            dialog.dismiss()
+        }
+
+        eventOnTouchForBottomSheetSort(txtSortByPopular)
+        eventOnTouchForBottomSheetSort(txtSortByNewest)
+        eventOnTouchForBottomSheetSort(txtSortByReview)
+        eventOnTouchForBottomSheetSort(txtSortByPriceLowest)
+        eventOnTouchForBottomSheetSort(txtSortByPriceHighest)
+
+        dialog.show()
+    }
+
+    private fun eventOnTouchForBottomSheetSort(txtView: TextView?) {
+        txtView!!.setOnTouchListener(object :OnTouchListener{
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                if (event?.action == MotionEvent.ACTION_DOWN) {
+                    txtView.setBackgroundResource(R.color.red_button)
+                    txtView.setTextColor(resources.getColor(R.color.white))
+                }
+                else if (event?.action == MotionEvent.ACTION_UP) {
+                    txtView.setBackgroundResource(R.color.background_default)
+                    txtView.setTextColor(resources.getColor(R.color.black_custom))
+                }
+                return false
+            }
+        })
     }
 
     private fun xuLyBoCucHienProduct() {
@@ -235,6 +325,8 @@ class CatalogFragment : Fragment() {
             }
             dsProduct = dsProductByCategory
         }
+        dsProduct.sortBy { it.productPrice }
+        txtViewSort.text = "Price: lowest to high"
         if (isViewList) {
             hienProductViewList()
         }
