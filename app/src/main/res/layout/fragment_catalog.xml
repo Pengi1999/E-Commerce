@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:elevation="5dp"
             android:orientation="vertical"
             android:paddingBottom="10dp">
 
@@ -41,11 +42,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:visibility="invisible"
                     android:text="Categories"
                     android:textColor="@color/black_custom"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
 
                 <ImageButton
                     android:id="@+id/btnSearch"

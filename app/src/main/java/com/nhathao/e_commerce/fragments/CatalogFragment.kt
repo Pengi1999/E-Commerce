@@ -1,9 +1,14 @@
 package com.nhathao.e_commerce.fragments
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,10 +17,13 @@ import android.view.View
 import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Filter
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,9 +39,11 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.nhathao.e_commerce.Interfaces.RvCategoryInterface
 import com.nhathao.e_commerce.R
+import com.nhathao.e_commerce.activities.FilterActivity
 import com.nhathao.e_commerce.adapters.RvAdapterCategory
 import com.nhathao.e_commerce.adapters.RvAdapterProduct
 import com.nhathao.e_commerce.models.Product
+import java.io.ByteArrayOutputStream
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -197,7 +207,14 @@ class CatalogFragment : Fragment() {
         }
 
         blockFilters.setOnClickListener {
-
+            val intent = Intent(requireContext(), FilterActivity::class.java)
+            val dsProDuctAllClone = dsProductAll
+            dsProDuctAllClone.sortBy { it.productPrice }
+            val valueFrom = dsProDuctAllClone.first().productPrice.toFloat()
+            val valueTo = dsProDuctAllClone.last().productPrice.toFloat()
+            intent.putExtra("valueFrom", valueFrom)
+            intent.putExtra("valueTo", valueTo)
+            startForResult.launch(intent)
         }
 
         blockSort.setOnClickListener {
@@ -360,5 +377,14 @@ class CatalogFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            Toast.makeText(requireContext(), "Get data", Toast.LENGTH_SHORT).show()
+            val intent = result.data
+            val valueFrom = intent?.getIntExtra("ValueFrom", 0)
+            val valueTo = intent?.getIntExtra("ValueTo", 0)
+        }
     }
 }

@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/bg_bottomnavigationview"
+        android:elevation="5dp"
         android:paddingBottom="25dp"
         app:itemIconTint="@color/color_item_bottom_nav"
         app:itemTextColor="@color/red_button"

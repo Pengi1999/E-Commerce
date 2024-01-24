@@ -21,16 +21,16 @@
             android:id="@+id/editTextText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Name"
             android:ems="10"
+            android:hint="Name"
             android:inputType="text" />
 
         <EditText
             android:id="@+id/editTextText8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Describe"
             android:ems="10"
+            android:hint="Describe"
             android:inputType="text" />
 
         <EditText
@@ -46,40 +46,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text"
-            android:hint="Type" />
+            android:hint="Type"
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/editTextText4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text"
-            android:hint="Category"/>
+            android:hint="Category"
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/editTextText7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text"
-            android:hint="Brand"/>
+            android:hint="Brand"
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/editTextText6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text"
-            android:hint="Mode" />
+            android:hint="Mode"
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/editTextText5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text"
-            android:hint="Price" />
+            android:hint="Price"
+            android:inputType="text" />
 
         <Button
             android:id="@+id/button"

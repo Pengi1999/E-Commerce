@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="5dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:padding="5dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardImage"
@@ -35,15 +35,15 @@
 
     <TextView
         android:id="@+id/txtRatingQuantity"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/cardImage"
-        app:layout_constraintLeft_toRightOf="@id/ratingProduct"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="(0)"
+        android:textColor="@color/text_color_hint"
         android:textSize="10sp"
-        android:textColor="@color/text_color_hint"/>
+        app:layout_constraintLeft_toRightOf="@id/ratingProduct"
+        app:layout_constraintTop_toBottomOf="@id/cardImage" />
 
     <TextView
         android:id="@+id/txtProductDes"
@@ -93,18 +93,18 @@
 
     <TextView
         android:id="@+id/txtProductMode"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
         android:layout_width="40dp"
         android:layout_height="24dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/bg_new"
-        app:layout_constraintStart_toStartOf="@id/cardImage"
-        app:layout_constraintTop_toTopOf="@+id/cardImage"
-        android:translationZ="90dp"
         android:gravity="center"
         android:text="NEW"
+        android:textColor="@color/white"
         android:textSize="11sp"
-        android:textColor="@color/white"/>
+        android:translationZ="90dp"
+        app:layout_constraintStart_toStartOf="@id/cardImage"
+        app:layout_constraintTop_toTopOf="@+id/cardImage" />
 
 
     <ImageButton
@@ -112,12 +112,12 @@
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_marginTop="164dp"
-        app:layout_constraintEnd_toEndOf="@id/cardImage"
-        app:layout_constraintTop_toTopOf="@id/cardImage"
-        android:translationZ="90dp"
-        android:src="@drawable/ic_favorite_gray"
-        android:elevation="5dp"
         android:background="@drawable/bg_btn_favorite"
-        android:contentDescription="Favorite" />
+        android:contentDescription="Favorite"
+        android:elevation="5dp"
+        android:src="@drawable/ic_favorite_gray"
+        android:translationZ="90dp"
+        app:layout_constraintEnd_toEndOf="@id/cardImage"
+        app:layout_constraintTop_toTopOf="@id/cardImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

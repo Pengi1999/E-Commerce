@@ -39,9 +39,9 @@
         android:textColorHint="@color/text_color_hint"
         app:boxBackgroundColor="@color/white"
         app:boxStrokeWidth="0dp"
-        app:endIconTint="#2AA952"
-        app:endIconMode="custom"
         app:endIconDrawable="@drawable/ic_check"
+        app:endIconMode="custom"
+        app:endIconTint="#2AA952"
         app:errorEnabled="true"
         app:errorIconDrawable="@drawable/ic_close">
 
