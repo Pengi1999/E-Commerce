@@ -80,6 +80,7 @@ class CatalogFragment : Fragment() {
     private lateinit var adapterCategory:RvAdapterCategory
     private lateinit var adapterProduct:RvAdapterProduct
     private var isViewList: Boolean = true
+    private var sortMode: String = "Ascending"
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -125,6 +126,7 @@ class CatalogFragment : Fragment() {
 
         dbRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
+                dsProduct.clear()
                 dsCategory.clear()
                 dsProductAll.clear()
                 dsProductTops.clear()
@@ -169,11 +171,11 @@ class CatalogFragment : Fragment() {
                         }
                     }
                     if(category == "All")
-                        dsProduct = dsProductAll
+                        dsProduct.addAll(dsProductAll)
                     else if (category == "Tops")
-                        dsProduct = dsProductTops
+                        dsProduct.addAll(dsProductTops)
                     else
-                        dsProduct = dsProductByCategory
+                        dsProduct.addAll(dsProductByCategory)
 
                     dsProduct.sortBy { it.productPrice }
                     hienProductViewList()
@@ -208,8 +210,7 @@ class CatalogFragment : Fragment() {
 
         blockFilters.setOnClickListener {
             val intent = Intent(requireContext(), FilterActivity::class.java)
-            val dsProDuctAllClone = dsProductAll
-            dsProDuctAllClone.sortBy { it.productPrice }
+            val dsProDuctAllClone = dsProductAll.sortedBy { it.productPrice }
             val valueFrom = dsProDuctAllClone.first().productPrice.toFloat()
             val valueTo = dsProDuctAllClone.last().productPrice.toFloat()
             intent.putExtra("valueFrom", valueFrom)
@@ -257,6 +258,7 @@ class CatalogFragment : Fragment() {
                 hienProductViewMode()
             }
             txtViewSort.text = txtSortByPriceLowest.text
+            sortMode = "Ascending"
             dialog.dismiss()
         }
 
@@ -269,6 +271,7 @@ class CatalogFragment : Fragment() {
                 hienProductViewMode()
             }
             txtViewSort.text = txtSortByPriceHighest.text
+            sortMode = "Descending"
             dialog.dismiss()
         }
 
@@ -337,19 +340,21 @@ class CatalogFragment : Fragment() {
     }
 
     private fun xuLyClickCategory(categorySelected: String) {
+        dsProduct.clear()
         if (categorySelected == "All")
-            dsProduct = dsProductAll
+            dsProduct.addAll(dsProductAll)
         else if (categorySelected == "Tops")
-            dsProduct = dsProductTops
+            dsProduct.addAll(dsProductTops)
         else {
             dsProductByCategory.clear()
             for (product in dsProductAll){
                 if (product.productCategory == categorySelected)
                     dsProductByCategory.add(product)
             }
-            dsProduct = dsProductByCategory
+            dsProduct.addAll(dsProductByCategory)
         }
         dsProduct.sortBy { it.productPrice }
+        sortMode = "Ascending"
         txtViewSort.text = "Price: lowest to high"
         if (isViewList) {
             hienProductViewList()
@@ -381,10 +386,22 @@ class CatalogFragment : Fragment() {
 
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
-            Toast.makeText(requireContext(), "Get data", Toast.LENGTH_SHORT).show()
             val intent = result.data
             val valueFrom = intent?.getIntExtra("ValueFrom", 0)
             val valueTo = intent?.getIntExtra("ValueTo", 0)
+            dsProduct.clear()
+            dsProduct.addAll(dsProductAll)
+            dsProduct.removeIf {it.productPrice < valueFrom!! || it.productPrice > valueTo!!}
+            if (sortMode == "Ascending")
+                dsProduct.sortBy { it.productPrice }
+            else if (sortMode == "Descending")
+                dsProduct.sortByDescending { it.productPrice }
+            if (isViewList) {
+                hienProductViewList()
+            }
+            else {
+                hienProductViewMode()
+            }
         }
     }
 }
