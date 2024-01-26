@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_default"
+    tools:context=".activities.BrandSelectActivity">
+
+    <RelativeLayout
+        android:id="@+id/blockActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        android:elevation="5dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/ic_chevron_left"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Brand"
+            android:textColor="@color/black_custom"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/blockSearch"
+        android:layout_below="@+id/blockActionBar"
+        android:elevation="5dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:startIconDrawable="@drawable/ic_search"
+        app:endIconMode="clear_text"
+        app:boxStrokeWidth="0dp"
+        app:boxBackgroundColor="@color/white"
+        app:boxCornerRadiusBottomStart="20dp"
+        app:boxCornerRadiusBottomEnd="20dp"
+        app:boxCornerRadiusTopStart="20dp"
+        app:boxCornerRadiusTopEnd="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/txtAdidas"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/chkAdidas"
+        android:layout_alignBottom="@+id/chkAdidas"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="adidas"
+        android:textSize="16sp"
+        android:textColor="@color/black_custom"/>
+
+    <CheckBox
+        android:id="@+id/chkAdidas"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/blockSearch"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtAdidasOrigin"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/chkAdidasOrigin"
+        android:layout_alignBottom="@+id/chkAdidasOrigin"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="adidas Originals"
+        android:textSize="16sp"
+        android:textColor="@color/black_custom"/>
+
+    <CheckBox
+        android:id="@+id/chkAdidasOrigin"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/chkAdidas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtBlend"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/chkBlend"
+        android:layout_alignBottom="@+id/chkBlend"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Blend"
+        android:textSize="16sp"
+        android:textColor="@color/black_custom"/>
+
+    <CheckBox
+        android:id="@+id/chkBlend"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/chkAdidasOrigin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtBoutique"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/chkBoutique"
+        android:layout_alignBottom="@+id/chkBoutique"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Boutique Moschino"
+        android:textSize="16sp"
+        android:textColor="@color/black_custom"/>
+
+    <CheckBox
+        android:id="@+id/chkBoutique"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/chkBlend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtChampion"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/chkChampion"
+        android:layout_alignBottom="@+id/chkChampion"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Champion"
+        android:textSize="16sp"
+        android:textColor="@color/black_custom"/>
+
+    <CheckBox
+        android:id="@+id/chkChampion"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/chkBoutique"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtDiesel"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/chkDiesel"
+        android:layout_alignBottom="@+id/chkDiesel"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Diesel"
+        android:textSize="16sp"
+        android:textColor="@color/black_custom"/>
+
+    <CheckBox
+        android:id="@+id/chkDiesel"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/chkChampion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtJJ"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/chkJJ"
+        android:layout_alignBottom="@+id/chkJJ"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jack &amp; Jones"
+        android:textSize="16sp"
+        android:textColor="@color/black_custom"/>
+
+    <CheckBox
+        android:id="@+id/chkJJ"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/chkDiesel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtNaf"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/chkNaf"
+        android:layout_alignBottom="@+id/chkNaf"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Naf Naf"
+        android:textSize="16sp"
+        android:textColor="@color/black_custom"/>
+
+    <CheckBox
+        android:id="@+id/chkNaf"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/chkJJ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtValentino"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/chkValentino"
+        android:layout_alignBottom="@+id/chkValentino"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Red Valentino"
+        android:textSize="16sp"
+        android:textColor="@color/black_custom"/>
+
+    <CheckBox
+        android:id="@+id/chkValentino"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/chkNaf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/txtOliver"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/chkOliver"
+        android:layout_alignBottom="@+id/chkOliver"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="s.Oliver"
+        android:textSize="16sp"
+        android:textColor="@color/black_custom"/>
+
+    <CheckBox
+        android:id="@+id/chkOliver"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/chkValentino"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/blockButton"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:elevation="8dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="20dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnDiscard"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_discard"
+            android:text="Discard"
+            android:textAllCaps="false"
+            android:textColor="@color/black_custom" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnApply"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_button_maxwidth"
+            android:text="Apply"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</RelativeLayout>

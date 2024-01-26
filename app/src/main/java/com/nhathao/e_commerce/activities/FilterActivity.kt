@@ -192,6 +192,11 @@ class FilterActivity : AppCompatActivity() {
             }
         }
 
+        binding.blockBrand.setOnClickListener {
+            val intent = Intent(this, BrandSelectActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.btnDiscard.setOnClickListener {
             finish()
         }
