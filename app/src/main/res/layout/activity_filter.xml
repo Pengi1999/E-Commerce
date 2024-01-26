@@ -121,15 +121,19 @@
                 android:paddingHorizontal="10dp">
 
                 <RelativeLayout
+                    android:id="@+id/blockBlackColor"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1">
 
                     <LinearLayout
+                        android:id="@+id/outlineBlackSelected"
                         android:layout_width="55dp"
                         android:layout_height="55dp"
                         android:layout_centerInParent="true"
                         android:background="@drawable/bg_color_selected"
+                        android:orientation="horizontal"
                         android:visibility="invisible" />
 
                     <LinearLayout
@@ -140,15 +144,19 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/blockWhiteColor"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1">
 
                     <LinearLayout
+                        android:id="@+id/outlineWhiteSelected"
                         android:layout_width="55dp"
                         android:layout_height="55dp"
                         android:layout_centerInParent="true"
                         android:background="@drawable/bg_color_selected"
+                        android:orientation="horizontal"
                         android:visibility="invisible" />
 
                     <LinearLayout
@@ -159,15 +167,19 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/blockRedColor"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1">
 
                     <LinearLayout
+                        android:id="@+id/outlineRedSelected"
                         android:layout_width="55dp"
                         android:layout_height="55dp"
                         android:layout_centerInParent="true"
                         android:background="@drawable/bg_color_selected"
+                        android:orientation="horizontal"
                         android:visibility="invisible" />
 
                     <LinearLayout
@@ -178,15 +190,19 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/blockGrayColor"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1">
 
                     <LinearLayout
+                        android:id="@+id/outlineGraySelected"
                         android:layout_width="55dp"
                         android:layout_height="55dp"
                         android:layout_centerInParent="true"
                         android:background="@drawable/bg_color_selected"
+                        android:orientation="horizontal"
                         android:visibility="invisible" />
 
                     <LinearLayout
@@ -197,15 +213,19 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/blockOrangeColor"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1">
 
                     <LinearLayout
+                        android:id="@+id/outlineOrangeSelected"
                         android:layout_width="55dp"
                         android:layout_height="55dp"
                         android:layout_centerInParent="true"
                         android:background="@drawable/bg_color_selected"
+                        android:orientation="horizontal"
                         android:visibility="invisible" />
 
                     <LinearLayout
@@ -216,15 +236,19 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/blockBlueColor"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1">
 
                     <LinearLayout
+                        android:id="@+id/outlineBlueSelected"
                         android:layout_width="55dp"
                         android:layout_height="55dp"
                         android:layout_centerInParent="true"
                         android:background="@drawable/bg_color_selected"
+                        android:orientation="horizontal"
                         android:visibility="invisible" />
 
                     <LinearLayout
@@ -256,6 +280,7 @@
                 android:paddingHorizontal="16dp">
 
                 <TextView
+                    android:id="@+id/txtSizeXS"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="16dp"
@@ -266,6 +291,7 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/txtSizeS"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="16dp"
@@ -276,6 +302,7 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/txtSizeM"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="16dp"
@@ -286,6 +313,7 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/txtSizeL"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="16dp"
@@ -296,6 +324,7 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/txtSizeXL"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/bg_size"

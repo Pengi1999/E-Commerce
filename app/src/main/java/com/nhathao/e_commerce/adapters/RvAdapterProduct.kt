@@ -15,10 +15,11 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
+import com.nhathao.e_commerce.Interfaces.RvInterface
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.models.Product
 
-class RvAdapterProduct (private var ds:List<Product>, private var layout:Int) : RecyclerView.Adapter<RvAdapterProduct.ProductViewHolder>(){
+class RvAdapterProduct (private var ds:List<Product>, private var layout:Int, private val onProductClick: RvInterface) : RecyclerView.Adapter<RvAdapterProduct.ProductViewHolder>(){
 
     class ProductViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView)
 
@@ -73,6 +74,15 @@ class RvAdapterProduct (private var ds:List<Product>, private var layout:Int) : 
 
             btnFavorite.setOnClickListener {
 
+            }
+
+            holder.itemView.setOnClickListener {
+                onProductClick.OnItemClick(position)
+            }
+
+            holder.itemView.setOnLongClickListener {
+                onProductClick.OnItemLongClick(position)
+                true
             }
         }
     }

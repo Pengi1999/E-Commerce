@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -15,6 +16,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.nhathao.e_commerce.Interfaces.RvInterface
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.adapters.RvAdapterProduct
 import com.nhathao.e_commerce.models.Product
@@ -76,12 +78,12 @@ class HomeFragment : Fragment() {
         dsProductSale = arrayListOf<Product>()
         dsProductNew = arrayListOf<Product>()
 
-        dbRef.addValueEventListener(object : ValueEventListener{
+        dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 dsProductSale.clear()
                 dsProductNew.clear()
-                if(snapshot.exists()){
-                    for (productSnap in snapshot.children){
+                if (snapshot.exists()) {
+                    for (productSnap in snapshot.children) {
                         val productData = Product(
                             productSnap.child("productId").value.toString(),
                             productSnap.child("productName").value.toString(),
@@ -96,18 +98,50 @@ class HomeFragment : Fragment() {
                             productSnap.child("productRating").value.toString().toFloat(),
                             productSnap.child("productRatingQuantity").value.toString().toInt(),
                         )
-                        if (productData.productMode == "NEW"){
+                        if (productData.productMode == "NEW") {
                             dsProductNew.add(productData)
-                        }
-                        else if (productData.productMode == ""){
+                        } else if (productData.productMode == "") {
 
-                        }
-                        else {
+                        } else {
                             dsProductSale.add(productData)
                         }
                     }
-                    val mAdapterNew = RvAdapterProduct(dsProductNew, R.layout.layout_item)
-                    val mAdapterSale = RvAdapterProduct(dsProductSale, R.layout.layout_item)
+                    val mAdapterNew =
+                        RvAdapterProduct(dsProductNew, R.layout.layout_item, object : RvInterface {
+                            override fun OnItemClick(pos: Int) {
+                                Toast.makeText(
+                                    this@HomeFragment.requireContext(),
+                                    "Vao chi tiet san pham ${dsProductNew[pos].productName}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                            override fun OnItemLongClick(pos: Int) {
+                                Toast.makeText(
+                                    this@HomeFragment.requireContext(),
+                                    "Chon color ma size roi add vao bag ${dsProductNew[pos].productName}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        })
+                    val mAdapterSale =
+                        RvAdapterProduct(dsProductSale, R.layout.layout_item, object : RvInterface {
+                            override fun OnItemClick(pos: Int) {
+                                Toast.makeText(
+                                    this@HomeFragment.requireContext(),
+                                    "Vao chi tiet san pham ${dsProductSale[pos].productName}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                            override fun OnItemLongClick(pos: Int) {
+                                Toast.makeText(
+                                    this@HomeFragment.requireContext(),
+                                    "Chon color ma size roi add vao bag ${dsProductSale[pos].productName}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        })
                     rvSale.adapter = mAdapterSale
                     rvSale.layoutManager = LinearLayoutManager(
                         this@HomeFragment.context,
@@ -122,6 +156,7 @@ class HomeFragment : Fragment() {
                     )
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
