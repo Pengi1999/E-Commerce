@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_default"
+    tools:context=".activities.ProductDetailActivity">
+
+    <RelativeLayout
+        android:id="@+id/blockActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        android:elevation="5dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/ic_chevron_left"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:id="@+id/txtProductCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Filters"
+            android:textColor="@color/black_custom"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_below="@+id/blockActionBar"
+        android:layout_above="@+id/blockBottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgProduct"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_width="match_parent"
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="12dp"
+                android:layout_height="400dp"/>
+
+            <RelativeLayout
+                android:id="@+id/blockSizeSelect"
+                android:layout_below="@+id/imgProduct"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp"
+                android:paddingHorizontal="12dp"
+                android:layout_width="140dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_sizeandcolor_productdetail">
+
+                <TextView
+                    android:id="@+id/txtSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:text="Size"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="@color/black_custom"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/ic_keyboard_arrow_down"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/blockColorSelect"
+                android:layout_below="@+id/imgProduct"
+                android:layout_toEndOf="@+id/blockSizeSelect"
+                android:layout_width="140dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:paddingHorizontal="12dp"
+                android:background="@drawable/bg_sizeandcolor_productdetail">
+
+                <TextView
+                    android:id="@+id/txtColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:text="Color"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="@color/black_custom"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/ic_keyboard_arrow_down"/>
+
+            </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/btnFavorite"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_below="@+id/imgProduct"
+                android:layout_marginTop="2dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_btn_favorite"
+                android:contentDescription="Favorite"
+                android:elevation="5dp"
+                android:src="@drawable/ic_favorite_gray" />
+
+
+            <TextView
+                android:id="@+id/txtProductName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/blockSizeSelect"
+                android:layout_marginTop="22dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp"
+                android:text="H&amp;M"
+                android:textSize="24sp"
+                android:textColor="@color/black_custom"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtProductPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/blockSizeSelect"
+                android:layout_marginTop="22dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:text="$20"
+                android:textSize="24sp"
+                android:textColor="@color/black_custom"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtProductPriceSale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtProductPrice"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:textSize="24sp"
+                android:textColor="@color/red_button"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtProductDes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtProductName"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp"
+                android:text="Short black dress"
+                android:textSize="11sp"
+                android:textColor="@color/text_color_hint" />
+
+            <RatingBar
+                android:id="@+id/ratingProduct"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/txtProductDes"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:numStars="5" />
+
+            <TextView
+                android:id="@+id/txtRatingQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/ratingProduct"
+                android:layout_alignTop="@+id/ratingProduct"
+                android:layout_alignBottom="@+id/ratingProduct"
+                android:layout_marginStart="5dp"
+                android:gravity="center"
+                android:text="(0)"
+                android:textColor="@color/text_color_hint"
+                android:textSize="10sp" />
+
+            <View
+                android:id="@+id/outlineTopReview"
+                android:layout_below="@+id/ratingProduct"
+                android:layout_alignParentStart="true"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
+                android:layout_height="1dp"
+                android:background="@color/text_color_hint"/>
+
+            <RelativeLayout
+                android:id="@+id/blockReview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/outlineTopReview"
+                android:layout_alignParentStart="true"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:text="Reviews"
+                    android:textColor="@color/black_custom"
+                    android:textSize="16sp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/ic_chevron_right_black" />
+            </RelativeLayout>
+
+            <View
+                android:layout_below="@+id/blockReview"
+                android:layout_alignParentStart="true"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/text_color_hint"/>
+
+            <RelativeLayout
+                android:id="@+id/blockSuggest"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/blockReview"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtSuggest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="16dp"
+                    android:text="You can also like this"
+                    android:textColor="@color/black_custom"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtNumberOfItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="6dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="16dp"
+                    android:text="12 items"
+                    android:textColor="@color/text_color_hint"
+                    android:textSize="11sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvSuggest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txtSuggest"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="20dp" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/blockBottom"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:elevation="8dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="20dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAddToCart"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_button_maxwidth"
+            android:text="ADD TO CART"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</RelativeLayout>

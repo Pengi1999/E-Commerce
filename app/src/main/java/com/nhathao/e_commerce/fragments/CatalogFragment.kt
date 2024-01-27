@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener
 import com.nhathao.e_commerce.Interfaces.RvInterface
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.activities.FilterActivity
+import com.nhathao.e_commerce.activities.ProductDetailActivity
 import com.nhathao.e_commerce.adapters.RvAdapterCategory
 import com.nhathao.e_commerce.adapters.RvAdapterProduct
 import com.nhathao.e_commerce.models.Product
@@ -640,7 +641,6 @@ class CatalogFragment : Fragment() {
         }
 
         btnAddToCart.setOnClickListener {
-
             dialog.dismiss()
         }
 
@@ -682,19 +682,16 @@ class CatalogFragment : Fragment() {
     private fun hienProductViewMode() {
         adapterProduct = RvAdapterProduct(dsProduct, R.layout.layout_item, object : RvInterface {
             override fun OnItemClick(pos: Int) {
-                Toast.makeText(
-                    this@CatalogFragment.requireContext(),
-                    "Vao chi tiet san pham ${dsProduct[pos].productName}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                val intent = Intent(this@CatalogFragment.requireContext(), ProductDetailActivity::class.java)
+                val productSelected = dsProduct[pos]
+                val bundle = Bundle()
+                bundle.putSerializable("productSelected", productSelected)
+                intent.putExtras(bundle)
+                startActivity(intent)
             }
 
             override fun OnItemLongClick(pos: Int) {
-                Toast.makeText(
-                    this@CatalogFragment.requireContext(),
-                    "Chon color ma size roi add vao bag ${dsProduct[pos].productName}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showBottomSheetSelectColorAndSize()
             }
         })
         rcvProduct.adapter = adapterProduct
@@ -709,11 +706,12 @@ class CatalogFragment : Fragment() {
     private fun hienProductViewList() {
         adapterProduct = RvAdapterProduct(dsProduct, R.layout.layout_item2, object : RvInterface {
             override fun OnItemClick(pos: Int) {
-                Toast.makeText(
-                    this@CatalogFragment.requireContext(),
-                    "Vao chi tiet san pham ${dsProduct[pos].productName}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                val intent = Intent(this@CatalogFragment.requireContext(), ProductDetailActivity::class.java)
+                val productSelected = dsProduct[pos]
+                val bundle = Bundle()
+                bundle.putSerializable("productSelected", productSelected)
+                intent.putExtras(bundle)
+                startActivity(intent)
             }
 
             override fun OnItemLongClick(pos: Int) {
