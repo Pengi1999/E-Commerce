@@ -34,6 +34,7 @@ import com.nhathao.e_commerce.adapters.RvAdapterCategory
 import com.nhathao.e_commerce.adapters.RvAdapterProduct
 import com.nhathao.e_commerce.models.Product
 import com.nhathao.e_commerce.models.Quantity
+import com.nhathao.e_commerce.models.User
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,6 +77,7 @@ class CatalogFragment : Fragment() {
     private lateinit var selectedColor: String
     private var isViewList: Boolean = true
     private var sortMode: String = "Ascending"
+    private var user: User? = null
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -110,6 +112,9 @@ class CatalogFragment : Fragment() {
         rcvCategory = view.findViewById(R.id.rcvCategory)
         rcvProduct = view.findViewById(R.id.rcvProduct)
 
+        val bundleGetData = this.activity?.intent?.extras
+        if (bundleGetData?.getSerializable("user") != null)
+            user = bundleGetData.getSerializable("user") as User
         val sex = this.activity?.intent?.getStringExtra("Sex")
         val type = this.activity?.intent?.getStringExtra("Type")
         val category = this.activity?.intent?.getStringExtra("Category")
@@ -686,6 +691,8 @@ class CatalogFragment : Fragment() {
                 val productSelected = dsProduct[pos]
                 val bundle = Bundle()
                 bundle.putSerializable("productSelected", productSelected)
+                if (user != null)
+                    bundle.putSerializable("user", user)
                 intent.putExtras(bundle)
                 startActivity(intent)
             }
@@ -710,6 +717,8 @@ class CatalogFragment : Fragment() {
                 val productSelected = dsProduct[pos]
                 val bundle = Bundle()
                 bundle.putSerializable("productSelected", productSelected)
+                if (user != null)
+                    bundle.putSerializable("user", user)
                 intent.putExtras(bundle)
                 startActivity(intent)
             }

@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.DataSnapshot
@@ -33,13 +34,17 @@ class ProductDetailActivity : AppCompatActivity() {
     private lateinit var dialog: BottomSheetDialog
     private var selectedSize = ""
     private var selectedColor = ""
+    private var user: User? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val bundle = intent.extras
-        productSelected = bundle!!.getSerializable("productSelected") as Product
+
+        if (bundle!!.getSerializable("user") != null)
+            user = bundle.getSerializable("user") as User
+        productSelected = bundle.getSerializable("productSelected") as Product
 
         val bytes = Base64.decode(productSelected.productImage, Base64.DEFAULT)
         val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
@@ -79,6 +84,16 @@ class ProductDetailActivity : AppCompatActivity() {
 
         binding.blockColorSelect.setOnClickListener {
             showBottomSheetColorSelect()
+        }
+
+        binding.blockReview.setOnClickListener {
+            val intent = Intent(this, ReviewActivity::class.java)
+            val bundle = Bundle()
+            bundle.putSerializable("productSelected", productSelected)
+            if (user != null)
+                bundle.putSerializable("user", user)
+            intent.putExtras(bundle)
+            startActivity(intent)
         }
 
         dbRefProduct = FirebaseDatabase.getInstance().getReference("Products")

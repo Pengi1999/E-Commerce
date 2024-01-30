@@ -24,6 +24,7 @@ import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.activities.ProductDetailActivity
 import com.nhathao.e_commerce.adapters.RvAdapterProduct
 import com.nhathao.e_commerce.models.Product
+import com.nhathao.e_commerce.models.User
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,6 +52,7 @@ class HomeFragment : Fragment() {
     private lateinit var rvNew: RecyclerView
     private lateinit var selectedSize: String
     private lateinit var selectedColor: String
+    private var user: User? = null
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -70,6 +72,10 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        val bundleGetData = this.activity?.intent?.extras
+        if (bundleGetData?.getSerializable("user") != null)
+            user = bundleGetData.getSerializable("user") as User
 
         bigBanner = view.findViewById(R.id.bigBanner)
         smallBanner = view.findViewById(R.id.smallBanner)
@@ -135,6 +141,8 @@ class HomeFragment : Fragment() {
                                 val productSelected = dsProductSale[pos]
                                 val bundle = Bundle()
                                 bundle.putSerializable("productSelected", productSelected)
+                                if (user != null)
+                                    bundle.putSerializable("user", user)
                                 intent.putExtras(bundle)
                                 startActivity(intent)
                             }
