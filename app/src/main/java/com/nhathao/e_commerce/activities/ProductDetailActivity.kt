@@ -1,5 +1,6 @@
 package com.nhathao.e_commerce.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Paint
@@ -12,6 +13,8 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.DataSnapshot
@@ -32,19 +35,21 @@ class ProductDetailActivity : AppCompatActivity() {
     private lateinit var dsProduct: MutableList<Product>
     private lateinit var productSelected: Product
     private lateinit var dialog: BottomSheetDialog
+    private lateinit var user: User
     private var selectedSize = ""
     private var selectedColor = ""
-    private var user: User? = null
+    private var isLogin: Boolean = false
+    private var requestCodeSelectItem = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val bundle = intent.extras
-
-        if (bundle!!.getSerializable("user") != null)
-            user = bundle.getSerializable("user") as User
-        productSelected = bundle.getSerializable("productSelected") as Product
+        val bundleGet = intent.extras
+        productSelected = bundleGet?.getSerializable("productSelected") as Product
+        isLogin = bundleGet.getBoolean("isLogin")
+        if (isLogin)
+            user = bundleGet.getSerializable("user") as User
 
         val bytes = Base64.decode(productSelected.productImage, Base64.DEFAULT)
         val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
@@ -63,18 +68,32 @@ class ProductDetailActivity : AppCompatActivity() {
 //        binding.ratingProduct.rating = productSelected.productRating!!.toFloat()
 
         binding.btnBack.setOnClickListener {
+            val data = Intent()
+            val bundlePassing = Bundle()
+            bundlePassing.putInt("requestCode", requestCodeSelectItem)
+            bundlePassing.putBoolean("isLogin", isLogin)
+            if (isLogin)
+                bundlePassing.putSerializable("user", user)
+            data.putExtras(bundlePassing)
+            setResult(Activity.RESULT_OK, data)
             finish()
         }
 
         binding.btnAddToCart.setOnClickListener {
-            if(selectedSize == "" || selectedColor == ""){
-                if (selectedSize == "")
-                    binding.blockSizeSelect.setBackgroundResource(R.drawable.bg_sizeandcolor_productdetail_error)
-                if (selectedColor == "")
-                    binding.blockColorSelect.setBackgroundResource(R.drawable.bg_sizeandcolor_productdetail_error)
+            if (isLogin) {
+                if(selectedSize == "" || selectedColor == ""){
+                    if (selectedSize == "")
+                        binding.blockSizeSelect.setBackgroundResource(R.drawable.bg_sizeandcolor_productdetail_error)
+                    if (selectedColor == "")
+                        binding.blockColorSelect.setBackgroundResource(R.drawable.bg_sizeandcolor_productdetail_error)
+                }
+                else {
+                    Toast.makeText(this,"${user?.userName}", Toast.LENGTH_SHORT).show()
+                }
             }
             else {
-                finish()
+                val intent = Intent(this, LoginActivity::class.java)
+                startForResult.launch(intent)
             }
         }
 
@@ -88,12 +107,13 @@ class ProductDetailActivity : AppCompatActivity() {
 
         binding.blockReview.setOnClickListener {
             val intent = Intent(this, ReviewActivity::class.java)
-            val bundle = Bundle()
-            bundle.putSerializable("productSelected", productSelected)
-            if (user != null)
-                bundle.putSerializable("user", user)
-            intent.putExtras(bundle)
-            startActivity(intent)
+            val bundlePassing = Bundle()
+            bundlePassing.putSerializable("productSelected", productSelected)
+            bundlePassing.putBoolean("isLogin", isLogin)
+            if (isLogin)
+                bundlePassing.putSerializable("user", user)
+            intent.putExtras(bundlePassing)
+            startForResult.launch(intent)
         }
 
         dbRefProduct = FirebaseDatabase.getInstance().getReference("Products")
@@ -127,10 +147,13 @@ class ProductDetailActivity : AppCompatActivity() {
                             override fun OnItemClick(pos: Int) {
                                 val intent = Intent(this@ProductDetailActivity, ProductDetailActivity::class.java)
                                 val productSelected = dsProduct[pos]
-                                val bundle = Bundle()
-                                bundle.putSerializable("productSelected", productSelected)
-                                intent.putExtras(bundle)
-                                startActivity(intent)
+                                val bundlePassing = Bundle()
+                                bundlePassing.putSerializable("productSelected", productSelected)
+                                bundlePassing.putBoolean("isLogin", isLogin)
+                                if (isLogin)
+                                    bundlePassing.putSerializable("user", user)
+                                intent.putExtras(bundlePassing)
+                                startForResult.launch(intent)
                             }
 
                             override fun OnItemLongClick(pos: Int) {
@@ -841,4 +864,17 @@ class ProductDetailActivity : AppCompatActivity() {
         }
         dialog.show()
     }
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                val bundleGet = intent?.extras
+                if (bundleGet != null) {
+                    isLogin = bundleGet.getBoolean("isLogin")
+                    if(isLogin)
+                        user = bundleGet.getSerializable("user") as User
+                }
+            }
+        }
 }

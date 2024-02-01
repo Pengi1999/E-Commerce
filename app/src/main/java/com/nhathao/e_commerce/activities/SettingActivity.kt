@@ -22,8 +22,9 @@ import com.nhathao.e_commerce.models.User
 import java.util.Calendar
 
 private lateinit var binding: ActivitySettingBinding
+
 class SettingActivity : AppCompatActivity() {
-    private lateinit var dbRef : DatabaseReference
+    private lateinit var dbRef: DatabaseReference
     private lateinit var dialog: BottomSheetDialog
     private lateinit var layoutEdtOldPWD: TextInputLayout
     private lateinit var layoutEdtNewPWD: TextInputLayout
@@ -35,7 +36,8 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var layoutEdtRepeatNewSecretCode: TextInputLayout
     private lateinit var btnSaveSecretCode: Button
     private lateinit var user: User
-    private lateinit var userAccountName : String
+    private lateinit var userAccountName: String
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,12 +60,11 @@ class SettingActivity : AppCompatActivity() {
         binding.layoutEdtFullName.editText?.setOnFocusChangeListener { v, hasFocus ->
             if (!hasFocus) {
 
-                if (binding.layoutEdtFullName.editText!!.text.isEmpty())
-                {
+                if (binding.layoutEdtFullName.editText!!.text.isEmpty()) {
                     binding.layoutEdtFullName.editText!!.setText(user.userName)
-                }
-                else{
-                    dbRef.child(user.userAccountName).child("userName").setValue(binding.layoutEdtFullName.editText?.text.toString())
+                } else {
+                    dbRef.child(user.userAccountName).child("userName")
+                        .setValue(binding.layoutEdtFullName.editText?.text.toString())
                     user.userName = binding.layoutEdtFullName.editText?.text.toString()
                 }
             }
@@ -74,11 +75,18 @@ class SettingActivity : AppCompatActivity() {
             val todayYear = today.get(Calendar.YEAR)
             val todayMonth = today.get(Calendar.MONTH)
             val todayDate = today.get(Calendar.DAY_OF_MONTH)
-            val dp = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                dbRef.child(user.userAccountName).child("birthday").setValue("$dayOfMonth/${month+1}/$year")
-                binding.layoutEdtBirthday.editText?.setText("$dayOfMonth/${month+1}/$year")
-                user.birthday = binding.layoutEdtBirthday.editText?.text.toString()
-            },todayYear, todayMonth, todayDate)
+            val dp = DatePickerDialog(
+                this,
+                DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                    dbRef.child(user.userAccountName).child("birthday")
+                        .setValue("$dayOfMonth/${month + 1}/$year")
+                    binding.layoutEdtBirthday.editText?.setText("$dayOfMonth/${month + 1}/$year")
+                    user.birthday = binding.layoutEdtBirthday.editText?.text.toString()
+                },
+                todayYear,
+                todayMonth,
+                todayDate
+            )
             dp.datePicker.maxDate = System.currentTimeMillis()
             dp.show()
         }
@@ -96,9 +104,12 @@ class SettingActivity : AppCompatActivity() {
         val dialogView = layoutInflater.inflate(R.layout.bottom_sheet_changesecretcode, null)
         dialog = BottomSheetDialog(this)
         dialog.setContentView(dialogView)
-        layoutEdtOldSecretCode = dialogView.findViewById<TextInputLayout>(R.id.layoutEdtOldSecretCode)
-        layoutEdtNewSecretCode = dialogView.findViewById<TextInputLayout>(R.id.layoutEdtNewSecretCode)
-        layoutEdtRepeatNewSecretCode = dialogView.findViewById<TextInputLayout>(R.id.layoutEdtRepeatNewSecretCode)
+        layoutEdtOldSecretCode =
+            dialogView.findViewById<TextInputLayout>(R.id.layoutEdtOldSecretCode)
+        layoutEdtNewSecretCode =
+            dialogView.findViewById<TextInputLayout>(R.id.layoutEdtNewSecretCode)
+        layoutEdtRepeatNewSecretCode =
+            dialogView.findViewById<TextInputLayout>(R.id.layoutEdtRepeatNewSecretCode)
         btnSaveSecretCode = dialogView.findViewById<Button>(R.id.btnSaveSecretCode)
 
         btnSaveSecretCode.setOnClickListener {
@@ -106,21 +117,21 @@ class SettingActivity : AppCompatActivity() {
             val newSecretCode = layoutEdtNewSecretCode.editText?.text.toString()
             val repeatNewSecretCode = layoutEdtRepeatNewSecretCode.editText?.text.toString()
 
-            val isNotEmpty = checkEmptyChangeSecretCode(oldSecretCode, newSecretCode, repeatNewSecretCode)
+            val isNotEmpty =
+                checkEmptyChangeSecretCode(oldSecretCode, newSecretCode, repeatNewSecretCode)
 
             if (isNotEmpty) {
                 if (user.secretCode == oldSecretCode) {
                     if (newSecretCode == repeatNewSecretCode) {
-                        dbRef.child(user.userAccountName).child("secretCode").setValue(newSecretCode)
+                        dbRef.child(user.userAccountName).child("secretCode")
+                            .setValue(newSecretCode)
                         user.secretCode = newSecretCode
                         binding.layoutEdtSecretCode.editText?.setText(newSecretCode)
                         dialog.dismiss()
-                    }
-                    else {
+                    } else {
                         layoutEdtRepeatNewSecretCode.error = "Secret codes do not match"
                     }
-                }
-                else {
+                } else {
                     layoutEdtOldSecretCode.error = "Your old secret code is incorrect"
                 }
             }
@@ -164,12 +175,10 @@ class SettingActivity : AppCompatActivity() {
                         user.userPWD = newPWD
                         binding.layoutEdtPWD.editText?.setText(newPWD)
                         dialog.dismiss()
-                    }
-                    else {
+                    } else {
                         layoutEdtRepeatNewPWD.error = "Passwords do not match"
                     }
-                }
-                else {
+                } else {
                     layoutEdtOldPWD.error = "Your old password is incorrect"
                 }
             }
@@ -220,7 +229,11 @@ class SettingActivity : AppCompatActivity() {
         return isNotEmpty
     }
 
-    private fun checkEmptyChangeSecretCode(oldSecretCode: String, newSecretCode: String, repeatNewSecretCode: String): Boolean {
+    private fun checkEmptyChangeSecretCode(
+        oldSecretCode: String,
+        newSecretCode: String,
+        repeatNewSecretCode: String
+    ): Boolean {
         var isNotEmpty = true
 
         if (oldSecretCode.isEmpty()) {

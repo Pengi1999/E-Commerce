@@ -1,5 +1,6 @@
 package com.nhathao.e_commerce.activities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,8 +12,11 @@ import com.nhathao.e_commerce.databinding.ActivitySignUpBinding
 import com.nhathao.e_commerce.models.User
 
 private lateinit var binding: ActivitySignUpBinding
+
 class SignUpActivity : AppCompatActivity() {
-    private lateinit var dbRef : DatabaseReference
+    private lateinit var dbRef: DatabaseReference
+    private var requestCodeSignUp = 1
+    private var requestCodeHaveAccount = 2
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
@@ -28,8 +32,12 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         binding.areaHaveAccount.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            val data = Intent()
+            val bundlePassing = Bundle()
+            bundlePassing.putInt("requestCode", requestCodeHaveAccount)
+            data.putExtras(bundlePassing)
+            setResult(Activity.RESULT_OK, data)
+            finish()
         }
 
         binding.btnSignUp.setOnClickListener {
@@ -41,14 +49,15 @@ class SignUpActivity : AppCompatActivity() {
 
             val user = User(userAccountName, userPWD, userName, userSecretCode)
 
-            val isNotEmpty = checkEmpty(userName,userAccountName,userPWD,confirmPWD,userSecretCode)
+            val isNotEmpty =
+                checkEmpty(userName, userAccountName, userPWD, confirmPWD, userSecretCode)
 
-            if (isNotEmpty){
+            if (isNotEmpty) {
                 if (userPWD == confirmPWD) {
                     insertUser(user)
-                }
-                else {
-                    binding.layoutEdtConfirmPWD.error = "Confirm Password doesn't match with Password"
+                } else {
+                    binding.layoutEdtConfirmPWD.error =
+                        "Confirm Password doesn't match with Password"
                 }
             }
         }
@@ -86,14 +95,19 @@ class SignUpActivity : AppCompatActivity() {
         // Check Account already exists
         dbRef.child(user.userAccountName).get()
             .addOnSuccessListener {
-                if(it.exists())
+                if (it.exists())
                     binding.layoutEdtAccountName.error = "Account already exists"
                 else {
                     //Insert User
                     dbRef.child(user.userAccountName).setValue(user)
                         .addOnCompleteListener {
-                            val intent = Intent(this, LoginActivity::class.java)
-                            startActivity(intent)
+                            val data = Intent()
+                            val bundlePassing = Bundle()
+                            bundlePassing.putInt("requestCode", requestCodeSignUp)
+                            bundlePassing.putSerializable("user", user)
+                            data.putExtras(bundlePassing)
+                            setResult(Activity.RESULT_OK, data)
+                            finish()
                         }
                         .addOnFailureListener { err ->
                             Toast.makeText(this, "Error ${err.message}", Toast.LENGTH_SHORT)
@@ -102,50 +116,51 @@ class SignUpActivity : AppCompatActivity() {
                 }
             }
             .addOnFailureListener { err ->
-                    Toast.makeText(this, "Error ${err.message}", Toast.LENGTH_SHORT)
-                        .show()
+                Toast.makeText(this, "Error ${err.message}", Toast.LENGTH_SHORT)
+                    .show()
             }
     }
 
-    private fun checkEmpty(userName: String, userAccountName: String, userPWD: String, confirmPWD: String, userSecretCode: String): Boolean {
+    private fun checkEmpty(
+        userName: String,
+        userAccountName: String,
+        userPWD: String,
+        confirmPWD: String,
+        userSecretCode: String
+    ): Boolean {
         var isNotEmpty = true
-        if (userName.isEmpty()){
+        if (userName.isEmpty()) {
             isNotEmpty = false
             binding.layoutEdtName.error = "Field can't be empty"
             binding.layoutEdtName.isEndIconVisible = false
-        }
-        else {
+        } else {
             binding.layoutEdtName.error = ""
             binding.layoutEdtName.isEndIconVisible = true
         }
-        if (userAccountName.isEmpty()){
+        if (userAccountName.isEmpty()) {
             isNotEmpty = false
             binding.layoutEdtAccountName.error = "Field can't be empty"
             binding.layoutEdtAccountName.isEndIconVisible = false
-        }
-        else {
+        } else {
             binding.layoutEdtAccountName.error = ""
             binding.layoutEdtAccountName.isEndIconVisible = true
         }
-        if (userPWD.isEmpty()){
+        if (userPWD.isEmpty()) {
             isNotEmpty = false
             binding.layoutEdtPWD.error = "Field can't be empty"
-        }
-        else {
+        } else {
             binding.layoutEdtPWD.error = ""
         }
-        if (confirmPWD.isEmpty()){
+        if (confirmPWD.isEmpty()) {
             isNotEmpty = false
             binding.layoutEdtConfirmPWD.error = "Field can't be empty"
-        }
-        else {
+        } else {
             binding.layoutEdtConfirmPWD.error = ""
         }
-        if (userSecretCode.isEmpty()){
+        if (userSecretCode.isEmpty()) {
             isNotEmpty = false
             binding.layoutEdtSecretCode.error = "Field can't be empty"
-        }
-        else {
+        } else {
             binding.layoutEdtSecretCode.error = ""
         }
         return isNotEmpty

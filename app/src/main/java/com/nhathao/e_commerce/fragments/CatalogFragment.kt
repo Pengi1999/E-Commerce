@@ -20,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -77,7 +78,10 @@ class CatalogFragment : Fragment() {
     private lateinit var selectedColor: String
     private var isViewList: Boolean = true
     private var sortMode: String = "Ascending"
-    private var user: User? = null
+    private lateinit var user: User
+    private var isLogin: Boolean = false
+    private var requestCodeFilter = 2
+    private var requestCodeSelectItem = 1
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -113,8 +117,11 @@ class CatalogFragment : Fragment() {
         rcvProduct = view.findViewById(R.id.rcvProduct)
 
         val bundleGetData = this.activity?.intent?.extras
-        if (bundleGetData?.getSerializable("user") != null)
-            user = bundleGetData.getSerializable("user") as User
+        if (bundleGetData != null) {
+            isLogin = bundleGetData.getBoolean("isLogin")
+            if (isLogin)
+                user = bundleGetData.getSerializable("user") as User
+        }
         val sex = this.activity?.intent?.getStringExtra("Sex")
         val type = this.activity?.intent?.getStringExtra("Type")
         val category = this.activity?.intent?.getStringExtra("Category")
@@ -236,7 +243,7 @@ class CatalogFragment : Fragment() {
         }
 
         btnSearch.setOnClickListener {
-
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
         }
 
         btnStyleShowList.setOnClickListener {
@@ -248,8 +255,10 @@ class CatalogFragment : Fragment() {
             val dsProDuctAllClone = dsProductAll.sortedBy { it.productPrice }
             val valueFrom = dsProDuctAllClone.first().productPrice.toFloat()
             val valueTo = dsProDuctAllClone.last().productPrice.toFloat()
-            intent.putExtra("valueFrom", valueFrom)
-            intent.putExtra("valueTo", valueTo)
+            val bundlePassing = Bundle()
+            bundlePassing.putFloat("valueFrom", valueFrom)
+            bundlePassing.putFloat("valueTo", valueTo)
+            intent.putExtras(bundlePassing)
             startForResult.launch(intent)
         }
 
@@ -333,7 +342,8 @@ class CatalogFragment : Fragment() {
         val outlineWhiteSelected = dialogView.findViewById<LinearLayout>(R.id.outlineWhiteSelected)
         val outlineRedSelected = dialogView.findViewById<LinearLayout>(R.id.outlineRedSelected)
         val outlineGraySelected = dialogView.findViewById<LinearLayout>(R.id.outlineGraySelected)
-        val outlineOrangeSelected = dialogView.findViewById<LinearLayout>(R.id.outlineOrangeSelected)
+        val outlineOrangeSelected =
+            dialogView.findViewById<LinearLayout>(R.id.outlineOrangeSelected)
         val outlineBlueSelected = dialogView.findViewById<LinearLayout>(R.id.outlineBlueSelected)
 
         val txtSizeXS = dialogView.findViewById<TextView>(R.id.txtSizeXS)
@@ -687,14 +697,16 @@ class CatalogFragment : Fragment() {
     private fun hienProductViewMode() {
         adapterProduct = RvAdapterProduct(dsProduct, R.layout.layout_item, object : RvInterface {
             override fun OnItemClick(pos: Int) {
-                val intent = Intent(this@CatalogFragment.requireContext(), ProductDetailActivity::class.java)
+                val intent =
+                    Intent(this@CatalogFragment.requireContext(), ProductDetailActivity::class.java)
                 val productSelected = dsProduct[pos]
-                val bundle = Bundle()
-                bundle.putSerializable("productSelected", productSelected)
-                if (user != null)
-                    bundle.putSerializable("user", user)
-                intent.putExtras(bundle)
-                startActivity(intent)
+                val bundlePassing = Bundle()
+                bundlePassing.putSerializable("productSelected", productSelected)
+                bundlePassing.putBoolean("isLogin", isLogin)
+                if (isLogin)
+                    bundlePassing.putSerializable("user", user)
+                intent.putExtras(bundlePassing)
+                startForResult.launch(intent)
             }
 
             override fun OnItemLongClick(pos: Int) {
@@ -713,14 +725,16 @@ class CatalogFragment : Fragment() {
     private fun hienProductViewList() {
         adapterProduct = RvAdapterProduct(dsProduct, R.layout.layout_item2, object : RvInterface {
             override fun OnItemClick(pos: Int) {
-                val intent = Intent(this@CatalogFragment.requireContext(), ProductDetailActivity::class.java)
+                val intent =
+                    Intent(this@CatalogFragment.requireContext(), ProductDetailActivity::class.java)
                 val productSelected = dsProduct[pos]
-                val bundle = Bundle()
-                bundle.putSerializable("productSelected", productSelected)
-                if (user != null)
-                    bundle.putSerializable("user", user)
-                intent.putExtras(bundle)
-                startActivity(intent)
+                val bundlePassing = Bundle()
+                bundlePassing.putSerializable("productSelected", productSelected)
+                bundlePassing.putBoolean("isLogin", isLogin)
+                if (isLogin)
+                    bundlePassing.putSerializable("user", user)
+                intent.putExtras(bundlePassing)
+                startForResult.launch(intent)
             }
 
             override fun OnItemLongClick(pos: Int) {
@@ -784,51 +798,65 @@ class CatalogFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val intent = result.data
-                val valueFrom = intent?.getIntExtra("ValueFrom", 0)
-                val valueTo = intent?.getIntExtra("ValueTo", 0)
-                val sizes = intent?.getStringArrayListExtra("sizes")
-                val colors = intent?.getStringArrayListExtra("colors")
+                val bundleGet = intent?.extras
+                if (bundleGet != null) {
+                    val requestCode = bundleGet.getInt("requestCode")
 
-                dsProduct.clear()
-                dsProduct.addAll(dsProductAll)
-                dsProduct.removeIf { it.productPrice < valueFrom!! || it.productPrice > valueTo!! }
+                    if (requestCode == requestCodeFilter) {
+                        val valueFrom = bundleGet.getInt("ValueFrom")
+                        val valueTo = bundleGet.getInt("ValueTo")
+                        val sizes = bundleGet.getStringArrayList("sizes")
+                        val colors = bundleGet.getStringArrayList("colors")
 
-                var listProDuctIdNotHas = mutableListOf<String>()
+                        dsProduct.clear()
+                        dsProduct.addAll(dsProductAll)
+                        dsProduct.removeIf { it.productPrice < valueFrom || it.productPrice > valueTo }
 
-                if (sizes!!.isNotEmpty() || colors!!.isNotEmpty()) {
-                    listProDuctIdNotHas.clear()
-                    for (product in dsProduct) {
-                        var isHas = false
-                        var quantityFilter =
-                            dsQuantity.filter { quantity -> quantity.productId == product.productId }
-                        if (sizes.isNotEmpty())
-                            quantityFilter =
-                                quantityFilter.filter { quantity -> sizes.contains(quantity.productSize) }
-                        if (colors!!.isNotEmpty())
-                            quantityFilter =
-                                quantityFilter.filter { quantity -> colors.contains(quantity.productColor) }
-                        for (quantity in quantityFilter) {
-                            if (quantity.quantity > 0) {
-                                isHas = true
-                                break
+                        val listProDuctIdNotHas = mutableListOf<String>()
+
+                        if (sizes!!.isNotEmpty() || colors!!.isNotEmpty()) {
+                            listProDuctIdNotHas.clear()
+                            for (product in dsProduct) {
+                                var isHas = false
+                                var quantityFilter =
+                                    dsQuantity.filter { quantity -> quantity.productId == product.productId }
+                                if (sizes.isNotEmpty())
+                                    quantityFilter =
+                                        quantityFilter.filter { quantity -> sizes.contains(quantity.productSize) }
+                                if (colors!!.isNotEmpty())
+                                    quantityFilter =
+                                        quantityFilter.filter { quantity -> colors.contains(quantity.productColor) }
+                                for (quantity in quantityFilter) {
+                                    if (quantity.quantity > 0) {
+                                        isHas = true
+                                        break
+                                    }
+                                }
+                                if (!isHas) {
+                                    listProDuctIdNotHas.add(product.productId)
+                                }
                             }
                         }
-                        if (!isHas) {
-                            listProDuctIdNotHas.add(product.productId)
+
+                        dsProduct.removeIf { listProDuctIdNotHas.contains(it.productId) }
+
+                        if (sortMode == "Ascending")
+                            dsProduct.sortBy { it.productPrice }
+                        else if (sortMode == "Descending")
+                            dsProduct.sortByDescending { it.productPrice }
+                        if (isViewList) {
+                            hienProductViewList()
+                        } else {
+                            hienProductViewMode()
+                        }
+                    } else if (requestCode == requestCodeSelectItem) {
+                        isLogin = bundleGet.getBoolean("isLogin")
+                        this.activity?.intent?.putExtra("isLogin", isLogin)
+                        if (isLogin) {
+                            user = bundleGet.getSerializable("user") as User
+                            this.activity?.intent?.putExtra("user", user)
                         }
                     }
-                }
-
-                dsProduct.removeIf { listProDuctIdNotHas.contains(it.productId) }
-
-                if (sortMode == "Ascending")
-                    dsProduct.sortBy { it.productPrice }
-                else if (sortMode == "Descending")
-                    dsProduct.sortByDescending { it.productPrice }
-                if (isViewList) {
-                    hienProductViewList()
-                } else {
-                    hienProductViewMode()
                 }
             }
         }

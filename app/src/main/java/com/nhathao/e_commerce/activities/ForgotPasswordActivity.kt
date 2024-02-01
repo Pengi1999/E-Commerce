@@ -1,9 +1,12 @@
 package com.nhathao.e_commerce.activities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doOnTextChanged
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -14,6 +17,7 @@ private lateinit var binding: ActivityForgotPasswordBinding
 
 class ForgotPasswordActivity : AppCompatActivity() {
     private lateinit var dbRef: DatabaseReference
+    private var requestCodeForgotPWD = 3
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
@@ -59,10 +63,10 @@ class ForgotPasswordActivity : AppCompatActivity() {
                     )
                     if (user.secretCode == secretCode) {
                         val intent = Intent(this, ResetPasswordActivity::class.java)
-                        val bundle = Bundle()
-                        bundle.putSerializable("user", user)
-                        intent.putExtras(bundle)
-                        startActivity(intent)
+                        val bundlePassing = Bundle()
+                        bundlePassing.putSerializable("user", user)
+                        intent.putExtras(bundlePassing)
+                        startForResult.launch(intent)
                     } else {
                         binding.layoutEdtSecretCode.error = "SecretCode doesn't match"
                     }
@@ -95,4 +99,22 @@ class ForgotPasswordActivity : AppCompatActivity() {
         }
         return isNotEmpty
     }
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                val bundleGet = intent?.extras
+                if (bundleGet != null) {
+                    val user = bundleGet.getSerializable("user") as User
+                    val data = Intent()
+                    val bundlePassing = Bundle()
+                    bundlePassing.putInt("requestCode", requestCodeForgotPWD)
+                    bundlePassing.putSerializable("user", user)
+                    data.putExtras(bundlePassing)
+                    setResult(Activity.RESULT_OK, data)
+                    finish()
+                }
+            }
+        }
 }

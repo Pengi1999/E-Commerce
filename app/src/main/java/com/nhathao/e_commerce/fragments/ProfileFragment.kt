@@ -40,11 +40,12 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ProfileFragment : Fragment() {
-    private lateinit var dbRef : DatabaseReference
-    private lateinit var imgAvatar : ImageView
-    private lateinit var txtFullName:TextView
-    private lateinit var txtEmail:TextView
+    private lateinit var dbRef: DatabaseReference
+    private lateinit var imgAvatar: ImageView
+    private lateinit var txtFullName: TextView
+    private lateinit var txtEmail: TextView
     private lateinit var user: User
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -119,8 +120,8 @@ class ProfileFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if(user.avatar != ""){
-            val bytes = Base64.decode(user.avatar,Base64.DEFAULT)
+        if (user.avatar != "") {
+            val bytes = Base64.decode(user.avatar, Base64.DEFAULT)
             val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
             imgAvatar.setImageBitmap(bitmap)
         }
@@ -128,23 +129,23 @@ class ProfileFragment : Fragment() {
         txtEmail.text = user.email
     }
 
-    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val uri = result.data?.data
-            try {
-                val inputStream = this.context?.contentResolver?.openInputStream(uri!!)
-                val myBitmap = BitmapFactory.decodeStream(inputStream)
-                val steam = ByteArrayOutputStream()
-                myBitmap.compress(Bitmap.CompressFormat.PNG, 100, steam)
-                val bytes = steam.toByteArray()
-                user.avatar = Base64.encodeToString(bytes,Base64.DEFAULT)
-                dbRef.child(user.userAccountName).child("avatar").setValue(user.avatar)
-                imgAvatar.setImageBitmap(myBitmap)
-                inputStream?.close()
-            }
-            catch (ex: Exception) {
-                Toast.makeText(this.context, ex.message.toString(), Toast.LENGTH_SHORT).show()
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val uri = result.data?.data
+                try {
+                    val inputStream = this.context?.contentResolver?.openInputStream(uri!!)
+                    val myBitmap = BitmapFactory.decodeStream(inputStream)
+                    val steam = ByteArrayOutputStream()
+                    myBitmap.compress(Bitmap.CompressFormat.PNG, 100, steam)
+                    val bytes = steam.toByteArray()
+                    user.avatar = Base64.encodeToString(bytes, Base64.DEFAULT)
+                    dbRef.child(user.userAccountName).child("avatar").setValue(user.avatar)
+                    imgAvatar.setImageBitmap(myBitmap)
+                    inputStream?.close()
+                } catch (ex: Exception) {
+                    Toast.makeText(this.context, ex.message.toString(), Toast.LENGTH_SHORT).show()
+                }
             }
         }
-    }
 }

@@ -34,7 +34,8 @@ class CategoryFragment : Fragment() {
     private lateinit var btnBack: ImageButton
     private lateinit var btnViewAll: Button
     private lateinit var listViewCategory: ListView
-    private lateinit var listCategory:MutableList<String>
+    private lateinit var listCategory: MutableList<String>
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -65,17 +66,18 @@ class CategoryFragment : Fragment() {
 
         listCategory = mutableListOf()
 
-        dbRef.addValueEventListener(object : ValueEventListener{
+        dbRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 listCategory.clear()
-                if(snapshot.exists()){
-                    if(type == "Clothes"){
+                if (snapshot.exists()) {
+                    if (type == "Clothes") {
                         listCategory.add("Tops")
                     }
-                    for (productSnap in snapshot.children){
+                    for (productSnap in snapshot.children) {
                         val productSnapSex = productSnap.child("productSex").value.toString()
                         val productSnapType = productSnap.child("productType").value.toString()
-                        val productSnapCategory = productSnap.child("productCategory").value.toString()
+                        val productSnapCategory =
+                            productSnap.child("productCategory").value.toString()
                         if (productSnapSex == sex && productSnapType == type) {
                             if (!listCategory.contains(productSnapCategory)) {
                                 listCategory.add(productSnapCategory)
@@ -85,7 +87,8 @@ class CategoryFragment : Fragment() {
                     listViewCategory.adapter = ArrayAdapter(
                         this@CategoryFragment.requireContext(),
                         android.R.layout.simple_list_item_1,
-                        listCategory)
+                        listCategory
+                    )
                 }
             }
 

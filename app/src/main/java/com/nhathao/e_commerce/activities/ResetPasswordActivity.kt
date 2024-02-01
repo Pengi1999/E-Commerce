@@ -1,5 +1,6 @@
 package com.nhathao.e_commerce.activities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,8 +12,9 @@ import com.nhathao.e_commerce.databinding.ActivityResetPasswordBinding
 import com.nhathao.e_commerce.models.User
 
 private lateinit var binding: ActivityResetPasswordBinding
+
 class ResetPasswordActivity : AppCompatActivity() {
-    private lateinit var dbRef : DatabaseReference
+    private lateinit var dbRef: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityResetPasswordBinding.inflate(layoutInflater)
@@ -20,8 +22,8 @@ class ResetPasswordActivity : AppCompatActivity() {
 
         dbRef = FirebaseDatabase.getInstance().getReference("Users")
 
-        val bundle = intent.extras
-        val user = bundle?.getSerializable("user") as User
+        val bundleGet = intent.extras
+        val user = bundleGet?.getSerializable("user") as User
 
         binding.btnBack.setOnClickListener {
             finish()
@@ -36,11 +38,15 @@ class ResetPasswordActivity : AppCompatActivity() {
             if (isNotEmpty) {
                 if (newPWD == confirmNewPWD) {
                     dbRef.child(user.userAccountName).child("userPWD").setValue(confirmNewPWD)
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                }
-                else {
-                    binding.layoutEdtConfirmNewPWD.error = "Confirm Password doesn't match with Password"
+                    val data = Intent()
+                    val bundlePassing = Bundle()
+                    bundlePassing.putSerializable("user", user)
+                    data.putExtras(bundlePassing)
+                    setResult(Activity.RESULT_OK, data)
+                    finish()
+                } else {
+                    binding.layoutEdtConfirmNewPWD.error =
+                        "Confirm Password doesn't match with Password"
                 }
             }
         }

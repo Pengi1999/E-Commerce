@@ -1,5 +1,6 @@
 package com.nhathao.e_commerce.fragments
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,6 +12,8 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -52,7 +55,8 @@ class HomeFragment : Fragment() {
     private lateinit var rvNew: RecyclerView
     private lateinit var selectedSize: String
     private lateinit var selectedColor: String
-    private var user: User? = null
+    private lateinit var user: User
+    private var isLogin: Boolean = false
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -74,8 +78,11 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         val bundleGetData = this.activity?.intent?.extras
-        if (bundleGetData?.getSerializable("user") != null)
-            user = bundleGetData.getSerializable("user") as User
+        if (bundleGetData != null) {
+            isLogin = bundleGetData.getBoolean("isLogin")
+            if (isLogin)
+                user = bundleGetData.getSerializable("user") as User
+        }
 
         bigBanner = view.findViewById(R.id.bigBanner)
         smallBanner = view.findViewById(R.id.smallBanner)
@@ -122,12 +129,18 @@ class HomeFragment : Fragment() {
                     val mAdapterNew =
                         RvAdapterProduct(dsProductNew, R.layout.layout_item, object : RvInterface {
                             override fun OnItemClick(pos: Int) {
-                                val intent = Intent(this@HomeFragment.requireContext(), ProductDetailActivity::class.java)
+                                val intent = Intent(
+                                    this@HomeFragment.requireContext(),
+                                    ProductDetailActivity::class.java
+                                )
                                 val productSelected = dsProductNew[pos]
-                                val bundle = Bundle()
-                                bundle.putSerializable("productSelected", productSelected)
-                                intent.putExtras(bundle)
-                                startActivity(intent)
+                                val bundlePassing = Bundle()
+                                bundlePassing.putSerializable("productSelected", productSelected)
+                                bundlePassing.putBoolean("isLogin", isLogin)
+                                if (isLogin)
+                                    bundlePassing.putSerializable("user", user)
+                                intent.putExtras(bundlePassing)
+                                startForResult.launch(intent)
                             }
 
                             override fun OnItemLongClick(pos: Int) {
@@ -137,14 +150,18 @@ class HomeFragment : Fragment() {
                     val mAdapterSale =
                         RvAdapterProduct(dsProductSale, R.layout.layout_item, object : RvInterface {
                             override fun OnItemClick(pos: Int) {
-                                val intent = Intent(this@HomeFragment.requireContext(), ProductDetailActivity::class.java)
+                                val intent = Intent(
+                                    this@HomeFragment.requireContext(),
+                                    ProductDetailActivity::class.java
+                                )
                                 val productSelected = dsProductSale[pos]
-                                val bundle = Bundle()
-                                bundle.putSerializable("productSelected", productSelected)
-                                if (user != null)
-                                    bundle.putSerializable("user", user)
-                                intent.putExtras(bundle)
-                                startActivity(intent)
+                                val bundlePassing = Bundle()
+                                bundlePassing.putSerializable("productSelected", productSelected)
+                                bundlePassing.putBoolean("isLogin", isLogin)
+                                if (isLogin)
+                                    bundlePassing.putSerializable("user", user)
+                                intent.putExtras(bundlePassing)
+                                startForResult.launch(intent)
                             }
 
                             override fun OnItemLongClick(pos: Int) {
@@ -202,7 +219,8 @@ class HomeFragment : Fragment() {
         val outlineWhiteSelected = dialogView.findViewById<LinearLayout>(R.id.outlineWhiteSelected)
         val outlineRedSelected = dialogView.findViewById<LinearLayout>(R.id.outlineRedSelected)
         val outlineGraySelected = dialogView.findViewById<LinearLayout>(R.id.outlineGraySelected)
-        val outlineOrangeSelected = dialogView.findViewById<LinearLayout>(R.id.outlineOrangeSelected)
+        val outlineOrangeSelected =
+            dialogView.findViewById<LinearLayout>(R.id.outlineOrangeSelected)
         val outlineBlueSelected = dialogView.findViewById<LinearLayout>(R.id.outlineBlueSelected)
 
         val txtSizeXS = dialogView.findViewById<TextView>(R.id.txtSizeXS)
@@ -541,4 +559,22 @@ class HomeFragment : Fragment() {
                 }
             }
     }
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                val bundleGet = intent?.extras
+                if (bundleGet != null) {
+                    isLogin = bundleGet.getBoolean("isLogin")
+                    val bundleIntentMain = Bundle()
+                    bundleIntentMain.putBoolean("isLogin", isLogin)
+                    if (isLogin) {
+                        user = bundleGet.getSerializable("user") as User
+                        bundleIntentMain.putSerializable("user", user)
+                    }
+                    this.activity?.intent?.putExtras(bundleIntentMain)
+                }
+            }
+        }
 }

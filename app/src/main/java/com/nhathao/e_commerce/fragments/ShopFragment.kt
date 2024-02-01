@@ -26,19 +26,19 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ShopFragment : Fragment() {
-    private lateinit var btnBack:ImageButton
-    private lateinit var btnSearch:ImageButton
-    private lateinit var txtWomen:TextView
-    private lateinit var txtMen:TextView
-    private lateinit var txtKids:TextView
-    private lateinit var underWomen:LinearLayout
-    private lateinit var underMen:LinearLayout
-    private lateinit var underKids:LinearLayout
-    private lateinit var cardNew:CardView
-    private lateinit var cardClothes:CardView
-    private lateinit var cardShoes:CardView
-    private lateinit var cardAccessories:CardView
-    private var sex:String = "Women"
+    private lateinit var btnBack: ImageButton
+    private lateinit var btnSearch: ImageButton
+    private lateinit var txtWomen: TextView
+    private lateinit var txtMen: TextView
+    private lateinit var txtKids: TextView
+    private lateinit var underWomen: LinearLayout
+    private lateinit var underMen: LinearLayout
+    private lateinit var underKids: LinearLayout
+    private lateinit var cardNew: CardView
+    private lateinit var cardClothes: CardView
+    private lateinit var cardShoes: CardView
+    private lateinit var cardAccessories: CardView
+    private var sex: String = "Women"
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -74,6 +74,10 @@ class ShopFragment : Fragment() {
 
         btnBack.setOnClickListener {
             this.activity?.supportFragmentManager?.popBackStack()
+        }
+
+        btnSearch.setOnClickListener {
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
         }
 
         txtWomen.setOnClickListener {

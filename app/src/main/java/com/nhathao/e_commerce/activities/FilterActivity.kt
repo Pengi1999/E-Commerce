@@ -15,6 +15,8 @@ import com.nhathao.e_commerce.databinding.ActivityFilterBinding
 private lateinit var binding: ActivityFilterBinding
 
 class FilterActivity : AppCompatActivity() {
+    private var valueFrom: Float = 0f
+    private var valueTo: Float = 0f
     private var isColorBlack: Boolean = false
     private var isColorWhite: Boolean = false
     private var isColorRed: Boolean = false
@@ -26,15 +28,20 @@ class FilterActivity : AppCompatActivity() {
     private var isSizeM: Boolean = false
     private var isSizeL: Boolean = false
     private var isSizeXL: Boolean = false
+    private var requestCodeFilter = 2
     private lateinit var sizes: ArrayList<String>
     private lateinit var colors: ArrayList<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFilterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val valueFrom = intent.getFloatExtra("valueFrom", 0f)
-        val valueTo = intent.getFloatExtra("valueTo", 0f)
+        val bundleGet = intent.extras
+        if (bundleGet != null) {
+            valueFrom = bundleGet.getFloat("valueFrom")
+            valueTo = bundleGet.getFloat("valueTo")
+        }
 
         binding.txtValueFrom.text = "$${valueFrom.toInt()}"
         binding.txtValueTo.text = "$${valueTo.toInt()}"
@@ -203,10 +210,13 @@ class FilterActivity : AppCompatActivity() {
 
         binding.btnApply.setOnClickListener {
             val data = Intent()
-            data.putExtra("ValueFrom", binding.rangeSliderPrice.values[0].toInt())
-            data.putExtra("ValueTo", binding.rangeSliderPrice.values[1].toInt())
-            data.putExtra("sizes", sizes)
-            data.putExtra("colors", colors)
+            val bundlePassing = Bundle()
+            bundlePassing.putInt("requestCode", requestCodeFilter)
+            bundlePassing.putInt("ValueFrom", binding.rangeSliderPrice.values[0].toInt())
+            bundlePassing.putInt("ValueTo", binding.rangeSliderPrice.values[1].toInt())
+            bundlePassing.putStringArrayList("sizes", sizes)
+            bundlePassing.putStringArrayList("colors", colors)
+            data.putExtras(bundlePassing)
             setResult(Activity.RESULT_OK, data)
             finish()
         }

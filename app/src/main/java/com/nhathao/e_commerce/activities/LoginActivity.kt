@@ -1,5 +1,6 @@
 package com.nhathao.e_commerce.activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -8,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doOnTextChanged
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -23,6 +26,9 @@ class LoginActivity : AppCompatActivity() {
     private var accountName: String? = null
     private var password: String? = null
     private var isRemember: Boolean? = null
+    private var requestCodeSignUp = 1
+    private var requestCodeHaveAccount = 2
+    private var requestCodeForgotPWD = 3
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -36,7 +42,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding.areaForgotPWD.setOnClickListener {
             val intent = Intent(this, ForgotPasswordActivity::class.java)
-            startActivity(intent)
+            startForResult.launch(intent)
         }
 
         binding.btnLogin.setOnClickListener {
@@ -60,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding.txtSignUp.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
+            startForResult.launch(intent)
         }
 
         binding.layoutEdtAccountName.editText?.doOnTextChanged { text, start, before, count ->
@@ -87,12 +93,12 @@ class LoginActivity : AppCompatActivity() {
                     )
                     if (user.userPWD == userPWD) {
                         saveAccount()
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        val bundle = Bundle()
-                        bundle.putSerializable("user", user)
-                        bundle.putBoolean("isLogin", true)
-                        intent.putExtras(bundle)
-                        startActivity(intent)
+                        val data = Intent()
+                        val bundlePassing = Bundle()
+                        bundlePassing.putSerializable("user", user)
+                        bundlePassing.putBoolean("isLogin", true)
+                        data.putExtras(bundlePassing)
+                        setResult(Activity.RESULT_OK, data)
                         finish()
                     } else {
                         binding.layoutEdtPWD.error = "Password doesn't match"
@@ -158,4 +164,24 @@ class LoginActivity : AppCompatActivity() {
         }
         return isNotEmpty
     }
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                val bundleGet = intent?.extras
+                if (bundleGet != null) {
+                    val requestCode = bundleGet.getInt("requestCode", 0)
+                    if (requestCode == requestCodeHaveAccount) {
+                        binding.layoutEdtAccountName.editText?.setText("")
+                        binding.layoutEdtPWD.editText?.setText("")
+                    } else if (requestCode == requestCodeSignUp || requestCode == requestCodeForgotPWD) {
+                        val user = bundleGet.getSerializable("user") as User
+                        binding.layoutEdtAccountName.editText?.setText(user.userAccountName)
+                        binding.layoutEdtPWD.editText?.setText(user.userPWD)
+                    }
+                }
+            }
+        }
+
 }
