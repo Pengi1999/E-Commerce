@@ -4,6 +4,6 @@ class Rating (
     var ratingId: String,
     var userAccountName: String,
     var productId:String,
-    var ratingStar:Int
+    var ratingStar:Float
 ){
 }
