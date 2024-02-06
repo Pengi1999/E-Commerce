@@ -4,6 +4,7 @@ class Review(
     var reviewId: String,
     var userAccountName: String,
     var productId:String,
-    var reviewContent:String
+    var reviewContent:String,
+    var reviewDate: Long
 ) {
 }

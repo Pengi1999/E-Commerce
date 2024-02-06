@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background_default"
+    tools:ignore="MissingDefaultResource">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_default">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="20dp"
+            android:elevation="5dp"
+            android:background="@drawable/bg_review_item"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/txtUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="Helene Moore"
+                android:textColor="@color/black_custom"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatRatingBar
+                android:id="@+id/ratingProductByUser"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtUserName"
+                android:layout_marginTop="4dp"
+                android:numStars="5"
+                android:progressTint="#FFBA49"
+                android:rating="4" />
+
+            <TextView
+                android:id="@+id/txtReviewDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/txtUserName"
+                android:layout_alignBottom="@+id/ratingProductByUser"
+                android:layout_alignParentEnd="true"
+                android:gravity="center_vertical|end"
+                android:text="June 5, 2019"
+                android:textColor="@color/text_color_hint"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/txtReviewContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ratingProductByUser"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:text="The dress is great! Very classy and comfortable. It fit perfectly! I'm 5'7 and 130 pounds. I am a 34B chest. This dress would be too long for those who are shorter but could be hemmed. I wouldn't recommend it for those big chested as I am smaller chested and it fit me perfectly. The underarms were not too wide and the dress was made well."
+                android:textColor="@color/black_custom"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:elevation="5dp"
+            android:src="@drawable/profile_test"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="0dp" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

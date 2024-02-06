@@ -29,14 +29,22 @@ class LoginActivity : AppCompatActivity() {
     private var requestCodeSignUp = 1
     private var requestCodeHaveAccount = 2
     private var requestCodeForgotPWD = 3
+    private var requestCodeChangeAccount = 4
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        loadAccount()
+
         dbRef = FirebaseDatabase.getInstance().getReference("Users")
         binding.layoutEdtAccountName.isEndIconVisible = false
         binding.btnBack.setOnClickListener {
+            val data = Intent()
+            val bundlePassing = Bundle()
+            bundlePassing.putBoolean("isLogin", false)
+            data.putExtras(bundlePassing)
+            setResult(Activity.RESULT_CANCELED, data)
             finish()
         }
 
@@ -95,6 +103,7 @@ class LoginActivity : AppCompatActivity() {
                         saveAccount()
                         val data = Intent()
                         val bundlePassing = Bundle()
+                        bundlePassing.putInt("requestCode", requestCodeChangeAccount)
                         bundlePassing.putSerializable("user", user)
                         bundlePassing.putBoolean("isLogin", true)
                         data.putExtras(bundlePassing)
@@ -125,11 +134,6 @@ class LoginActivity : AppCompatActivity() {
             editor.putString("key_password", password)
         }
         editor.apply()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        loadAccount()
     }
 
     private fun loadAccount() {
@@ -173,8 +177,8 @@ class LoginActivity : AppCompatActivity() {
                 if (bundleGet != null) {
                     val requestCode = bundleGet.getInt("requestCode", 0)
                     if (requestCode == requestCodeHaveAccount) {
-                        binding.layoutEdtAccountName.editText?.setText("")
-                        binding.layoutEdtPWD.editText?.setText("")
+                        binding.layoutEdtAccountName.editText?.text?.clear()
+                        binding.layoutEdtPWD.editText?.text?.clear()
                     } else if (requestCode == requestCodeSignUp || requestCode == requestCodeForgotPWD) {
                         val user = bundleGet.getSerializable("user") as User
                         binding.layoutEdtAccountName.editText?.setText(user.userAccountName)

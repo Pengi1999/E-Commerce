@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doOnTextChanged
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.ChildEventListener
@@ -20,11 +21,14 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nhathao.e_commerce.R
+import com.nhathao.e_commerce.adapters.RvAdapterReview
 import com.nhathao.e_commerce.databinding.ActivityReviewBinding
 import com.nhathao.e_commerce.models.Product
 import com.nhathao.e_commerce.models.Rating
 import com.nhathao.e_commerce.models.Review
 import com.nhathao.e_commerce.models.User
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import kotlin.math.max
 
 private lateinit var binding: ActivityReviewBinding
@@ -36,6 +40,7 @@ class ReviewActivity : AppCompatActivity() {
     private lateinit var dialog: BottomSheetDialog
     private lateinit var user: User
     private lateinit var dsRatingSelectedProduct: MutableList<Rating>
+    private lateinit var dsReviewSelectedProduct: MutableList<Review>
     private var isLogin: Boolean = false
     private lateinit var productSelected: Product
     private lateinit var ratingUserSelectedProduct : Rating
@@ -46,6 +51,7 @@ class ReviewActivity : AppCompatActivity() {
     private var quantityTwoStar = 0
     private var quantityOneStar = 0
     private var ratingUserSelectedProductGetList = listOf<Rating>()
+    private val calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,18 +88,19 @@ class ReviewActivity : AppCompatActivity() {
                             ratingSnap.child("productId").value.toString(),
                             ratingSnap.child("ratingStar").value.toString().toFloat()
                         )
-                        if (rating.ratingStar == 5f)
-                            quantityFiveStar++
-                        else if (rating.ratingStar == 4f)
-                            quantityFourStar++
-                        else if (rating.ratingStar == 3f)
-                            quantityThreeStar++
-                        else if (rating.ratingStar == 2f)
-                            quantityTwoStar++
-                        else
-                            quantityOneStar++
-                        if (rating.productId == productSelected.productId)
+                        if (rating.productId == productSelected.productId) {
                             dsRatingSelectedProduct.add(rating)
+                            if (rating.ratingStar == 5f)
+                                quantityFiveStar++
+                            else if (rating.ratingStar == 4f)
+                                quantityFourStar++
+                            else if (rating.ratingStar == 3f)
+                                quantityThreeStar++
+                            else if (rating.ratingStar == 2f)
+                                quantityTwoStar++
+                            else
+                                quantityOneStar++
+                        }
                     }
                     highestQuantityRating = maxOf(quantityFiveStar,quantityFourStar,quantityThreeStar,quantityTwoStar,quantityOneStar)
                     xuLyHienThiRatingLine(highestQuantityRating)
@@ -116,11 +123,39 @@ class ReviewActivity : AppCompatActivity() {
                 TODO("Not yet implemented")
             }
         })
-//        var a =
-//            binding.ratingLineFiveStar.layoutParams.width / binding.txtRatingQuantityFiveStar.text.toString()
-//                .toInt()
 
-        binding.ratingLineOneStar.layoutParams.width = 18
+        dsReviewSelectedProduct = mutableListOf()
+
+        dbRefReview.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                dsReviewSelectedProduct.clear()
+                if (snapshot.exists()){
+                    for (reviewSnap in snapshot.children){
+                        val review = Review(
+                            reviewSnap.child("reviewId").value.toString(),
+                            reviewSnap.child("userAccountName").value.toString(),
+                            reviewSnap.child("productId").value.toString(),
+                            reviewSnap.child("reviewContent").value.toString(),
+                            reviewSnap.child("reviewDate").value.toString().toLong()
+                        )
+                        if (review.productId == productSelected.productId)
+                            dsReviewSelectedProduct.add(review)
+                    }
+                    binding.txtReviewQuantity.text = "${dsReviewSelectedProduct.size} reviews"
+                    val reviewAdapter = RvAdapterReview(dsReviewSelectedProduct)
+                    binding.rcvReview.adapter = reviewAdapter
+                    binding.rcvReview.layoutManager = LinearLayoutManager(
+                        this@ReviewActivity,
+                        LinearLayoutManager.VERTICAL,
+                        false
+                    )
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
 
         binding.btnBack.setOnClickListener {
             val data = Intent()
@@ -144,52 +179,54 @@ class ReviewActivity : AppCompatActivity() {
     }
 
     private fun xuLyHienThiRatingLine(quantity: Int) {
-        val widthMax = 380
-        var widthAverage = 0
-        if (quantity == quantityFiveStar)
-        {
-            widthAverage = widthMax / quantityFiveStar
-            binding.ratingLineFiveStar.layoutParams.width = widthMax
-            binding.ratingLineFourStar.layoutParams.width = widthAverage * quantityFourStar
-            binding.ratingLineThreeStar.layoutParams.width = widthAverage * quantityThreeStar
-            binding.ratingLineTwoStar.layoutParams.width = widthAverage * quantityTwoStar
-            binding.ratingLineOneStar.layoutParams.width = widthAverage * quantityOneStar
-        }
-        else if (quantity == quantityFourStar)
-        {
-            widthAverage = widthMax / quantityFourStar
-            binding.ratingLineFiveStar.layoutParams.width = widthAverage * quantityFiveStar
-            binding.ratingLineFourStar.layoutParams.width = widthMax
-            binding.ratingLineThreeStar.layoutParams.width = widthAverage * quantityThreeStar
-            binding.ratingLineTwoStar.layoutParams.width = widthAverage * quantityTwoStar
-            binding.ratingLineOneStar.layoutParams.width = widthAverage * quantityOneStar
-        }
-        else if (quantity == quantityThreeStar)
-        {
-            widthAverage = widthMax / quantityThreeStar
-            binding.ratingLineFiveStar.layoutParams.width = widthAverage * quantityFiveStar
-            binding.ratingLineFourStar.layoutParams.width = widthAverage * quantityFourStar
-            binding.ratingLineThreeStar.layoutParams.width = widthMax
-            binding.ratingLineTwoStar.layoutParams.width = widthAverage * quantityTwoStar
-            binding.ratingLineOneStar.layoutParams.width = widthAverage * quantityOneStar
-        }
-        else if (quantity == quantityTwoStar)
-        {
-            widthAverage = widthMax / quantityTwoStar
-            binding.ratingLineFiveStar.layoutParams.width = widthAverage * quantityFiveStar
-            binding.ratingLineFourStar.layoutParams.width = widthAverage * quantityFourStar
-            binding.ratingLineThreeStar.layoutParams.width = widthAverage * quantityThreeStar
-            binding.ratingLineTwoStar.layoutParams.width = widthMax
-            binding.ratingLineOneStar.layoutParams.width = widthAverage * quantityOneStar
-        }
-        else
-        {
-            widthAverage = widthMax / quantityOneStar
-            binding.ratingLineFiveStar.layoutParams.width = widthAverage * quantityFiveStar
-            binding.ratingLineFourStar.layoutParams.width = widthAverage * quantityFourStar
-            binding.ratingLineThreeStar.layoutParams.width = widthAverage * quantityThreeStar
-            binding.ratingLineTwoStar.layoutParams.width = widthAverage * quantityTwoStar
-            binding.ratingLineOneStar.layoutParams.width = widthMax
+        if (quantity > 0) {
+            val widthMax = 380
+            var widthAverage = 0
+            if (quantity == quantityFiveStar)
+            {
+                widthAverage = widthMax / quantityFiveStar
+                binding.ratingLineFiveStar.layoutParams.width = widthMax
+                binding.ratingLineFourStar.layoutParams.width = widthAverage * quantityFourStar
+                binding.ratingLineThreeStar.layoutParams.width = widthAverage * quantityThreeStar
+                binding.ratingLineTwoStar.layoutParams.width = widthAverage * quantityTwoStar
+                binding.ratingLineOneStar.layoutParams.width = widthAverage * quantityOneStar
+            }
+            else if (quantity == quantityFourStar)
+            {
+                widthAverage = widthMax / quantityFourStar
+                binding.ratingLineFiveStar.layoutParams.width = widthAverage * quantityFiveStar
+                binding.ratingLineFourStar.layoutParams.width = widthMax
+                binding.ratingLineThreeStar.layoutParams.width = widthAverage * quantityThreeStar
+                binding.ratingLineTwoStar.layoutParams.width = widthAverage * quantityTwoStar
+                binding.ratingLineOneStar.layoutParams.width = widthAverage * quantityOneStar
+            }
+            else if (quantity == quantityThreeStar)
+            {
+                widthAverage = widthMax / quantityThreeStar
+                binding.ratingLineFiveStar.layoutParams.width = widthAverage * quantityFiveStar
+                binding.ratingLineFourStar.layoutParams.width = widthAverage * quantityFourStar
+                binding.ratingLineThreeStar.layoutParams.width = widthMax
+                binding.ratingLineTwoStar.layoutParams.width = widthAverage * quantityTwoStar
+                binding.ratingLineOneStar.layoutParams.width = widthAverage * quantityOneStar
+            }
+            else if (quantity == quantityTwoStar)
+            {
+                widthAverage = widthMax / quantityTwoStar
+                binding.ratingLineFiveStar.layoutParams.width = widthAverage * quantityFiveStar
+                binding.ratingLineFourStar.layoutParams.width = widthAverage * quantityFourStar
+                binding.ratingLineThreeStar.layoutParams.width = widthAverage * quantityThreeStar
+                binding.ratingLineTwoStar.layoutParams.width = widthMax
+                binding.ratingLineOneStar.layoutParams.width = widthAverage * quantityOneStar
+            }
+            else
+            {
+                widthAverage = widthMax / quantityOneStar
+                binding.ratingLineFiveStar.layoutParams.width = widthAverage * quantityFiveStar
+                binding.ratingLineFourStar.layoutParams.width = widthAverage * quantityFourStar
+                binding.ratingLineThreeStar.layoutParams.width = widthAverage * quantityThreeStar
+                binding.ratingLineTwoStar.layoutParams.width = widthAverage * quantityTwoStar
+                binding.ratingLineOneStar.layoutParams.width = widthMax
+            }
         }
         if (quantityFiveStar == 0)
             binding.ratingLineFiveStar.layoutParams.width = 18
@@ -245,7 +282,7 @@ class ReviewActivity : AppCompatActivity() {
             //Insert Review
             if (edtReviewContent.text.isNotEmpty())
             {
-                val review = Review("", user.userAccountName, productSelected.productId, edtReviewContent.text.toString())
+                val review = Review("", user.userAccountName, productSelected.productId, edtReviewContent.text.toString(), calendar.timeInMillis)
                 review.reviewId = dbRefReview.push().key.toString()
                 dbRefReview.child(review.reviewId).setValue(review)
             }
@@ -267,7 +304,7 @@ class ReviewActivity : AppCompatActivity() {
                         ratingUserSelectedProduct = ratingUserSelectedProductGetList[0]
                     }
                 }
-            } else if (result.resultCode == Activity.RESULT_CANCELED) {
+            } else {
                 Toast.makeText(this, "You must login", Toast.LENGTH_SHORT).show()
             }
         }

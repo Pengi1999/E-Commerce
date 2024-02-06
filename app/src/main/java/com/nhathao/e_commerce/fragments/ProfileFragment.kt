@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.cardview.widget.CardView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -45,6 +46,8 @@ class ProfileFragment : Fragment() {
     private lateinit var txtFullName: TextView
     private lateinit var txtEmail: TextView
     private lateinit var user: User
+    private var isLogin: Boolean = false
+    private var requestCodeChangeAccount = 4
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -73,7 +76,11 @@ class ProfileFragment : Fragment() {
         val btnLogOut = view.findViewById<Button>(R.id.btnLogOut)
 
         val bundleGetData = this.activity?.intent?.extras
-        user = bundleGetData?.getSerializable("user") as User
+        if (bundleGetData != null) {
+            isLogin = bundleGetData.getBoolean("isLogin")
+            if (isLogin)
+                user = bundleGetData.getSerializable("user") as User
+        }
 
         imgAvatar.setOnClickListener {
             val myFileIntent = Intent(Intent.ACTION_GET_CONTENT)
@@ -91,8 +98,7 @@ class ProfileFragment : Fragment() {
 
         btnLogOut.setOnClickListener {
             val intent = Intent(this.activity, LoginActivity::class.java)
-            startActivity(intent)
-            this.activity?.finish()
+            startForResult.launch(intent)
         }
 
         return view
@@ -132,19 +138,51 @@ class ProfileFragment : Fragment() {
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val uri = result.data?.data
-                try {
-                    val inputStream = this.context?.contentResolver?.openInputStream(uri!!)
-                    val myBitmap = BitmapFactory.decodeStream(inputStream)
-                    val steam = ByteArrayOutputStream()
-                    myBitmap.compress(Bitmap.CompressFormat.PNG, 100, steam)
-                    val bytes = steam.toByteArray()
-                    user.avatar = Base64.encodeToString(bytes, Base64.DEFAULT)
-                    dbRef.child(user.userAccountName).child("avatar").setValue(user.avatar)
-                    imgAvatar.setImageBitmap(myBitmap)
-                    inputStream?.close()
-                } catch (ex: Exception) {
-                    Toast.makeText(this.context, ex.message.toString(), Toast.LENGTH_SHORT).show()
+                val bundleGet = result.data?.extras
+                if (bundleGet != null) {
+                    val requestCode = bundleGet.getInt("requestCode")
+                    if (requestCode == requestCodeChangeAccount) {
+                        isLogin = bundleGet.getBoolean("isLogin")
+                        this.activity?.intent?.putExtra("isLogin", isLogin)
+                        user = bundleGet.getSerializable("user") as User
+                        this.activity?.intent?.putExtra("user", user)
+                        this.activity?.supportFragmentManager?.beginTransaction()?.apply {
+                            replace(R.id.frame_layout, HomeFragment())
+                            commit()
+                        }
+                        val bottomNavigationViewMain = this.activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+                        bottomNavigationViewMain?.menu?.findItem(R.id.home)?.setChecked(true)
+                    }
+                }
+                else{
+                    val uri = result.data?.data
+                    try {
+                        val inputStream = this.context?.contentResolver?.openInputStream(uri!!)
+                        val myBitmap = BitmapFactory.decodeStream(inputStream)
+                        val steam = ByteArrayOutputStream()
+                        myBitmap.compress(Bitmap.CompressFormat.PNG, 100, steam)
+                        val bytes = steam.toByteArray()
+                        user.avatar = Base64.encodeToString(bytes, Base64.DEFAULT)
+                        dbRef.child(user.userAccountName).child("avatar").setValue(user.avatar)
+                        imgAvatar.setImageBitmap(myBitmap)
+                        inputStream?.close()
+                    } catch (ex: Exception) {
+                        Toast.makeText(this.context, ex.message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            else {
+                val intent = result.data
+                val bundleGet = intent?.extras
+                if (bundleGet != null) {
+                    isLogin = bundleGet.getBoolean("isLogin")
+                    this.activity?.intent?.putExtra("isLogin", isLogin)
+                    this.activity?.supportFragmentManager?.beginTransaction()?.apply {
+                        replace(R.id.frame_layout, HomeFragment())
+                        commit()
+                    }
+                    val bottomNavigationViewMain = this.activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+                    bottomNavigationViewMain?.menu?.findItem(R.id.home)?.setChecked(true)
                 }
             }
         }
