@@ -240,7 +240,78 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/outlineBottomReview"
                 android:layout_below="@+id/blockReview"
+                android:layout_alignParentStart="true"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/text_color_hint"/>
+
+            <RelativeLayout
+                android:id="@+id/blockItemDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/outlineBottomReview"
+                android:layout_alignParentStart="true"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:text="Item details"
+                    android:textColor="@color/black_custom"
+                    android:textSize="16sp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/ic_chevron_right_black" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/outlineBottomItemDetails"
+                android:layout_below="@+id/blockItemDetails"
+                android:layout_alignParentStart="true"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/text_color_hint"/>
+
+            <RelativeLayout
+                android:id="@+id/blockShippingInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/outlineBottomItemDetails"
+                android:layout_alignParentStart="true"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:text="Shipping info"
+                    android:textColor="@color/black_custom"
+                    android:textSize="16sp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/ic_chevron_right_black" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/outlineBottomShippingInfo"
+                android:layout_below="@+id/blockShippingInfo"
                 android:layout_alignParentStart="true"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -249,7 +320,7 @@
             <RelativeLayout
                 android:id="@+id/blockSuggest"
                 android:layout_width="match_parent"
-                android:layout_below="@+id/blockReview"
+                android:layout_below="@+id/blockShippingInfo"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="20dp"
                 android:layout_height="wrap_content">

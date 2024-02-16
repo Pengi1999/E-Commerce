@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener
 import com.nhathao.e_commerce.Interfaces.RvInterface
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.activities.FilterActivity
+import com.nhathao.e_commerce.activities.LoginActivity
 import com.nhathao.e_commerce.activities.ProductDetailActivity
 import com.nhathao.e_commerce.adapters.RvAdapterCategory
 import com.nhathao.e_commerce.adapters.RvAdapterProduct
@@ -326,7 +327,7 @@ class CatalogFragment : Fragment() {
         dialog.show()
     }
 
-    private fun showBottomSheetSelectColorAndSize() {
+    private fun showBottomSheetSelectColorAndSize(selectedProduct: Product) {
         val dialogView = layoutInflater.inflate(R.layout.bottom_sheet_select_colorandsize, null)
         dialog = BottomSheetDialog(this.requireContext())
         dialog.setContentView(dialogView)
@@ -365,6 +366,9 @@ class CatalogFragment : Fragment() {
         var isSizeM: Boolean = false
         var isSizeL: Boolean = false
         var isSizeXL: Boolean = false
+
+        selectedColor = ""
+        selectedSize = ""
 
         blockBlackColor.setOnClickListener {
             if (!isColorBlack) {
@@ -656,7 +660,28 @@ class CatalogFragment : Fragment() {
         }
 
         btnAddToCart.setOnClickListener {
-            dialog.dismiss()
+            if (isLogin) {
+                if(selectedSize == "" || selectedColor == ""){
+                    if (selectedSize == "")
+                        Toast.makeText(this.requireContext(), "Please choose size", Toast.LENGTH_SHORT).show()
+                    if (selectedColor == "")
+                        Toast.makeText(this.requireContext(), "Please choose color", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    val quantitySelectedProduct = dsQuantity.find { it.productId == selectedProduct.productId &&
+                            it.productColor == selectedColor &&
+                            it.productSize == selectedSize }
+                    if(quantitySelectedProduct?.quantity!! > 0)
+                        //Add to Cart
+                        dialog.dismiss()
+                    else
+                        Toast.makeText(this.requireContext(), "This product is out of stock", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else {
+                val intent = Intent(this.requireContext(), LoginActivity::class.java)
+                startForResult.launch(intent)
+            }
         }
 
         dialog.show()
@@ -710,7 +735,7 @@ class CatalogFragment : Fragment() {
             }
 
             override fun OnItemLongClick(pos: Int) {
-                showBottomSheetSelectColorAndSize()
+                showBottomSheetSelectColorAndSize(dsProduct[pos])
             }
         })
         rcvProduct.adapter = adapterProduct
@@ -738,7 +763,7 @@ class CatalogFragment : Fragment() {
             }
 
             override fun OnItemLongClick(pos: Int) {
-                showBottomSheetSelectColorAndSize()
+                showBottomSheetSelectColorAndSize(dsProduct[pos])
             }
 
         })
@@ -802,6 +827,7 @@ class CatalogFragment : Fragment() {
                 if (bundleGet != null) {
                     val requestCode = bundleGet.getInt("requestCode")
 
+                    // Nếu mở màn hình Filter
                     if (requestCode == requestCodeFilter) {
                         val valueFrom = bundleGet.getInt("ValueFrom")
                         val valueTo = bundleGet.getInt("ValueTo")
@@ -849,7 +875,9 @@ class CatalogFragment : Fragment() {
                         } else {
                             hienProductViewMode()
                         }
-                    } else if (requestCode == requestCodeSelectItem) {
+                    }
+                    // Nếu mở màn hình Product Detail hoặc Login
+                    else {
                         isLogin = bundleGet.getBoolean("isLogin")
                         this.activity?.intent?.putExtra("isLogin", isLogin)
                         if (isLogin) {

@@ -24,9 +24,11 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nhathao.e_commerce.Interfaces.RvInterface
 import com.nhathao.e_commerce.R
+import com.nhathao.e_commerce.activities.LoginActivity
 import com.nhathao.e_commerce.activities.ProductDetailActivity
 import com.nhathao.e_commerce.adapters.RvAdapterProduct
 import com.nhathao.e_commerce.models.Product
+import com.nhathao.e_commerce.models.Quantity
 import com.nhathao.e_commerce.models.User
 
 // TODO: Rename parameter arguments, choose names that match
@@ -41,9 +43,11 @@ private const val ARG_PARAM2 = "param2"
  */
 class HomeFragment : Fragment() {
     private lateinit var dialog: BottomSheetDialog
-    private lateinit var dbRef: DatabaseReference
+    private lateinit var dbRefProduct: DatabaseReference
+    private lateinit var dbRefQuantity: DatabaseReference
     private lateinit var dsProductSale: ArrayList<Product>
     private lateinit var dsProductNew: ArrayList<Product>
+    private lateinit var dsQuantity: MutableList<Quantity>
     private lateinit var smallBanner: RelativeLayout
     private lateinit var bigBanner: RelativeLayout
     private lateinit var btnCheckSale: Button
@@ -94,11 +98,14 @@ class HomeFragment : Fragment() {
         rvSale = view.findViewById<RecyclerView>(R.id.rvSale)
         rvNew = view.findViewById<RecyclerView>(R.id.rvNew)
 
-        dbRef = FirebaseDatabase.getInstance().getReference("Products")
+        dbRefProduct = FirebaseDatabase.getInstance().getReference("Products")
+        dbRefQuantity = FirebaseDatabase.getInstance().getReference("Quantities")
+
         dsProductSale = arrayListOf<Product>()
         dsProductNew = arrayListOf<Product>()
+        dsQuantity = mutableListOf()
 
-        dbRef.addValueEventListener(object : ValueEventListener {
+        dbRefProduct.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 dsProductSale.clear()
                 dsProductNew.clear()
@@ -144,7 +151,7 @@ class HomeFragment : Fragment() {
                             }
 
                             override fun OnItemLongClick(pos: Int) {
-                                showBottomSheetSelectColorAndSize()
+                                showBottomSheetSelectColorAndSize(dsProductNew[pos])
                             }
                         })
                     val mAdapterSale =
@@ -165,7 +172,7 @@ class HomeFragment : Fragment() {
                             }
 
                             override fun OnItemLongClick(pos: Int) {
-                                showBottomSheetSelectColorAndSize()
+                                showBottomSheetSelectColorAndSize(dsProductSale[pos])
                             }
                         })
                     rvSale.adapter = mAdapterSale
@@ -188,6 +195,27 @@ class HomeFragment : Fragment() {
             }
 
         })
+        dbRefQuantity.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                dsQuantity.clear()
+                if(snapshot.exists()){
+                    for (quantitySnap in snapshot.children){
+                        val quantityData = Quantity(
+                            quantitySnap.child("quantityId").value.toString(),
+                            quantitySnap.child("productId").value.toString(),
+                            quantitySnap.child("productColor").value.toString(),
+                            quantitySnap.child("productSize").value.toString(),
+                            quantitySnap.child("quantity").value.toString().toInt(),
+                        )
+                        dsQuantity.add(quantityData)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
 
         btnCheckSale.setOnClickListener {
             bigBanner.visibility = View.GONE
@@ -203,7 +231,7 @@ class HomeFragment : Fragment() {
         return view
     }
 
-    private fun showBottomSheetSelectColorAndSize() {
+    private fun showBottomSheetSelectColorAndSize(selectedProduct: Product) {
         val dialogView = layoutInflater.inflate(R.layout.bottom_sheet_select_colorandsize, null)
         dialog = BottomSheetDialog(this.requireContext())
         dialog.setContentView(dialogView)
@@ -533,8 +561,28 @@ class HomeFragment : Fragment() {
         }
 
         btnAddToCart.setOnClickListener {
-
-            dialog.dismiss()
+            if (isLogin) {
+                if(selectedSize == "" || selectedColor == ""){
+                    if (selectedSize == "")
+                        Toast.makeText(this.requireContext(), "Please choose size", Toast.LENGTH_SHORT).show()
+                    if (selectedColor == "")
+                        Toast.makeText(this.requireContext(), "Please choose color", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    val quantitySelectedProduct = dsQuantity.find { it.productId == selectedProduct.productId &&
+                            it.productColor == selectedColor &&
+                            it.productSize == selectedSize }
+                    if(quantitySelectedProduct?.quantity!! > 0)
+                    //Add to Cart
+                        dialog.dismiss()
+                    else
+                        Toast.makeText(this.requireContext(), "This product is out of stock", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else {
+                val intent = Intent(this.requireContext(), LoginActivity::class.java)
+                startForResult.launch(intent)
+            }
         }
 
         dialog.show()

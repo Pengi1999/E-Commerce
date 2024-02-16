@@ -13,6 +13,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import com.nhathao.e_commerce.Interfaces.RvInterface
@@ -73,7 +74,10 @@ class RvAdapterProduct (private var ds:List<Product>, private var layout:Int, pr
             txtProductName.text = ds[position].productName
 
             btnFavorite.setOnClickListener {
-
+                if (btnFavorite.drawable.toBitmap().sameAs(resources.getDrawable(R.drawable.ic_favorite_filled_18).toBitmap()))
+                    btnFavorite.setImageResource(R.drawable.ic_favorite_gray)
+                else
+                    btnFavorite.setImageResource(R.drawable.ic_favorite_filled_18)
             }
 
             holder.itemView.setOnClickListener {

@@ -27,12 +27,15 @@ import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.adapters.RvAdapterProduct
 import com.nhathao.e_commerce.databinding.ActivityProductDetailBinding
 import com.nhathao.e_commerce.models.Product
+import com.nhathao.e_commerce.models.Quantity
 import com.nhathao.e_commerce.models.User
 
 private lateinit var binding: ActivityProductDetailBinding
 class ProductDetailActivity : AppCompatActivity() {
     private lateinit var dbRefProduct: DatabaseReference
+    private lateinit var dbRefQuantity: DatabaseReference
     private lateinit var dsProduct: MutableList<Product>
+    private lateinit var dsQuantity: MutableList<Quantity>
     private lateinit var productSelected: Product
     private lateinit var dialog: BottomSheetDialog
     private lateinit var user: User
@@ -67,6 +70,88 @@ class ProductDetailActivity : AppCompatActivity() {
         binding.txtProductPrice.text = "$${productSelected.productPrice}"
 //        binding.ratingProduct.rating = productSelected.productRating!!.toFloat()
 
+        dbRefProduct = FirebaseDatabase.getInstance().getReference("Products")
+        dbRefQuantity = FirebaseDatabase.getInstance().getReference("Quantities")
+
+        dsProduct = mutableListOf()
+        dsQuantity = mutableListOf()
+
+        dbRefProduct.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                dsProduct.clear()
+                if(snapshot.exists()){
+                    for (productSnap in snapshot.children){
+                        val productData = Product(
+                            productSnap.child("productId").value.toString(),
+                            productSnap.child("productName").value.toString(),
+                            productSnap.child("productDescribe").value.toString(),
+                            productSnap.child("productImage").value.toString(),
+                            productSnap.child("productSex").value.toString(),
+                            productSnap.child("productType").value.toString(),
+                            productSnap.child("productCategory").value.toString(),
+                            productSnap.child("productBrand").value.toString(),
+                            productSnap.child("productMode").value.toString(),
+                            productSnap.child("productPrice").value.toString().toInt(),
+                            productSnap.child("productRating").value.toString().toFloat(),
+                            productSnap.child("productRatingQuantity").value.toString().toInt(),
+                        )
+                        if(productData.productCategory == productSelected.productCategory && productData.productId != productSelected.productId)
+                            dsProduct.add(productData)
+                    }
+                    binding.txtNumberOfItem.text = "${dsProduct.size} items"
+                    val mAdapter =
+                        RvAdapterProduct(dsProduct, R.layout.layout_item, object : RvInterface {
+                            override fun OnItemClick(pos: Int) {
+                                val intent = Intent(this@ProductDetailActivity, ProductDetailActivity::class.java)
+                                val productSelected = dsProduct[pos]
+                                val bundlePassing = Bundle()
+                                bundlePassing.putSerializable("productSelected", productSelected)
+                                bundlePassing.putBoolean("isLogin", isLogin)
+                                if (isLogin)
+                                    bundlePassing.putSerializable("user", user)
+                                intent.putExtras(bundlePassing)
+                                startForResult.launch(intent)
+                            }
+
+                            override fun OnItemLongClick(pos: Int) {
+                                showBottomSheetSelectColorAndSize(dsProduct[pos])
+                            }
+                        })
+                    binding.rvSuggest.adapter = mAdapter
+                    binding.rvSuggest.layoutManager = LinearLayoutManager(
+                        this@ProductDetailActivity,
+                        LinearLayoutManager.HORIZONTAL,
+                        false
+                    )
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+        dbRefQuantity.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                dsQuantity.clear()
+                if(snapshot.exists()){
+                    for (quantitySnap in snapshot.children){
+                        val quantityData = Quantity(
+                            quantitySnap.child("quantityId").value.toString(),
+                            quantitySnap.child("productId").value.toString(),
+                            quantitySnap.child("productColor").value.toString(),
+                            quantitySnap.child("productSize").value.toString(),
+                            quantitySnap.child("quantity").value.toString().toInt(),
+                        )
+                        dsQuantity.add(quantityData)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+
         binding.btnBack.setOnClickListener {
             val data = Intent()
             val bundlePassing = Bundle()
@@ -88,7 +173,14 @@ class ProductDetailActivity : AppCompatActivity() {
                         binding.blockColorSelect.setBackgroundResource(R.drawable.bg_sizeandcolor_productdetail_error)
                 }
                 else {
-                    Toast.makeText(this,"${user?.userName}", Toast.LENGTH_SHORT).show()
+                    val quantitySelectedProduct = dsQuantity.find { it.productId == productSelected.productId &&
+                            it.productColor == selectedColor &&
+                            it.productSize == selectedSize }
+                    if(quantitySelectedProduct?.quantity!! > 0)
+                    //Add to Cart
+                        dialog.dismiss()
+                    else
+                        Toast.makeText(this, "This product is out of stock", Toast.LENGTH_SHORT).show()
                 }
             }
             else {
@@ -116,66 +208,16 @@ class ProductDetailActivity : AppCompatActivity() {
             startForResult.launch(intent)
         }
 
-        dbRefProduct = FirebaseDatabase.getInstance().getReference("Products")
-        dsProduct = mutableListOf()
+        binding.blockItemDetails.setOnClickListener {
+            Toast.makeText(this, "Do it later", Toast.LENGTH_SHORT).show()
+        }
 
-        dbRefProduct.addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                dsProduct.clear()
-                if(snapshot.exists()){
-                    for (productSnap in snapshot.children){
-                        val productData = Product(
-                            productSnap.child("productId").value.toString(),
-                            productSnap.child("productName").value.toString(),
-                            productSnap.child("productDescribe").value.toString(),
-                            productSnap.child("productImage").value.toString(),
-                            productSnap.child("productSex").value.toString(),
-                            productSnap.child("productType").value.toString(),
-                            productSnap.child("productCategory").value.toString(),
-                            productSnap.child("productBrand").value.toString(),
-                            productSnap.child("productMode").value.toString(),
-                            productSnap.child("productPrice").value.toString().toInt(),
-                            productSnap.child("productRating").value.toString().toFloat(),
-                            productSnap.child("productRatingQuantity").value.toString().toInt(),
-                        )
-                        if(productData.productCategory == productSelected.productCategory)
-                            dsProduct.add(productData)
-                    }
-                    binding.txtNumberOfItem.text = "${dsProduct.size} items"
-                    val mAdapter =
-                        RvAdapterProduct(dsProduct, R.layout.layout_item, object : RvInterface {
-                            override fun OnItemClick(pos: Int) {
-                                val intent = Intent(this@ProductDetailActivity, ProductDetailActivity::class.java)
-                                val productSelected = dsProduct[pos]
-                                val bundlePassing = Bundle()
-                                bundlePassing.putSerializable("productSelected", productSelected)
-                                bundlePassing.putBoolean("isLogin", isLogin)
-                                if (isLogin)
-                                    bundlePassing.putSerializable("user", user)
-                                intent.putExtras(bundlePassing)
-                                startForResult.launch(intent)
-                            }
-
-                            override fun OnItemLongClick(pos: Int) {
-                                showBottomSheetSelectColorAndSize()
-                            }
-                        })
-                    binding.rvSuggest.adapter = mAdapter
-                    binding.rvSuggest.layoutManager = LinearLayoutManager(
-                        this@ProductDetailActivity,
-                        LinearLayoutManager.HORIZONTAL,
-                        false
-                    )
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
+        binding.blockShippingInfo.setOnClickListener {
+            Toast.makeText(this, "Do it later", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    private fun showBottomSheetSelectColorAndSize() {
+    private fun showBottomSheetSelectColorAndSize(selectedProduct: Product) {
         val dialogView = layoutInflater.inflate(R.layout.bottom_sheet_select_colorandsize, null)
         dialog = BottomSheetDialog(this)
         dialog.setContentView(dialogView)
@@ -504,7 +546,28 @@ class ProductDetailActivity : AppCompatActivity() {
         }
 
         btnAddToCart.setOnClickListener {
-            dialog.dismiss()
+            if (isLogin) {
+                if(selectedSize == "" || selectedColor == ""){
+                    if (selectedSize == "")
+                        Toast.makeText(this, "Please choose size", Toast.LENGTH_SHORT).show()
+                    if (selectedColor == "")
+                        Toast.makeText(this, "Please choose color", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    val quantitySelectedProduct = dsQuantity.find { it.productId == selectedProduct.productId &&
+                            it.productColor == selectedColor &&
+                            it.productSize == selectedSize }
+                    if(quantitySelectedProduct?.quantity!! > 0)
+                    //Add to Cart
+                        dialog.dismiss()
+                    else
+                        Toast.makeText(this, "This product is out of stock", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else {
+                val intent = Intent(this, LoginActivity::class.java)
+                startForResult.launch(intent)
+            }
         }
         dialog.show()
     }
