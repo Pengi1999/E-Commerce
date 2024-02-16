@@ -31,6 +31,7 @@ class ShopFragment : Fragment() {
     private lateinit var txtWomen: TextView
     private lateinit var txtMen: TextView
     private lateinit var txtKids: TextView
+    private lateinit var blockSale: LinearLayout
     private lateinit var underWomen: LinearLayout
     private lateinit var underMen: LinearLayout
     private lateinit var underKids: LinearLayout
@@ -64,6 +65,7 @@ class ShopFragment : Fragment() {
         txtWomen = view.findViewById(R.id.txtWomen)
         txtMen = view.findViewById(R.id.txtMen)
         txtKids = view.findViewById(R.id.txtKids)
+        blockSale = view.findViewById(R.id.blockSale)
         underWomen = view.findViewById(R.id.underWomen)
         underMen = view.findViewById(R.id.underMen)
         underKids = view.findViewById(R.id.underKids)
@@ -111,6 +113,10 @@ class ShopFragment : Fragment() {
             underKids.visibility = View.VISIBLE
 
             sex = txtKids.text.toString()
+        }
+
+        blockSale.setOnClickListener {
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
         }
 
         cardNew.setOnClickListener {

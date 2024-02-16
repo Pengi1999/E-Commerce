@@ -57,6 +57,8 @@ class HomeFragment : Fragment() {
     private lateinit var blockNew: RelativeLayout
     private lateinit var rvSale: RecyclerView
     private lateinit var rvNew: RecyclerView
+    private lateinit var txtViewNew: TextView
+    private lateinit var txtViewSale: TextView
     private lateinit var selectedSize: String
     private lateinit var selectedColor: String
     private lateinit var user: User
@@ -95,8 +97,10 @@ class HomeFragment : Fragment() {
         blockMain2 = view.findViewById(R.id.blockMain2)
         blockSale = view.findViewById(R.id.blockSale)
         blockNew = view.findViewById(R.id.blockNew)
-        rvSale = view.findViewById<RecyclerView>(R.id.rvSale)
-        rvNew = view.findViewById<RecyclerView>(R.id.rvNew)
+        rvSale = view.findViewById(R.id.rvSale)
+        rvNew = view.findViewById(R.id.rvNew)
+        txtViewNew = view.findViewById(R.id.txtViewNew)
+        txtViewSale = view.findViewById(R.id.txtViewSale)
 
         dbRefProduct = FirebaseDatabase.getInstance().getReference("Products")
         dbRefQuantity = FirebaseDatabase.getInstance().getReference("Quantities")
@@ -226,6 +230,14 @@ class HomeFragment : Fragment() {
         smallBanner.setOnClickListener {
             blockMain2.visibility = View.VISIBLE
             blockMain1.visibility = View.GONE
+        }
+
+        txtViewNew.setOnClickListener {
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+        }
+
+        txtViewSale.setOnClickListener {
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
         }
 
         return view

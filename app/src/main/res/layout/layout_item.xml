@@ -103,7 +103,7 @@
         android:text="NEW"
         android:textColor="@color/white"
         android:textSize="11sp"
-        android:translationZ="90dp"
+        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="@id/cardImage"
         app:layout_constraintTop_toTopOf="@+id/cardImage" />
 
@@ -117,7 +117,6 @@
         android:contentDescription="Favorite"
         android:elevation="5dp"
         android:src="@drawable/ic_favorite_gray"
-        android:translationZ="90dp"
         app:layout_constraintEnd_toEndOf="@id/cardImage"
         app:layout_constraintTop_toTopOf="@id/cardImage" />
 
