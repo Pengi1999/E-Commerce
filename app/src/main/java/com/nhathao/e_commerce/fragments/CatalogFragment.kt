@@ -290,7 +290,14 @@ class CatalogFragment : Fragment() {
         }
 
         txtSortByReview.setOnClickListener {
+            dsProduct.sortByDescending { it.productRating }
+            if (isViewList) {
+                hienProductViewList()
+            } else {
+                hienProductViewMode()
+            }
             txtViewSort.text = txtSortByReview.text
+            sortMode = "Review"
             dialog.dismiss()
         }
 
@@ -870,6 +877,8 @@ class CatalogFragment : Fragment() {
                             dsProduct.sortBy { it.productPrice }
                         else if (sortMode == "Descending")
                             dsProduct.sortByDescending { it.productPrice }
+                        else if (sortMode == "Review")
+                            dsProduct.sortByDescending { it.productRating }
                         if (isViewList) {
                             hienProductViewList()
                         } else {
