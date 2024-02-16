@@ -68,7 +68,8 @@ class ProductDetailActivity : AppCompatActivity() {
             binding.txtProductPriceSale.text = "$${productSelected.productPrice - (productSelected.productPrice * saleValue).toInt()}"
         }
         binding.txtProductPrice.text = "$${productSelected.productPrice}"
-//        binding.ratingProduct.rating = productSelected.productRating!!.toFloat()
+        binding.ratingProduct.rating = productSelected.productRating!!.toFloat()
+        binding.txtRatingQuantity.text = "(${productSelected.productRatingQuantity})"
 
         dbRefProduct = FirebaseDatabase.getInstance().getReference("Products")
         dbRefQuantity = FirebaseDatabase.getInstance().getReference("Quantities")

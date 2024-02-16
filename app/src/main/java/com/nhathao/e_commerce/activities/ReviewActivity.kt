@@ -43,7 +43,7 @@ class ReviewActivity : AppCompatActivity() {
     private lateinit var dsReviewSelectedProduct: MutableList<Review>
     private var isLogin: Boolean = false
     private lateinit var productSelected: Product
-    private lateinit var ratingUserSelectedProduct : Rating
+    private lateinit var ratingUserSelectedProduct: Rating
     private var highestQuantityRating = 0
     private var quantityFiveStar = 0
     private var quantityFourStar = 0
@@ -72,7 +72,7 @@ class ReviewActivity : AppCompatActivity() {
 
         binding.txtRatingStarAverage.text = productSelected.productRating.toString()
 
-        dbRefRating.addValueEventListener(object : ValueEventListener{
+        dbRefRating.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 dsRatingSelectedProduct.clear()
                 quantityFiveStar = 0
@@ -80,8 +80,8 @@ class ReviewActivity : AppCompatActivity() {
                 quantityThreeStar = 0
                 quantityTwoStar = 0
                 quantityOneStar = 0
-                if(snapshot.exists()) {
-                    for (ratingSnap in snapshot.children){
+                if (snapshot.exists()) {
+                    for (ratingSnap in snapshot.children) {
                         val rating = Rating(
                             ratingSnap.child("ratingId").value.toString(),
                             ratingSnap.child("userAccountName").value.toString(),
@@ -102,7 +102,13 @@ class ReviewActivity : AppCompatActivity() {
                                 quantityOneStar++
                         }
                     }
-                    highestQuantityRating = maxOf(quantityFiveStar,quantityFourStar,quantityThreeStar,quantityTwoStar,quantityOneStar)
+                    highestQuantityRating = maxOf(
+                        quantityFiveStar,
+                        quantityFourStar,
+                        quantityThreeStar,
+                        quantityTwoStar,
+                        quantityOneStar
+                    )
                     xuLyHienThiRatingLine(highestQuantityRating)
                     binding.txtRatingQuantity.text = "${dsRatingSelectedProduct.size} ratings"
                     binding.txtRatingQuantityFiveStar.text = quantityFiveStar.toString()
@@ -110,9 +116,10 @@ class ReviewActivity : AppCompatActivity() {
                     binding.txtRatingQuantityThreeStar.text = quantityThreeStar.toString()
                     binding.txtRatingQuantityTwoStar.text = quantityTwoStar.toString()
                     binding.txtRatingQuantityOneStar.text = quantityOneStar.toString()
-                    if (isLogin){
-                        ratingUserSelectedProductGetList = dsRatingSelectedProduct.filter { it.userAccountName == user.userAccountName }
-                        if (ratingUserSelectedProductGetList.isNotEmpty()){
+                    if (isLogin) {
+                        ratingUserSelectedProductGetList =
+                            dsRatingSelectedProduct.filter { it.userAccountName == user.userAccountName }
+                        if (ratingUserSelectedProductGetList.isNotEmpty()) {
                             ratingUserSelectedProduct = ratingUserSelectedProductGetList[0]
                         }
                     }
@@ -126,11 +133,11 @@ class ReviewActivity : AppCompatActivity() {
 
         dsReviewSelectedProduct = mutableListOf()
 
-        dbRefReview.addValueEventListener(object : ValueEventListener{
+        dbRefReview.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 dsReviewSelectedProduct.clear()
-                if (snapshot.exists()){
-                    for (reviewSnap in snapshot.children){
+                if (snapshot.exists()) {
+                    for (reviewSnap in snapshot.children) {
                         val review = Review(
                             reviewSnap.child("reviewId").value.toString(),
                             reviewSnap.child("userAccountName").value.toString(),
@@ -182,44 +189,35 @@ class ReviewActivity : AppCompatActivity() {
         if (quantity > 0) {
             val widthMax = 380
             var widthAverage = 0
-            if (quantity == quantityFiveStar)
-            {
+            if (quantity == quantityFiveStar) {
                 widthAverage = widthMax / quantityFiveStar
                 binding.ratingLineFiveStar.layoutParams.width = widthMax
                 binding.ratingLineFourStar.layoutParams.width = widthAverage * quantityFourStar
                 binding.ratingLineThreeStar.layoutParams.width = widthAverage * quantityThreeStar
                 binding.ratingLineTwoStar.layoutParams.width = widthAverage * quantityTwoStar
                 binding.ratingLineOneStar.layoutParams.width = widthAverage * quantityOneStar
-            }
-            else if (quantity == quantityFourStar)
-            {
+            } else if (quantity == quantityFourStar) {
                 widthAverage = widthMax / quantityFourStar
                 binding.ratingLineFiveStar.layoutParams.width = widthAverage * quantityFiveStar
                 binding.ratingLineFourStar.layoutParams.width = widthMax
                 binding.ratingLineThreeStar.layoutParams.width = widthAverage * quantityThreeStar
                 binding.ratingLineTwoStar.layoutParams.width = widthAverage * quantityTwoStar
                 binding.ratingLineOneStar.layoutParams.width = widthAverage * quantityOneStar
-            }
-            else if (quantity == quantityThreeStar)
-            {
+            } else if (quantity == quantityThreeStar) {
                 widthAverage = widthMax / quantityThreeStar
                 binding.ratingLineFiveStar.layoutParams.width = widthAverage * quantityFiveStar
                 binding.ratingLineFourStar.layoutParams.width = widthAverage * quantityFourStar
                 binding.ratingLineThreeStar.layoutParams.width = widthMax
                 binding.ratingLineTwoStar.layoutParams.width = widthAverage * quantityTwoStar
                 binding.ratingLineOneStar.layoutParams.width = widthAverage * quantityOneStar
-            }
-            else if (quantity == quantityTwoStar)
-            {
+            } else if (quantity == quantityTwoStar) {
                 widthAverage = widthMax / quantityTwoStar
                 binding.ratingLineFiveStar.layoutParams.width = widthAverage * quantityFiveStar
                 binding.ratingLineFourStar.layoutParams.width = widthAverage * quantityFourStar
                 binding.ratingLineThreeStar.layoutParams.width = widthAverage * quantityThreeStar
                 binding.ratingLineTwoStar.layoutParams.width = widthMax
                 binding.ratingLineOneStar.layoutParams.width = widthAverage * quantityOneStar
-            }
-            else
-            {
+            } else {
                 widthAverage = widthMax / quantityOneStar
                 binding.ratingLineFiveStar.layoutParams.width = widthAverage * quantityFiveStar
                 binding.ratingLineFourStar.layoutParams.width = widthAverage * quantityFourStar
@@ -253,40 +251,57 @@ class ReviewActivity : AppCompatActivity() {
             ratingBar.rating = ratingUserSelectedProduct.ratingStar
 
         btnSendReview.setOnClickListener {
-            //Insert Rating
-            if (ratingUserSelectedProductGetList.isEmpty()) {
-                val rating = Rating("", user.userAccountName, productSelected.productId, ratingBar.rating)
-                rating.ratingId = dbRefRating.push().key.toString()
-                dbRefRating.child(rating.ratingId).setValue(rating)
-                dsRatingSelectedProduct.add(rating)
-            }
-            //Update Rating
-            else
-            {
-                ratingUserSelectedProduct.ratingStar = ratingBar.rating
-                dbRefRating.child(ratingUserSelectedProduct.ratingId).setValue(ratingUserSelectedProduct)
-                dsRatingSelectedProduct.find { it.ratingId == ratingUserSelectedProduct.ratingId }?.ratingStar = ratingUserSelectedProduct.ratingStar
-            }
-            //Tinh lai ratingStar cua Product duoc lua chon
-            var sumRating = 0f
-            for (ratingChildren in dsRatingSelectedProduct) {
-                sumRating += ratingChildren.ratingStar
-            }
-            var ratingStarProduct = sumRating / dsRatingSelectedProduct.size
-            ratingStarProduct = String.format("%.3f", ratingStarProduct).toFloat()
-            ratingStarProduct = String.format("%.2f", ratingStarProduct).toFloat()
-            ratingStarProduct = String.format("%.1f", ratingStarProduct).toFloat()
-            dbRefProduct.child(productSelected.productId).child("productRating").setValue(ratingStarProduct)
-            binding.txtRatingStarAverage.text = ratingStarProduct.toString()
+            if (ratingBar.rating != 0f) {
+                //Insert Rating
+                if (ratingUserSelectedProductGetList.isEmpty()) {
+                    val rating = Rating(
+                        "",
+                        user.userAccountName,
+                        productSelected.productId,
+                        ratingBar.rating
+                    )
+                    rating.ratingId = dbRefRating.push().key.toString()
+                    dbRefRating.child(rating.ratingId).setValue(rating)
+                    dsRatingSelectedProduct.add(rating)
+                    dbRefProduct.child(productSelected.productId).child("productRatingQuantity")
+                        .setValue(productSelected.productRatingQuantity?.plus(1))
+                }
+                //Update Rating
+                else {
+                    ratingUserSelectedProduct.ratingStar = ratingBar.rating
+                    dbRefRating.child(ratingUserSelectedProduct.ratingId)
+                        .setValue(ratingUserSelectedProduct)
+                    dsRatingSelectedProduct.find { it.ratingId == ratingUserSelectedProduct.ratingId }?.ratingStar =
+                        ratingUserSelectedProduct.ratingStar
+                }
+                //Tinh lai ratingStar cua Product duoc lua chon
+                var sumRating = 0f
+                for (ratingChildren in dsRatingSelectedProduct) {
+                    sumRating += ratingChildren.ratingStar
+                }
+                var ratingStarProduct = sumRating / dsRatingSelectedProduct.size
+                ratingStarProduct = String.format("%.3f", ratingStarProduct).toFloat()
+                ratingStarProduct = String.format("%.2f", ratingStarProduct).toFloat()
+                ratingStarProduct = String.format("%.1f", ratingStarProduct).toFloat()
+                dbRefProduct.child(productSelected.productId).child("productRating")
+                    .setValue(ratingStarProduct)
+                binding.txtRatingStarAverage.text = ratingStarProduct.toString()
 
-            //Insert Review
-            if (edtReviewContent.text.isNotEmpty())
-            {
-                val review = Review("", user.userAccountName, productSelected.productId, edtReviewContent.text.toString(), calendar.timeInMillis)
-                review.reviewId = dbRefReview.push().key.toString()
-                dbRefReview.child(review.reviewId).setValue(review)
-            }
-            dialog.dismiss()
+                //Insert Review
+                if (edtReviewContent.text.isNotEmpty()) {
+                    val review = Review(
+                        "",
+                        user.userAccountName,
+                        productSelected.productId,
+                        edtReviewContent.text.toString(),
+                        calendar.timeInMillis
+                    )
+                    review.reviewId = dbRefReview.push().key.toString()
+                    dbRefReview.child(review.reviewId).setValue(review)
+                }
+                dialog.dismiss()
+            } else
+                Toast.makeText(this, "Please rate it", Toast.LENGTH_SHORT).show()
         }
         dialog.show()
     }
@@ -299,8 +314,9 @@ class ReviewActivity : AppCompatActivity() {
                 if (bundleGet != null) {
                     isLogin = bundleGet.getBoolean("isLogin")
                     user = bundleGet.getSerializable("user") as User
-                    ratingUserSelectedProductGetList = dsRatingSelectedProduct.filter { it.userAccountName == user.userAccountName }
-                    if (ratingUserSelectedProductGetList.isNotEmpty()){
+                    ratingUserSelectedProductGetList =
+                        dsRatingSelectedProduct.filter { it.userAccountName == user.userAccountName }
+                    if (ratingUserSelectedProductGetList.isNotEmpty()) {
                         ratingUserSelectedProduct = ratingUserSelectedProductGetList[0]
                     }
                 }
