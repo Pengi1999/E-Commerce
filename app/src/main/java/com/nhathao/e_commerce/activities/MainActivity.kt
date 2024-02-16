@@ -53,8 +53,13 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.bag -> {
-                    binding.bottomNavigationView.menu.findItem(R.id.bag).setChecked(true)
-                    replaceFragment(BagFragment())
+                    if (!isLogin) {
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startForResult.launch(intent)
+                    } else {
+                        binding.bottomNavigationView.menu.findItem(R.id.bag).setChecked(true)
+                        replaceFragment(BagFragment())
+                    }
                 }
 
                 R.id.favorite -> {

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/background_default"
     android:paddingBottom="16dp">
 
     <androidx.cardview.widget.CardView
@@ -96,15 +97,18 @@
                             android:layout_height="wrap_content"
                             android:text="34$"
                             android:textColor="@color/black_custom"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:textStyle="bold"/>
 
                         <TextView
                             android:id="@+id/txtProductPriceSale"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text=""
                             android:layout_marginStart="4dp"
                             android:textColor="@color/red_button"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:textStyle="bold"/>
                     </LinearLayout>
 
                 </LinearLayout>

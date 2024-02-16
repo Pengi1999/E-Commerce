@@ -27,6 +27,7 @@ import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.activities.LoginActivity
 import com.nhathao.e_commerce.activities.ProductDetailActivity
 import com.nhathao.e_commerce.adapters.RvAdapterProduct
+import com.nhathao.e_commerce.models.Bag
 import com.nhathao.e_commerce.models.Product
 import com.nhathao.e_commerce.models.Quantity
 import com.nhathao.e_commerce.models.User
@@ -45,9 +46,11 @@ class HomeFragment : Fragment() {
     private lateinit var dialog: BottomSheetDialog
     private lateinit var dbRefProduct: DatabaseReference
     private lateinit var dbRefQuantity: DatabaseReference
+    private lateinit var dbRefBag: DatabaseReference
     private lateinit var dsProductSale: ArrayList<Product>
     private lateinit var dsProductNew: ArrayList<Product>
     private lateinit var dsQuantity: MutableList<Quantity>
+    private lateinit var dsBag: MutableList<Bag>
     private lateinit var smallBanner: RelativeLayout
     private lateinit var bigBanner: RelativeLayout
     private lateinit var btnCheckSale: Button
@@ -104,10 +107,12 @@ class HomeFragment : Fragment() {
 
         dbRefProduct = FirebaseDatabase.getInstance().getReference("Products")
         dbRefQuantity = FirebaseDatabase.getInstance().getReference("Quantities")
+        dbRefBag = FirebaseDatabase.getInstance().getReference("Bags")
 
         dsProductSale = arrayListOf<Product>()
         dsProductNew = arrayListOf<Product>()
         dsQuantity = mutableListOf()
+        dsBag = mutableListOf()
 
         dbRefProduct.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -220,6 +225,26 @@ class HomeFragment : Fragment() {
                 TODO("Not yet implemented")
             }
         })
+        dbRefBag.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                dsBag.clear()
+                if(snapshot.exists()){
+                    for (bagSnap in snapshot.children){
+                        val bagData = Bag(
+                            bagSnap.child("bagId").value.toString(),
+                            bagSnap.child("quantityId").value.toString(),
+                            bagSnap.child("userAccountName").value.toString(),
+                            bagSnap.child("quantity").value.toString().toInt()
+                        )
+                        dsBag.add(bagData)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
 
         btnCheckSale.setOnClickListener {
             bigBanner.visibility = View.GONE
@@ -239,7 +264,6 @@ class HomeFragment : Fragment() {
         txtViewSale.setOnClickListener {
             Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
         }
-
         return view
     }
 
@@ -584,9 +608,28 @@ class HomeFragment : Fragment() {
                     val quantitySelectedProduct = dsQuantity.find { it.productId == selectedProduct.productId &&
                             it.productColor == selectedColor &&
                             it.productSize == selectedSize }
-                    if(quantitySelectedProduct?.quantity!! > 0)
-                    //Add to Cart
+                    if(quantitySelectedProduct?.quantity!! > 0){
+                        //Add Product to Bag
+                        val bagSearch = dsBag.find { it.quantityId == quantitySelectedProduct.quantityId &&
+                                it.userAccountName == user.userAccountName}
+                        //Neu product da duoc them vao bag
+                        if (bagSearch != null) {
+                            bagSearch.quantity += 1
+                            dbRefBag.child(bagSearch.bagId).setValue(bagSearch)
+                        }
+                        //Neu product chua co trong bag
+                        else {
+                            val bag = Bag(
+                                "",
+                                quantitySelectedProduct.quantityId,
+                                user.userAccountName,
+                                1
+                            )
+                            bag.bagId = dbRefBag.push().key.toString()
+                            dbRefBag.child(bag.bagId).setValue(bag)
+                        }
                         dialog.dismiss()
+                    }
                     else
                         Toast.makeText(this.requireContext(), "This product is out of stock", Toast.LENGTH_SHORT).show()
                 }

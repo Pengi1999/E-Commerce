@@ -26,6 +26,7 @@ import com.nhathao.e_commerce.Interfaces.RvInterface
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.adapters.RvAdapterProduct
 import com.nhathao.e_commerce.databinding.ActivityProductDetailBinding
+import com.nhathao.e_commerce.models.Bag
 import com.nhathao.e_commerce.models.Product
 import com.nhathao.e_commerce.models.Quantity
 import com.nhathao.e_commerce.models.User
@@ -34,8 +35,10 @@ private lateinit var binding: ActivityProductDetailBinding
 class ProductDetailActivity : AppCompatActivity() {
     private lateinit var dbRefProduct: DatabaseReference
     private lateinit var dbRefQuantity: DatabaseReference
+    private lateinit var dbRefBag: DatabaseReference
     private lateinit var dsProduct: MutableList<Product>
     private lateinit var dsQuantity: MutableList<Quantity>
+    private lateinit var dsBag: MutableList<Bag>
     private lateinit var productSelected: Product
     private lateinit var dialog: BottomSheetDialog
     private lateinit var user: User
@@ -73,9 +76,11 @@ class ProductDetailActivity : AppCompatActivity() {
 
         dbRefProduct = FirebaseDatabase.getInstance().getReference("Products")
         dbRefQuantity = FirebaseDatabase.getInstance().getReference("Quantities")
+        dbRefBag = FirebaseDatabase.getInstance().getReference("Bags")
 
         dsProduct = mutableListOf()
         dsQuantity = mutableListOf()
+        dsBag = mutableListOf()
 
         dbRefProduct.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -152,6 +157,26 @@ class ProductDetailActivity : AppCompatActivity() {
                 TODO("Not yet implemented")
             }
         })
+        dbRefBag.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                dsBag.clear()
+                if(snapshot.exists()){
+                    for (bagSnap in snapshot.children){
+                        val bagData = Bag(
+                            bagSnap.child("bagId").value.toString(),
+                            bagSnap.child("quantityId").value.toString(),
+                            bagSnap.child("userAccountName").value.toString(),
+                            bagSnap.child("quantity").value.toString().toInt()
+                        )
+                        dsBag.add(bagData)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
 
         binding.btnBack.setOnClickListener {
             val data = Intent()
@@ -177,9 +202,28 @@ class ProductDetailActivity : AppCompatActivity() {
                     val quantitySelectedProduct = dsQuantity.find { it.productId == productSelected.productId &&
                             it.productColor == selectedColor &&
                             it.productSize == selectedSize }
-                    if(quantitySelectedProduct?.quantity!! > 0)
-                    //Add to Cart
+                    if(quantitySelectedProduct?.quantity!! > 0){
+                        //Add Product to Bag
+                        val bagSearch = dsBag.find { it.quantityId == quantitySelectedProduct.quantityId &&
+                                it.userAccountName == user.userAccountName}
+                        //Neu product da duoc them vao bag
+                        if (bagSearch != null) {
+                            bagSearch.quantity += 1
+                            dbRefBag.child(bagSearch.bagId).setValue(bagSearch)
+                        }
+                        //Neu product chua co trong bag
+                        else {
+                            val bag = Bag(
+                                "",
+                                quantitySelectedProduct.quantityId,
+                                user.userAccountName,
+                                1
+                            )
+                            bag.bagId = dbRefBag.push().key.toString()
+                            dbRefBag.child(bag.bagId).setValue(bag)
+                        }
                         dialog.dismiss()
+                    }
                     else
                         Toast.makeText(this, "This product is out of stock", Toast.LENGTH_SHORT).show()
                 }
@@ -558,9 +602,28 @@ class ProductDetailActivity : AppCompatActivity() {
                     val quantitySelectedProduct = dsQuantity.find { it.productId == selectedProduct.productId &&
                             it.productColor == selectedColor &&
                             it.productSize == selectedSize }
-                    if(quantitySelectedProduct?.quantity!! > 0)
-                    //Add to Cart
+                    if(quantitySelectedProduct?.quantity!! > 0){
+                        //Add Product to Bag
+                        val bagSearch = dsBag.find { it.quantityId == quantitySelectedProduct.quantityId &&
+                                it.userAccountName == user.userAccountName}
+                        //Neu product da duoc them vao bag
+                        if (bagSearch != null) {
+                            bagSearch.quantity += 1
+                            dbRefBag.child(bagSearch.bagId).setValue(bagSearch)
+                        }
+                        //Neu product chua co trong bag
+                        else {
+                            val bag = Bag(
+                                "",
+                                quantitySelectedProduct.quantityId,
+                                user.userAccountName,
+                                1
+                            )
+                            bag.bagId = dbRefBag.push().key.toString()
+                            dbRefBag.child(bag.bagId).setValue(bag)
+                        }
                         dialog.dismiss()
+                    }
                     else
                         Toast.makeText(this, "This product is out of stock", Toast.LENGTH_SHORT).show()
                 }
@@ -741,8 +804,11 @@ class ProductDetailActivity : AppCompatActivity() {
             if (selectedSize != "") {
                 binding.txtSize.text = selectedSize
                 binding.blockSizeSelect.setBackgroundResource(R.drawable.bg_sizeandcolor_productdetail)
+                dialog.dismiss()
             }
-            dialog.dismiss()
+            else {
+                Toast.makeText(this, "Please choose size", Toast.LENGTH_SHORT).show()
+            }
         }
         dialog.show()
     }
@@ -923,8 +989,11 @@ class ProductDetailActivity : AppCompatActivity() {
             if (selectedColor != ""){
                 binding.txtColor.text = selectedColor
                 binding.blockColorSelect.setBackgroundResource(R.drawable.bg_sizeandcolor_productdetail)
+                dialog.dismiss()
             }
-            dialog.dismiss()
+            else {
+                Toast.makeText(this, "Please choose color", Toast.LENGTH_SHORT).show()
+            }
         }
         dialog.show()
     }

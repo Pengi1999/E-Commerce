@@ -34,6 +34,7 @@ import com.nhathao.e_commerce.activities.LoginActivity
 import com.nhathao.e_commerce.activities.ProductDetailActivity
 import com.nhathao.e_commerce.adapters.RvAdapterCategory
 import com.nhathao.e_commerce.adapters.RvAdapterProduct
+import com.nhathao.e_commerce.models.Bag
 import com.nhathao.e_commerce.models.Product
 import com.nhathao.e_commerce.models.Quantity
 import com.nhathao.e_commerce.models.User
@@ -57,6 +58,7 @@ class CatalogFragment : Fragment() {
     private lateinit var txtSortByPriceHighest: TextView
     private lateinit var dbRefProduct: DatabaseReference
     private lateinit var dbRefQuantity: DatabaseReference
+    private lateinit var dbRefBag: DatabaseReference
     private lateinit var btnBack: ImageButton
     private lateinit var btnSearch: ImageButton
     private lateinit var txtCategoryActionBar: TextView
@@ -72,6 +74,7 @@ class CatalogFragment : Fragment() {
     private lateinit var dsProductAll: MutableList<Product>
     private lateinit var dsProductByCategory: MutableList<Product>
     private lateinit var dsProductTops: MutableList<Product>
+    private lateinit var dsBag: MutableList<Bag>
     private lateinit var rcvProduct: RecyclerView
     private lateinit var adapterCategory: RvAdapterCategory
     private lateinit var adapterProduct: RvAdapterProduct
@@ -105,6 +108,7 @@ class CatalogFragment : Fragment() {
 
         dbRefProduct = FirebaseDatabase.getInstance().getReference("Products")
         dbRefQuantity = FirebaseDatabase.getInstance().getReference("Quantities")
+        dbRefBag = FirebaseDatabase.getInstance().getReference("Bags")
 
         btnBack = view.findViewById(R.id.btnBack)
         btnSearch = view.findViewById(R.id.btnSearch)
@@ -129,12 +133,13 @@ class CatalogFragment : Fragment() {
 
         txtCategory.setText("$sex's $category")
 
-        dsCategory = mutableListOf<String>()
-        dsQuantity = mutableListOf<Quantity>()
-        dsProduct = mutableListOf<Product>()
-        dsProductAll = mutableListOf<Product>()
-        dsProductByCategory = mutableListOf<Product>()
-        dsProductTops = mutableListOf<Product>()
+        dsCategory = mutableListOf()
+        dsQuantity = mutableListOf()
+        dsProduct = mutableListOf()
+        dsProductAll = mutableListOf()
+        dsProductByCategory = mutableListOf()
+        dsProductTops = mutableListOf()
+        dsBag = mutableListOf()
 
         dbRefProduct.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -216,7 +221,6 @@ class CatalogFragment : Fragment() {
                 TODO("Not yet implemented")
             }
         })
-
         dbRefQuantity.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 dsQuantity.clear()
@@ -230,6 +234,26 @@ class CatalogFragment : Fragment() {
                             quantitySnap.child("quantity").value.toString().toInt(),
                         )
                         dsQuantity.add(quantityData)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+        dbRefBag.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                dsBag.clear()
+                if(snapshot.exists()){
+                    for (bagSnap in snapshot.children){
+                        val bagData = Bag(
+                            bagSnap.child("bagId").value.toString(),
+                            bagSnap.child("quantityId").value.toString(),
+                            bagSnap.child("userAccountName").value.toString(),
+                            bagSnap.child("quantity").value.toString().toInt()
+                        )
+                        dsBag.add(bagData)
                     }
                 }
             }
@@ -678,9 +702,28 @@ class CatalogFragment : Fragment() {
                     val quantitySelectedProduct = dsQuantity.find { it.productId == selectedProduct.productId &&
                             it.productColor == selectedColor &&
                             it.productSize == selectedSize }
-                    if(quantitySelectedProduct?.quantity!! > 0)
-                        //Add to Cart
+                    if(quantitySelectedProduct?.quantity!! > 0){
+                        //Add Product to Bag
+                        val bagSearch = dsBag.find { it.quantityId == quantitySelectedProduct.quantityId &&
+                                it.userAccountName == user.userAccountName}
+                        //Neu product da duoc them vao bag
+                        if (bagSearch != null) {
+                            bagSearch.quantity += 1
+                            dbRefBag.child(bagSearch.bagId).setValue(bagSearch)
+                        }
+                        //Neu product chua co trong bag
+                        else {
+                            val bag = Bag(
+                                "",
+                                quantitySelectedProduct.quantityId,
+                                user.userAccountName,
+                                1
+                            )
+                            bag.bagId = dbRefBag.push().key.toString()
+                            dbRefBag.child(bag.bagId).setValue(bag)
+                        }
                         dialog.dismiss()
+                    }
                     else
                         Toast.makeText(this.requireContext(), "This product is out of stock", Toast.LENGTH_SHORT).show()
                 }
