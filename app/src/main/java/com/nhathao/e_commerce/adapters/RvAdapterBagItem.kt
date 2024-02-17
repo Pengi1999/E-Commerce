@@ -23,6 +23,7 @@ import com.nhathao.e_commerce.models.User
 import java.text.SimpleDateFormat
 
 class RvAdapterBagItem (private var ds:List<Bag>): RecyclerView.Adapter<RvAdapterBagItem.BagItemViewHolder>() {
+    private val dbRefBag: DatabaseReference = FirebaseDatabase.getInstance().getReference("Bags")
     private val dbRefProduct: DatabaseReference = FirebaseDatabase.getInstance().getReference("Products")
     private val dbRefQuantity: DatabaseReference = FirebaseDatabase.getInstance().getReference("Quantities")
     private lateinit var quantity: Quantity
@@ -95,6 +96,21 @@ class RvAdapterBagItem (private var ds:List<Bag>): RecyclerView.Adapter<RvAdapte
                 }
             }
             txtQuantity.text = ds[position].quantity.toString()
+
+            btnIncrease.setOnClickListener {
+                ds[position].quantity += 1
+                dbRefBag.child(ds[position].bagId).setValue(ds[position])
+            }
+
+            btnDecrease.setOnClickListener {
+                if (ds[position].quantity > 1) {
+                    ds[position].quantity -= 1
+                    dbRefBag.child(ds[position].bagId).setValue(ds[position])
+                }
+                else {
+                    dbRefBag.child(ds[position].bagId).removeValue()
+                }
+            }
         }
     }
 }
