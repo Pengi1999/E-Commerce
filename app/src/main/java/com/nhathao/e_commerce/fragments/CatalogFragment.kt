@@ -722,6 +722,7 @@ class CatalogFragment : Fragment() {
                             bag.bagId = dbRefBag.push().key.toString()
                             dbRefBag.child(bag.bagId).setValue(bag)
                         }
+                        Toast.makeText(this.requireContext(), "This product is added to Cart", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
                     }
                     else

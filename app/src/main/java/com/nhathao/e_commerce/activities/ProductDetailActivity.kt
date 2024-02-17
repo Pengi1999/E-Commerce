@@ -222,7 +222,7 @@ class ProductDetailActivity : AppCompatActivity() {
                             bag.bagId = dbRefBag.push().key.toString()
                             dbRefBag.child(bag.bagId).setValue(bag)
                         }
-                        dialog.dismiss()
+                        Toast.makeText(this, "This product is added to Cart", Toast.LENGTH_SHORT).show()
                     }
                     else
                         Toast.makeText(this, "This product is out of stock", Toast.LENGTH_SHORT).show()
@@ -622,6 +622,7 @@ class ProductDetailActivity : AppCompatActivity() {
                             bag.bagId = dbRefBag.push().key.toString()
                             dbRefBag.child(bag.bagId).setValue(bag)
                         }
+                        Toast.makeText(this, "This product is added to Cart", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
                     }
                     else
