@@ -27,6 +27,7 @@ import com.google.firebase.database.values
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.activities.LoginActivity
 import com.nhathao.e_commerce.activities.SettingActivity
+import com.nhathao.e_commerce.activities.ShippingAddressActivity
 import com.nhathao.e_commerce.models.User
 import java.io.ByteArrayOutputStream
 
@@ -45,6 +46,7 @@ class ProfileFragment : Fragment() {
     private lateinit var imgAvatar: ImageView
     private lateinit var txtFullName: TextView
     private lateinit var txtEmail: TextView
+    private lateinit var cardShippingAddress: CardView
     private lateinit var user: User
     private var isLogin: Boolean = false
     private var requestCodeChangeAccount = 4
@@ -73,6 +75,7 @@ class ProfileFragment : Fragment() {
         imgAvatar = view.findViewById<ImageView>(R.id.imgAvatar)
         txtFullName = view.findViewById<TextView>(R.id.txtFullName)
         txtEmail = view.findViewById<TextView>(R.id.txtEmail)
+        cardShippingAddress = view.findViewById(R.id.cardShippingAddress)
         val btnLogOut = view.findViewById<Button>(R.id.btnLogOut)
 
         val bundleGetData = this.activity?.intent?.extras
@@ -86,6 +89,11 @@ class ProfileFragment : Fragment() {
             val myFileIntent = Intent(Intent.ACTION_GET_CONTENT)
             myFileIntent.setType("image/*")
             startForResult.launch(myFileIntent)
+        }
+
+        cardShippingAddress.setOnClickListener {
+            val intent = Intent(this.requireContext(), ShippingAddressActivity::class.java)
+            startActivity(intent)
         }
 
         areaSetting.setOnClickListener {

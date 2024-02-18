@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/background_default"
+tools:context=".activities.AddingShippingAddressActivity">
+
+    <RelativeLayout
+    android:id="@+id/blockActionBar"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentStart="true"
+    android:background="@color/white">
+
+        <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/ic_chevron_left"
+        android:contentDescription="Back" />
+
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Adding Shipping Address"
+        android:textColor="@color/black_custom"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutEdtFullName"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/blockActionBar"
+        android:layout_alignParentStart="true"
+        android:gravity="center_vertical"
+        android:hint="Full name"
+        android:textColorHint="@color/text_color_hint"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeWidth="0dp"
+        app:errorEnabled="true"
+
+        app:errorIconDrawable="@drawable/ic_close">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:inputType="text"
+            android:textColor="@color/black_custom"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutEdtAddress"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/layoutEdtFullName"
+        android:layout_alignParentStart="true"
+        android:gravity="center_vertical"
+        android:hint="Address"
+        android:textColorHint="@color/text_color_hint"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeWidth="0dp"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@drawable/ic_close">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:inputType="text"
+            android:textColor="@color/black_custom"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutEdtCity"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/layoutEdtAddress"
+        android:layout_alignParentStart="true"
+        android:gravity="center_vertical"
+        android:hint="City"
+        android:textColorHint="@color/text_color_hint"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeWidth="0dp"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@drawable/ic_close">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:inputType="text"
+            android:textColor="@color/black_custom"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutEdtRegion"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/layoutEdtCity"
+        android:layout_alignParentStart="true"
+        android:gravity="center_vertical"
+        android:hint="State/Province/Region"
+        android:textColorHint="@color/text_color_hint"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeWidth="0dp"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@drawable/ic_close">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:inputType="text"
+            android:textColor="@color/black_custom"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutEdtZipCode"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/layoutEdtRegion"
+        android:layout_alignParentStart="true"
+        android:gravity="center_vertical"
+        android:hint="Zip Code (Postal Code)"
+        android:textColorHint="@color/text_color_hint"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeWidth="0dp"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@drawable/ic_close">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:inputType="text"
+            android:textColor="@color/black_custom"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutEdtCountry"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/layoutEdtZipCode"
+        android:layout_alignParentStart="true"
+        android:gravity="center_vertical"
+        android:hint="Country"
+        android:textColorHint="@color/text_color_hint"
+        app:boxBackgroundColor="@color/white"
+        app:boxStrokeWidth="0dp"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@drawable/ic_close"
+        app:endIconDrawable="@drawable/ic_chevron_right_black"
+        app:endIconMode="custom"
+        android:focusable="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:inputType="text"
+            android:textColor="@color/black_custom"
+            android:textSize="14sp"
+            android:focusable="false"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSaveAddress"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/layoutEdtCountry"
+        android:background="@drawable/bg_button_maxwidth"
+        android:text="SAVE ADDRESS"
+        android:textColor="@color/white" />
+
+
+</RelativeLayout>
