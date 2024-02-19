@@ -53,6 +53,8 @@ class ProfileFragment : Fragment() {
     private lateinit var txtEmail: TextView
     private lateinit var txtShippingAddressQuantity: TextView
     private lateinit var cardShippingAddress: CardView
+    private lateinit var cardSetting: CardView
+    private lateinit var btnLogOut: Button
     private lateinit var user: User
     private var isLogin: Boolean = false
     private var requestCodeChangeAccount = 4
@@ -79,13 +81,13 @@ class ProfileFragment : Fragment() {
         dbRefUser = FirebaseDatabase.getInstance().getReference("Users")
         dbRefShippingAddress = FirebaseDatabase.getInstance().getReference("ShippingAddresses")
 
-        val areaSetting = view.findViewById<CardView>(R.id.areaSetting)
         imgAvatar = view.findViewById(R.id.imgAvatar)
         txtFullName = view.findViewById(R.id.txtFullName)
         txtEmail = view.findViewById(R.id.txtEmail)
         txtShippingAddressQuantity = view.findViewById(R.id.txtShippingAddressQuantity)
         cardShippingAddress = view.findViewById(R.id.cardShippingAddress)
-        val btnLogOut = view.findViewById<Button>(R.id.btnLogOut)
+        cardSetting = view.findViewById(R.id.cardSetting)
+        btnLogOut = view.findViewById(R.id.btnLogOut)
 
         val bundleGetData = this.activity?.intent?.extras
         if (bundleGetData != null) {
@@ -96,17 +98,24 @@ class ProfileFragment : Fragment() {
 
         dbRefShippingAddress.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
-                    val shippingAddressQuantity = snapshot.children.count()
+                if (snapshot.exists()) {
+                    var shippingAddressQuantity = 0
+                    for (shippingAddressSnap in snapshot.children) {
+                        if (shippingAddressSnap.child("userAccountName").value.toString() == user.userAccountName &&
+                            shippingAddressSnap.child("status").value.toString().toBoolean()
+                        ) {
+                            shippingAddressQuantity++
+                        }
+                    }
                     if (shippingAddressQuantity < 1)
-                        txtShippingAddressQuantity.text = "You don't have a shipping address yet"
+                        txtShippingAddressQuantity.text =
+                            "You don't have a shipping address yet"
                     else if (shippingAddressQuantity == 1)
                         txtShippingAddressQuantity.text = "$shippingAddressQuantity address"
                     else
                         txtShippingAddressQuantity.text = "$shippingAddressQuantity addresses"
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
@@ -126,7 +135,7 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
         }
 
-        areaSetting.setOnClickListener {
+        cardSetting.setOnClickListener {
             val intent = Intent(this.activity, SettingActivity::class.java)
             val bundlePassing = Bundle()
             bundlePassing.putSerializable("user", user)
