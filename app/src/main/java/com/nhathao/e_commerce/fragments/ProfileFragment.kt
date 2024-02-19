@@ -21,13 +21,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.cardview.widget.CardView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.values
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.activities.LoginActivity
 import com.nhathao.e_commerce.activities.SettingActivity
 import com.nhathao.e_commerce.activities.ShippingAddressActivity
+import com.nhathao.e_commerce.models.ShippingAddress
 import com.nhathao.e_commerce.models.User
 import java.io.ByteArrayOutputStream
 
@@ -42,10 +46,12 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ProfileFragment : Fragment() {
-    private lateinit var dbRef: DatabaseReference
+    private lateinit var dbRefUser: DatabaseReference
+    private lateinit var dbRefShippingAddress: DatabaseReference
     private lateinit var imgAvatar: ImageView
     private lateinit var txtFullName: TextView
     private lateinit var txtEmail: TextView
+    private lateinit var txtShippingAddressQuantity: TextView
     private lateinit var cardShippingAddress: CardView
     private lateinit var user: User
     private var isLogin: Boolean = false
@@ -69,12 +75,15 @@ class ProfileFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
-        dbRef = FirebaseDatabase.getInstance().getReference("Users")
+
+        dbRefUser = FirebaseDatabase.getInstance().getReference("Users")
+        dbRefShippingAddress = FirebaseDatabase.getInstance().getReference("ShippingAddresses")
 
         val areaSetting = view.findViewById<CardView>(R.id.areaSetting)
-        imgAvatar = view.findViewById<ImageView>(R.id.imgAvatar)
-        txtFullName = view.findViewById<TextView>(R.id.txtFullName)
-        txtEmail = view.findViewById<TextView>(R.id.txtEmail)
+        imgAvatar = view.findViewById(R.id.imgAvatar)
+        txtFullName = view.findViewById(R.id.txtFullName)
+        txtEmail = view.findViewById(R.id.txtEmail)
+        txtShippingAddressQuantity = view.findViewById(R.id.txtShippingAddressQuantity)
         cardShippingAddress = view.findViewById(R.id.cardShippingAddress)
         val btnLogOut = view.findViewById<Button>(R.id.btnLogOut)
 
@@ -85,6 +94,24 @@ class ProfileFragment : Fragment() {
                 user = bundleGetData.getSerializable("user") as User
         }
 
+        dbRefShippingAddress.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()){
+                    val shippingAddressQuantity = snapshot.children.count()
+                    if (shippingAddressQuantity < 1)
+                        txtShippingAddressQuantity.text = "You don't have a shipping address yet"
+                    else if (shippingAddressQuantity == 1)
+                        txtShippingAddressQuantity.text = "$shippingAddressQuantity address"
+                    else
+                        txtShippingAddressQuantity.text = "$shippingAddressQuantity addresses"
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+
         imgAvatar.setOnClickListener {
             val myFileIntent = Intent(Intent.ACTION_GET_CONTENT)
             myFileIntent.setType("image/*")
@@ -93,14 +120,17 @@ class ProfileFragment : Fragment() {
 
         cardShippingAddress.setOnClickListener {
             val intent = Intent(this.requireContext(), ShippingAddressActivity::class.java)
+            val bundlePassing = Bundle()
+            bundlePassing.putSerializable("user", user)
+            intent.putExtras(bundlePassing)
             startActivity(intent)
         }
 
         areaSetting.setOnClickListener {
             val intent = Intent(this.activity, SettingActivity::class.java)
-            val bundle = Bundle()
-            bundle.putSerializable("user", user)
-            intent.putExtras(bundle)
+            val bundlePassing = Bundle()
+            bundlePassing.putSerializable("user", user)
+            intent.putExtras(bundlePassing)
             startActivity(intent)
         }
 
@@ -171,7 +201,7 @@ class ProfileFragment : Fragment() {
                         myBitmap.compress(Bitmap.CompressFormat.PNG, 100, steam)
                         val bytes = steam.toByteArray()
                         user.avatar = Base64.encodeToString(bytes, Base64.DEFAULT)
-                        dbRef.child(user.userAccountName).child("avatar").setValue(user.avatar)
+                        dbRefUser.child(user.userAccountName).child("avatar").setValue(user.avatar)
                         imgAvatar.setImageBitmap(myBitmap)
                         inputStream?.close()
                     } catch (ex: Exception) {

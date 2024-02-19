@@ -150,9 +150,10 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txtShippingAddressQuantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3 address"
+                        android:text="3 addresses"
                         android:textColor="#9B9B9B"
                         android:textSize="11sp" />
                 </LinearLayout>

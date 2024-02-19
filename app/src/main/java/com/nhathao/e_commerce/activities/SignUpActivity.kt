@@ -63,11 +63,11 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         binding.btnSignUpByGoogle.setOnClickListener {
-
+            Toast.makeText(this, "Do it later", Toast.LENGTH_SHORT).show()
         }
 
         binding.btnSignUpByFacebook.setOnClickListener {
-
+            Toast.makeText(this, "Do it later", Toast.LENGTH_SHORT).show()
         }
 
         binding.layoutEdtName.editText?.doOnTextChanged { text, start, before, count ->

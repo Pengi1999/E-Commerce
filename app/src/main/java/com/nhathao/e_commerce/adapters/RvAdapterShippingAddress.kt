@@ -6,11 +6,14 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.nhathao.e_commerce.Interfaces.EventShippingAddressItemListening
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.models.ShippingAddress
 
-class RvAdapterShippingAddress (private var ds:List<ShippingAddress>): RecyclerView.Adapter<RvAdapterShippingAddress.ShippingAddressViewHolder>() {
-
+class RvAdapterShippingAddress (private var ds:List<ShippingAddress>, private val eventShippingAddressItemListening: EventShippingAddressItemListening): RecyclerView.Adapter<RvAdapterShippingAddress.ShippingAddressViewHolder>() {
+    private val dbRefShippingAddress: DatabaseReference = FirebaseDatabase.getInstance().getReference("ShippingAddresses")
     class ShippingAddressViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShippingAddressViewHolder {
@@ -34,8 +37,26 @@ class RvAdapterShippingAddress (private var ds:List<ShippingAddress>): RecyclerV
             txtFullName.text = ds[position].fullName
             txtAddress.text = ds[position].address
             txtAddress2.text = "${ds[position].city}, ${ds[position].region} ${ds[position].zipCode}, ${ds[position].country}"
-            if(ds[position].isUsed == true)
-                chkUsedAddress.isChecked = true
+            chkUsedAddress.isChecked = ds[position].used
+
+            chkUsedAddress.setOnCheckedChangeListener { buttonView, isChecked ->
+                if(isChecked) {
+                    for (shippingAddress in ds){
+                        if (shippingAddress.used) {
+                            dbRefShippingAddress.child(shippingAddress.shippingAddressId).child("used").setValue(false)
+                            break
+                        }
+                    }
+                    dbRefShippingAddress.child(ds[position].shippingAddressId).child("used").setValue(true)
+                }
+                else{
+                    dbRefShippingAddress.child(ds[position].shippingAddressId).child("used").setValue(false)
+                }
+            }
+
+            txtEdit.setOnClickListener {
+                eventShippingAddressItemListening.OnClickEditItemListening(position)
+            }
         }
     }
 }

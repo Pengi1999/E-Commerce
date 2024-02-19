@@ -1,39 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/background_default"
-tools:context=".activities.AddingShippingAddressActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_default"
+    tools:context=".activities.EditingShippingAddressActivity">
 
     <RelativeLayout
-    android:id="@+id/blockActionBar"
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentStart="true"
-    android:background="@color/white">
+        android:id="@+id/blockActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/white">
 
         <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="8dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/ic_chevron_left"
-        android:contentDescription="Back" />
+            android:id="@+id/btnBack"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/ic_chevron_left"
+            android:contentDescription="Back" />
 
         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Adding Shipping Address"
-        android:textColor="@color/black_custom"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Editing Shipping Address"
+            android:textColor="@color/black_custom"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btnRemove"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/ic_delete_forever"
+            android:contentDescription="Remove" />
 
     </RelativeLayout>
 
@@ -203,5 +214,4 @@ tools:context=".activities.AddingShippingAddressActivity">
         android:background="@drawable/bg_button_maxwidth"
         android:text="SAVE ADDRESS"
         android:textColor="@color/white" />
-
 </RelativeLayout>

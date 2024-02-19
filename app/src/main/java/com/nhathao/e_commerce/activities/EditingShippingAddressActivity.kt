@@ -3,73 +3,49 @@ package com.nhathao.e_commerce.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.ListView
 import android.widget.SearchView
-import android.widget.SearchView.OnQueryTextListener
 import androidx.core.widget.doOnTextChanged
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nhathao.e_commerce.R
-import com.nhathao.e_commerce.adapters.RvAdapterShippingAddress
-import com.nhathao.e_commerce.databinding.ActivityAddingShippingAddressBinding
-import com.nhathao.e_commerce.models.Rating
+import com.nhathao.e_commerce.databinding.ActivityEditingShippingAddressBinding
 import com.nhathao.e_commerce.models.ShippingAddress
 import com.nhathao.e_commerce.models.User
 
-private lateinit var binding: ActivityAddingShippingAddressBinding
-class AddingShippingAddressActivity : AppCompatActivity() {
+private lateinit var binding: ActivityEditingShippingAddressBinding
+class EditingShippingAddressActivity : AppCompatActivity() {
     private lateinit var dialog: BottomSheetDialog
     private lateinit var dbRefShippingAddress: DatabaseReference
-    private lateinit var dsShippingAddressOfUser: MutableList<ShippingAddress>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddingShippingAddressBinding.inflate(layoutInflater)
+        binding = ActivityEditingShippingAddressBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         dbRefShippingAddress = FirebaseDatabase.getInstance().getReference("ShippingAddresses")
 
         val bundleGet = intent.extras
-        val user = bundleGet?.getSerializable("user") as User
+        val shippingAddress = bundleGet?.getSerializable("shippingAddress") as ShippingAddress
 
-        dsShippingAddressOfUser = mutableListOf()
-
-        dbRefShippingAddress.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                dsShippingAddressOfUser.clear()
-                if (snapshot.exists()) {
-                    for (shippingAddressSnap in snapshot.children) {
-                        if (shippingAddressSnap.child("userAccountName").value.toString() == user.userAccountName){
-                            val shippingAddress = ShippingAddress(
-                                shippingAddressSnap.child("shippingAddressId").value.toString(),
-                                shippingAddressSnap.child("userAccountName").value.toString(),
-                                shippingAddressSnap.child("fullName").value.toString(),
-                                shippingAddressSnap.child("address").value.toString(),
-                                shippingAddressSnap.child("city").value.toString(),
-                                shippingAddressSnap.child("region").value.toString(),
-                                shippingAddressSnap.child("zipCode").value.toString(),
-                                shippingAddressSnap.child("country").value.toString(),
-                                shippingAddressSnap.child("used").value.toString().toBoolean(),
-                                shippingAddressSnap.child("status").value.toString().toBoolean()
-                            )
-                            dsShippingAddressOfUser.add(shippingAddress)
-                        }
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
+        binding.layoutEdtFullName.editText?.setText(shippingAddress.fullName)
+        binding.layoutEdtAddress.editText?.setText(shippingAddress.address)
+        binding.layoutEdtCity.editText?.setText(shippingAddress.city)
+        binding.layoutEdtRegion.editText?.setText(shippingAddress.region)
+        binding.layoutEdtZipCode.editText?.setText(shippingAddress.zipCode)
+        binding.layoutEdtCountry.editText?.setText(shippingAddress.country)
 
         binding.btnBack.setOnClickListener {
+            finish()
+        }
+
+        binding.btnRemove.setOnClickListener {
+            shippingAddress.used = false
+            shippingAddress.status = false
+            dbRefShippingAddress.child(shippingAddress.shippingAddressId).setValue(shippingAddress)
             finish()
         }
 
@@ -86,7 +62,13 @@ class AddingShippingAddressActivity : AppCompatActivity() {
                     binding.layoutEdtZipCode.editText?.text.toString(),
                     binding.layoutEdtCountry.editText?.text.toString())
             if (isNotEmpty) {
-                addShippingAddress(user)
+                shippingAddress.fullName = binding.layoutEdtFullName.editText?.text.toString()
+                shippingAddress.address = binding.layoutEdtAddress.editText?.text.toString()
+                shippingAddress.city = binding.layoutEdtCity.editText?.text.toString()
+                shippingAddress.region = binding.layoutEdtRegion.editText?.text.toString()
+                shippingAddress.zipCode = binding.layoutEdtZipCode.editText?.text.toString()
+                shippingAddress.country = binding.layoutEdtCountry.editText?.text.toString()
+                dbRefShippingAddress.child(shippingAddress.shippingAddressId).setValue(shippingAddress)
                 finish()
             }
         }
@@ -157,29 +139,6 @@ class AddingShippingAddressActivity : AppCompatActivity() {
         return isNotEmpty
     }
 
-    private fun addShippingAddress(user: User) {
-        for (shippingAddressChildren in dsShippingAddressOfUser){
-            if(shippingAddressChildren.used) {
-                dbRefShippingAddress.child(shippingAddressChildren.shippingAddressId).child("used").setValue(false)
-                break
-            }
-        }
-        val shippingAddress = ShippingAddress(
-            "",
-            user.userAccountName,
-            binding.layoutEdtFullName.editText?.text.toString(),
-            binding.layoutEdtAddress.editText?.text.toString(),
-            binding.layoutEdtCity.editText?.text.toString(),
-            binding.layoutEdtRegion.editText?.text.toString(),
-            binding.layoutEdtZipCode.editText?.text.toString(),
-            binding.layoutEdtCountry.editText?.text.toString(),
-            used = true,
-            status = true
-        )
-        shippingAddress.shippingAddressId = dbRefShippingAddress.push().key.toString()
-        dbRefShippingAddress.child(shippingAddress.shippingAddressId).setValue(shippingAddress)
-    }
-
     private fun showBottomSheetChooseCountry() {
         val dialogView = layoutInflater.inflate(R.layout.bottom_sheet_select_country, null)
         dialog = BottomSheetDialog(this)
@@ -193,7 +152,7 @@ class AddingShippingAddressActivity : AppCompatActivity() {
         val arrayQuocGiaAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1,arrQuocGia)
         lvCountry.adapter = arrayQuocGiaAdapter
 
-        searchViewCountry.setOnQueryTextListener(object : OnQueryTextListener{
+        searchViewCountry.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }

@@ -8,11 +8,12 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardProduct"
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="1dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginHorizontal="2dp"
         android:layout_height="140dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="22dp"
         android:background="@color/white"
         app:cardCornerRadius="8dp">
 

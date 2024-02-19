@@ -38,8 +38,11 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvShippingAddress"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginHorizontal="14dp"
         android:layout_below="@+id/blockActionBar"
         android:layout_above="@+id/btnAdd"
         android:layout_alignParentStart="true"/>

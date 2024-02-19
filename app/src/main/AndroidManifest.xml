@@ -13,6 +13,9 @@
         android:theme="@style/Theme.ECommerce"
         tools:targetApi="31">
         <activity
+            android:name=".activities.EditingShippingAddressActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.AddingShippingAddressActivity"
             android:exported="false" />
         <activity
