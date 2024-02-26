@@ -43,7 +43,8 @@
                 android:layout_alignParentTop="true"
                 android:text="Edit"
                 android:textColor="@color/red_button"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/txtAddress"

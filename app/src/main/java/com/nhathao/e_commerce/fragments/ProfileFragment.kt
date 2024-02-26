@@ -52,7 +52,11 @@ class ProfileFragment : Fragment() {
     private lateinit var txtFullName: TextView
     private lateinit var txtEmail: TextView
     private lateinit var txtShippingAddressQuantity: TextView
+    private lateinit var cardMyOrder: CardView
     private lateinit var cardShippingAddress: CardView
+    private lateinit var cardPaymentMethod: CardView
+    private lateinit var cardPromocode: CardView
+    private lateinit var cardReview: CardView
     private lateinit var cardSetting: CardView
     private lateinit var btnLogOut: Button
     private lateinit var user: User
@@ -85,7 +89,11 @@ class ProfileFragment : Fragment() {
         txtFullName = view.findViewById(R.id.txtFullName)
         txtEmail = view.findViewById(R.id.txtEmail)
         txtShippingAddressQuantity = view.findViewById(R.id.txtShippingAddressQuantity)
+        cardMyOrder = view.findViewById(R.id.cardMyOrder)
         cardShippingAddress = view.findViewById(R.id.cardShippingAddress)
+        cardPaymentMethod = view.findViewById(R.id.cardPaymentMethod)
+        cardPromocode = view.findViewById(R.id.cardPromocode)
+        cardReview = view.findViewById(R.id.cardReview)
         cardSetting = view.findViewById(R.id.cardSetting)
         btnLogOut = view.findViewById(R.id.btnLogOut)
 
@@ -127,12 +135,28 @@ class ProfileFragment : Fragment() {
             startForResult.launch(myFileIntent)
         }
 
+        cardMyOrder.setOnClickListener {
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+        }
+
         cardShippingAddress.setOnClickListener {
             val intent = Intent(this.requireContext(), ShippingAddressActivity::class.java)
             val bundlePassing = Bundle()
             bundlePassing.putSerializable("user", user)
             intent.putExtras(bundlePassing)
             startActivity(intent)
+        }
+
+        cardPaymentMethod.setOnClickListener {
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+        }
+
+        cardPromocode.setOnClickListener {
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+        }
+
+        cardReview.setOnClickListener {
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
         }
 
         cardSetting.setOnClickListener {

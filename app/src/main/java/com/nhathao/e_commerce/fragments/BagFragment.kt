@@ -1,5 +1,6 @@
 package com.nhathao.e_commerce.fragments
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Paint
 import android.os.Bundle
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nhathao.e_commerce.R
+import com.nhathao.e_commerce.activities.CheckoutActivity
 import com.nhathao.e_commerce.adapters.RvAdapterBagItem
 import com.nhathao.e_commerce.adapters.RvAdapterReview
 import com.nhathao.e_commerce.models.Bag
@@ -193,7 +195,8 @@ class BagFragment : Fragment() {
         }
 
         btnCheckOut.setOnClickListener {
-            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this.requireContext(), CheckoutActivity::class.java)
+            startActivity(intent)
         }
 
         return view

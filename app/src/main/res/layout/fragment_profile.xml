@@ -73,6 +73,7 @@
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardMyOrder"
             android:layout_width="match_parent"
             android:layout_height="72dp"
             android:layout_marginTop="28dp">
@@ -175,6 +176,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardPaymentMethod"
             android:layout_width="match_parent"
             android:layout_height="72dp"
             android:layout_marginTop="1dp">
@@ -225,6 +227,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardPromocode"
             android:layout_width="match_parent"
             android:layout_height="72dp"
             android:layout_marginTop="1dp">
@@ -275,6 +278,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardReview"
             android:layout_width="match_parent"
             android:layout_height="72dp"
             android:layout_marginTop="1dp">

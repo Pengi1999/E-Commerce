@@ -36,7 +36,6 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var layoutEdtRepeatNewSecretCode: TextInputLayout
     private lateinit var btnSaveSecretCode: Button
     private lateinit var user: User
-    private lateinit var userAccountName: String
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,6 +96,18 @@ class SettingActivity : AppCompatActivity() {
 
         binding.txtChangeSecretCode.setOnClickListener {
             showBottomSheetChangeSecretCode()
+        }
+
+        binding.switchSales.setOnCheckedChangeListener { buttonView, isChecked ->
+            Toast.makeText(this, "Do it later", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.switchNewArrivals.setOnCheckedChangeListener { buttonView, isChecked ->
+            Toast.makeText(this, "Do it later", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.switchDelivery.setOnCheckedChangeListener { buttonView, isChecked ->
+            Toast.makeText(this, "Do it later", Toast.LENGTH_SHORT).show()
         }
     }
 
