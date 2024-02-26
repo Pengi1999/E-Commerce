@@ -11,10 +11,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -39,11 +42,13 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class BagFragment : Fragment() {
+    private lateinit var dialog: BottomSheetDialog
     private lateinit var dbRefBag: DatabaseReference
     private lateinit var dbRefProduct: DatabaseReference
     private lateinit var dbRefQuantity: DatabaseReference
     private lateinit var btnSearch: ImageButton
-    private lateinit var btnPromoCode: ImageButton
+    private lateinit var btnChoosePromoCode: ImageButton
+    private lateinit var btnClearPromoCode: ImageButton
     private lateinit var btnCheckOut: Button
     private lateinit var edtPromoCode: EditText
     private lateinit var txtTotalPrice: TextView
@@ -74,7 +79,8 @@ class BagFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_bag, container, false)
 
         btnSearch = view.findViewById(R.id.btnSearch)
-        btnPromoCode = view.findViewById(R.id.btnPromoCode)
+        btnChoosePromoCode = view.findViewById(R.id.btnChoosePromoCode)
+        btnClearPromoCode = view.findViewById(R.id.btnClearPromoCode)
         btnCheckOut = view.findViewById(R.id.btnCheckOut)
         edtPromoCode = view.findViewById(R.id.edtPromoCode)
         txtTotalPrice = view.findViewById(R.id.txtTotalPrice)
@@ -171,19 +177,65 @@ class BagFragment : Fragment() {
             Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
         }
 
-        btnPromoCode.setOnClickListener {
-            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+        btnChoosePromoCode.setOnClickListener {
+            showBottomSheetPromoCode()
+        }
+
+        edtPromoCode.setOnClickListener {
+            showBottomSheetPromoCode()
+        }
+
+        btnClearPromoCode.setOnClickListener {
+            edtPromoCode.setText("")
+            btnChoosePromoCode.visibility = View.VISIBLE
+            btnClearPromoCode.visibility = View.INVISIBLE
+            txtTotalPrice.text = "$totalPrice$"
         }
 
         btnCheckOut.setOnClickListener {
             Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
         }
 
-        edtPromoCode.setOnClickListener {
-            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+        return view
+    }
+
+    private fun showBottomSheetPromoCode() {
+        val dialogView = layoutInflater.inflate(R.layout.bottom_sheet_promocode, null)
+        dialog = BottomSheetDialog(this.requireContext())
+        dialog.setContentView(dialogView)
+
+        val btnApplyPersonal10 = dialogView.findViewById<Button>(R.id.btnApplyPersonal10)
+        val btnApplySummerSale = dialogView.findViewById<Button>(R.id.btnApplySummerSale)
+        val btnApplyPersonal22 = dialogView.findViewById<Button>(R.id.btnApplyPersonal22)
+
+        btnApplyPersonal10.setOnClickListener {
+            edtPromoCode.setText("personalpromocode10")
+            btnClearPromoCode.visibility = View.VISIBLE
+            btnChoosePromoCode.visibility = View.INVISIBLE
+            val totalPriceWithPromoCode = totalPrice - (totalPrice * 0.1).toInt()
+            txtTotalPrice.text = "$totalPriceWithPromoCode$"
+            dialog.dismiss()
         }
 
-        return view
+        btnApplySummerSale.setOnClickListener {
+            edtPromoCode.setText("summer2024")
+            btnClearPromoCode.visibility = View.VISIBLE
+            btnChoosePromoCode.visibility = View.INVISIBLE
+            val totalPriceWithPromoCode = totalPrice - (totalPrice * 0.15).toInt()
+            txtTotalPrice.text = "$totalPriceWithPromoCode$"
+            dialog.dismiss()
+        }
+
+        btnApplyPersonal22.setOnClickListener {
+            edtPromoCode.setText("personalpromocode22")
+            btnClearPromoCode.visibility = View.VISIBLE
+            btnChoosePromoCode.visibility = View.INVISIBLE
+            val totalPriceWithPromoCode = totalPrice - (totalPrice * 0.22).toInt()
+            txtTotalPrice.text = "$totalPriceWithPromoCode$"
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     companion object {
