@@ -24,13 +24,18 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.nhathao.e_commerce.Interfaces.EventShippingAddressItemListening
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.activities.CheckoutActivity
+import com.nhathao.e_commerce.activities.EditingShippingAddressActivity
+import com.nhathao.e_commerce.activities.ShippingAddressActivity
 import com.nhathao.e_commerce.adapters.RvAdapterBagItem
 import com.nhathao.e_commerce.adapters.RvAdapterReview
+import com.nhathao.e_commerce.adapters.RvAdapterShippingAddress
 import com.nhathao.e_commerce.models.Bag
 import com.nhathao.e_commerce.models.Product
 import com.nhathao.e_commerce.models.Quantity
+import com.nhathao.e_commerce.models.ShippingAddress
 import com.nhathao.e_commerce.models.User
 
 // TODO: Rename parameter arguments, choose names that match
@@ -48,6 +53,7 @@ class BagFragment : Fragment() {
     private lateinit var dbRefBag: DatabaseReference
     private lateinit var dbRefProduct: DatabaseReference
     private lateinit var dbRefQuantity: DatabaseReference
+    private lateinit var dbRefShippingAddress: DatabaseReference
     private lateinit var btnSearch: ImageButton
     private lateinit var btnChoosePromoCode: ImageButton
     private lateinit var btnClearPromoCode: ImageButton
@@ -61,6 +67,7 @@ class BagFragment : Fragment() {
     private lateinit var user: User
     private var isLogin: Boolean = false
     private var totalPrice: Int = 0
+    private var shippingAddressOfUser: ShippingAddress? = null
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -98,6 +105,7 @@ class BagFragment : Fragment() {
         dbRefBag = FirebaseDatabase.getInstance().getReference("Bags")
         dbRefQuantity = FirebaseDatabase.getInstance().getReference("Quantities")
         dbRefProduct = FirebaseDatabase.getInstance().getReference("Products")
+        dbRefShippingAddress = FirebaseDatabase.getInstance().getReference("ShippingAddresses")
 
         dsBagByUser = mutableListOf()
         dsQuantityByBag = mutableListOf()
@@ -174,6 +182,34 @@ class BagFragment : Fragment() {
             }
         })
 
+        dbRefShippingAddress.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (shippingAddressSnap in snapshot.children) {
+                        if (shippingAddressSnap.child("userAccountName").value.toString() == user.userAccountName &&
+                            shippingAddressSnap.child("status").value.toString().toBoolean() &&
+                            shippingAddressSnap.child("used").value.toString().toBoolean()){
+                            shippingAddressOfUser = ShippingAddress(
+                                shippingAddressSnap.child("shippingAddressId").value.toString(),
+                                shippingAddressSnap.child("userAccountName").value.toString(),
+                                shippingAddressSnap.child("fullName").value.toString(),
+                                shippingAddressSnap.child("address").value.toString(),
+                                shippingAddressSnap.child("city").value.toString(),
+                                shippingAddressSnap.child("region").value.toString(),
+                                shippingAddressSnap.child("zipCode").value.toString(),
+                                shippingAddressSnap.child("country").value.toString(),
+                                shippingAddressSnap.child("used").value.toString().toBoolean(),
+                                shippingAddressSnap.child("status").value.toString().toBoolean()
+                            )
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
 
         btnSearch.setOnClickListener {
             Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
@@ -195,8 +231,24 @@ class BagFragment : Fragment() {
         }
 
         btnCheckOut.setOnClickListener {
-            val intent = Intent(this.requireContext(), CheckoutActivity::class.java)
-            startActivity(intent)
+            if (dsBagByUser.size != 0) {
+                if (shippingAddressOfUser != null) {
+                    val intent = Intent(this.requireContext(), CheckoutActivity::class.java)
+                    val bundlePassing = Bundle()
+                    bundlePassing.putSerializable("user", user)
+                    intent.putExtras(bundlePassing)
+                    startActivity(intent)
+                }
+                else {
+                    val intent = Intent(this.requireContext(), ShippingAddressActivity::class.java)
+                    val bundlePassing = Bundle()
+                    bundlePassing.putSerializable("user", user)
+                    intent.putExtras(bundlePassing)
+                    startActivity(intent)
+                }
+            }
+            else
+                Toast.makeText(this.requireContext(), "Cart is empty", Toast.LENGTH_SHORT).show()
         }
 
         return view

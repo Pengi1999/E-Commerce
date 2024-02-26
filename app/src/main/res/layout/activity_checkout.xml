@@ -156,19 +156,19 @@
 
             <ImageView
                 android:id="@+id/imgPayment"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="8dp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="8dp"
                 android:src="@drawable/dollars" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/imgPayment"
-                android:layout_marginStart="4dp"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="4dp"
+                android:layout_toEndOf="@+id/imgPayment"
                 android:text="Cash"
                 android:textColor="@color/black_custom"
                 android:textSize="14sp" />
@@ -195,8 +195,8 @@
         android:layout_width="100dp"
         android:layout_height="72dp"
         android:layout_below="@+id/txtDeliveryMethod"
-        android:layout_marginStart="16dp"
         android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         app:cardCornerRadius="5dp">
 
@@ -205,26 +205,40 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/imgSelectedFedEx"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:background="@drawable/bg_color_red"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="6dp"
+                android:visibility="invisible"
+                android:contentDescription="Selected"
+                android:elevation="5dp"
+                android:src="@drawable/ic_check_white" />
+
+            <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:background="@drawable/fedex"
+                android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_alignParentTop="true" />
+                android:background="@drawable/fedex" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2-3 days"
-                android:textSize="11sp"
-                android:textColor="@color/text_color_hint"
-                android:layout_marginBottom="16dp"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp"
+                android:text="2-3 days"
+                android:textColor="@color/text_color_hint"
+                android:textSize="11sp" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardDeliveryMethodUSPS.COM"
+        android:id="@+id/cardDeliveryMethodUSPS"
         android:layout_width="100dp"
         android:layout_height="72dp"
         android:layout_below="@+id/txtDeliveryMethod"
@@ -237,22 +251,36 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/imgSelectedUSPS"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:background="@drawable/bg_color_red"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="6dp"
+                android:visibility="invisible"
+                android:contentDescription="Selected"
+                android:elevation="5dp"
+                android:src="@drawable/ic_check_white" />
+
+            <ImageView
                 android:layout_width="80dp"
                 android:layout_height="11dp"
-                android:background="@drawable/usps"
-                android:layout_marginTop="24dp"
+                android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_alignParentTop="true" />
+                android:layout_marginTop="24dp"
+                android:background="@drawable/usps" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2-3 days"
-                android:textSize="11sp"
-                android:textColor="@color/text_color_hint"
-                android:layout_marginBottom="16dp"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp"
+                android:text="2-3 days"
+                android:textColor="@color/text_color_hint"
+                android:textSize="11sp" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
@@ -261,9 +289,9 @@
         android:layout_width="100dp"
         android:layout_height="72dp"
         android:layout_below="@+id/txtDeliveryMethod"
-        android:layout_marginEnd="16dp"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
         app:cardCornerRadius="5dp">
 
         <RelativeLayout
@@ -271,21 +299,35 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/imgSelectedDHL"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:background="@drawable/bg_color_red"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="6dp"
+                android:visibility="invisible"
+                android:contentDescription="Selected"
+                android:elevation="5dp"
+                android:src="@drawable/ic_check_white" />
+
+            <ImageView
                 android:layout_width="70dp"
                 android:layout_height="60dp"
-                android:src="@drawable/dhl"
+                android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_alignParentTop="true" />
+                android:src="@drawable/dhl" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2-3 days"
-                android:textSize="11sp"
-                android:textColor="@color/text_color_hint"
-                android:layout_marginBottom="16dp"
                 android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp"
+                android:text="2-3 days"
+                android:textColor="@color/text_color_hint"
+                android:textSize="11sp" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
@@ -294,84 +336,84 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/txtOrderPrice"
         android:layout_alignBottom="@+id/txtOrderPrice"
-        android:gravity="center_vertical"
         android:layout_alignParentStart="true"
         android:layout_marginStart="16dp"
+        android:gravity="center_vertical"
         android:text="Order: "
-        android:textSize="14sp"
-        android:textColor="@color/text_color_hint"/>
+        android:textColor="@color/text_color_hint"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/txtOrderPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/txtDeliveryPrice"
+        android:layout_alignParentEnd="true"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="16dp"
-        android:layout_alignParentEnd="true"
         android:text="112$"
-        android:textSize="16sp"
         android:textColor="@color/black_custom"
-        android:textStyle="bold"/>
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/txtDeliveryPrice"
         android:layout_alignBottom="@+id/txtDeliveryPrice"
-        android:gravity="center_vertical"
         android:layout_alignParentStart="true"
         android:layout_marginStart="16dp"
+        android:gravity="center_vertical"
         android:text="Delivery: "
-        android:textSize="14sp"
-        android:textColor="@color/text_color_hint"/>
+        android:textColor="@color/text_color_hint"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/txtDeliveryPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/txtSummaryPrice"
-        android:layout_marginEnd="20dp"
         android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="16dp"
-        android:text="15$"
-        android:textSize="16sp"
+        android:text="0$"
         android:textColor="@color/black_custom"
-        android:textStyle="bold"/>
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/txtSummaryPrice"
         android:layout_alignBottom="@+id/txtSummaryPrice"
-        android:gravity="center_vertical"
         android:layout_alignParentStart="true"
         android:layout_marginStart="16dp"
+        android:gravity="center_vertical"
         android:text="Summary: "
-        android:textSize="16sp"
-        android:textColor="@color/text_color_hint"/>
+        android:textColor="@color/text_color_hint"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/txtSummaryPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btnSubmitOrder"
+        android:layout_alignParentEnd="true"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:layout_alignParentEnd="true"
         android:text="127$"
-        android:textSize="18sp"
         android:textColor="@color/black_custom"
-        android:textStyle="bold"/>
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSubmitOrder"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginHorizontal="16dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/bg_button_maxwidth"
         android:text="SUBMIT ORDER"
         android:textColor="@color/white" />
