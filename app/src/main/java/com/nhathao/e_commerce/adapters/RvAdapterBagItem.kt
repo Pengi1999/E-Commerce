@@ -11,6 +11,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -98,8 +99,13 @@ class RvAdapterBagItem (private var ds:List<Bag>): RecyclerView.Adapter<RvAdapte
             txtQuantity.text = ds[position].quantity.toString()
 
             btnIncrease.setOnClickListener {
-                ds[position].quantity += 1
-                dbRefBag.child(ds[position].bagId).setValue(ds[position])
+                if (ds[position].quantity + 1 > quantity.quantity) {
+                    Toast.makeText(context, "The maximum quantity of this product has been reached", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    ds[position].quantity += 1
+                    dbRefBag.child(ds[position].bagId).setValue(ds[position])
+                }
             }
 
             btnDecrease.setOnClickListener {

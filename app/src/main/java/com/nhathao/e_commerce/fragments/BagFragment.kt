@@ -245,6 +245,7 @@ class BagFragment : Fragment() {
                     bundlePassing.putSerializable("user", user)
                     intent.putExtras(bundlePassing)
                     startActivity(intent)
+                    Toast.makeText(this.requireContext(), "You need to add the shipping address first", Toast.LENGTH_SHORT).show()
                 }
             }
             else

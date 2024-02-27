@@ -213,7 +213,34 @@ class CheckoutActivity : AppCompatActivity() {
         }
 
         binding.btnSubmitOrder.setOnClickListener {
-            Toast.makeText(this, "Do it later", Toast.LENGTH_SHORT).show()
+            if (deliveryPrice != 0) {
+                val intent = Intent(this, SuccessActivity::class.java)
+                startActivity(intent)
+
+                //Clear bag của user
+                for (bag in dsBagByUser){
+                    dbRefBag.child(bag.bagId).removeValue()
+                    //Giảm số lượng tồn kho
+                    dbRefQuantity.child(bag.quantityId).get().addOnSuccessListener {
+                        if (it.exists()) {
+                            val quantity = Quantity(
+                                it.child("quantityId").value.toString(),
+                                it.child("productId").value.toString(),
+                                it.child("productColor").value.toString(),
+                                it.child("productSize").value.toString(),
+                                it.child("quantity").value.toString().toInt()
+                            )
+                            quantity.quantity = quantity.quantity - bag.quantity
+                            dbRefQuantity.child(quantity.quantityId).setValue(quantity)
+                        }
+                    }
+                }
+
+                finish()
+            }
+            else {
+                Toast.makeText(this, "Please choose delivery method", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

@@ -413,7 +413,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/bg_button_maxwidth"
         android:text="SUBMIT ORDER"
         android:textColor="@color/white" />
