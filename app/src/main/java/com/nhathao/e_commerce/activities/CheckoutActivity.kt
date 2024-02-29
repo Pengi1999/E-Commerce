@@ -187,9 +187,6 @@ class CheckoutActivity : AppCompatActivity() {
 
         binding.btnSubmitOrder.setOnClickListener {
             if (deliveryPrice != 0) {
-                val intent = Intent(this, SuccessActivity::class.java)
-                startActivity(intent)
-
                 //Them Order
                 val order = Order(
                     "",
@@ -235,6 +232,8 @@ class CheckoutActivity : AppCompatActivity() {
                     //Clear bag của user
                     dbRefBag.child(bag.bagId).removeValue()
                 }
+                val intent = Intent(this, SuccessActivity::class.java)
+                startActivity(intent)
                 finish()
             }
             else {

@@ -1,5 +1,6 @@
 package com.nhathao.e_commerce.adapters
 
+import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import java.text.SimpleDateFormat
 class RvAdapterReview (private var ds:List<Review>): RecyclerView.Adapter<RvAdapterReview.ReviewViewHolder>() {
     private val dbRefUser: DatabaseReference = FirebaseDatabase.getInstance().getReference("Users")
     private val dbRefRating: DatabaseReference = FirebaseDatabase.getInstance().getReference("Ratings")
+    @SuppressLint("SimpleDateFormat")
     private val dateFormat = SimpleDateFormat("kk:mm a\nMMMM d, yyyy")
 
     class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

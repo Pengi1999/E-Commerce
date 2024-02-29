@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/btnSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -100,6 +100,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txtOrderQuantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Already have 12 orders"

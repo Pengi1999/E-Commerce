@@ -1,5 +1,6 @@
 package com.nhathao.e_commerce.fragments
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Intent
@@ -13,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -48,9 +50,12 @@ private const val ARG_PARAM2 = "param2"
 class ProfileFragment : Fragment() {
     private lateinit var dbRefUser: DatabaseReference
     private lateinit var dbRefShippingAddress: DatabaseReference
+    private lateinit var dbRefOrder: DatabaseReference
+    private lateinit var btnSearch: ImageButton
     private lateinit var imgAvatar: ImageView
     private lateinit var txtFullName: TextView
     private lateinit var txtEmail: TextView
+    private lateinit var txtOrderQuantity: TextView
     private lateinit var txtShippingAddressQuantity: TextView
     private lateinit var cardMyOrder: CardView
     private lateinit var cardShippingAddress: CardView
@@ -84,10 +89,13 @@ class ProfileFragment : Fragment() {
 
         dbRefUser = FirebaseDatabase.getInstance().getReference("Users")
         dbRefShippingAddress = FirebaseDatabase.getInstance().getReference("ShippingAddresses")
+        dbRefOrder = FirebaseDatabase.getInstance().getReference("Orders")
 
+        btnSearch = view.findViewById(R.id.btnSearch)
         imgAvatar = view.findViewById(R.id.imgAvatar)
         txtFullName = view.findViewById(R.id.txtFullName)
         txtEmail = view.findViewById(R.id.txtEmail)
+        txtOrderQuantity = view.findViewById(R.id.txtOrderQuantity)
         txtShippingAddressQuantity = view.findViewById(R.id.txtShippingAddressQuantity)
         cardMyOrder = view.findViewById(R.id.cardMyOrder)
         cardShippingAddress = view.findViewById(R.id.cardShippingAddress)
@@ -105,6 +113,7 @@ class ProfileFragment : Fragment() {
         }
 
         dbRefShippingAddress.addValueEventListener(object : ValueEventListener{
+            @SuppressLint("SetTextI18n")
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     var shippingAddressQuantity = 0
@@ -129,6 +138,34 @@ class ProfileFragment : Fragment() {
             }
         })
 
+        dbRefOrder.addValueEventListener(object : ValueEventListener{
+            @SuppressLint("SetTextI18n")
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    var orderQuantity = 0
+                    for (orderSnap in snapshot.children) {
+                        if (orderSnap.child("userAccountName").value.toString() == user.userAccountName) {
+                            orderQuantity++
+                        }
+                    }
+                    if (orderQuantity < 1)
+                        txtOrderQuantity.text =
+                            "You don't have a order yet"
+                    else if (orderQuantity == 1)
+                        txtOrderQuantity.text = "Already have $orderQuantity order"
+                    else
+                        txtOrderQuantity.text = "Already have $orderQuantity orders"
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+
+        btnSearch.setOnClickListener {
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+        }
+
         imgAvatar.setOnClickListener {
             val myFileIntent = Intent(Intent.ACTION_GET_CONTENT)
             myFileIntent.setType("image/*")
@@ -136,7 +173,11 @@ class ProfileFragment : Fragment() {
         }
 
         cardMyOrder.setOnClickListener {
-            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+            this.activity?.supportFragmentManager?.beginTransaction()?.apply {
+                addToBackStack(null)
+                replace(R.id.frame_layout, MyOrdersFragment())
+                commit()
+            }
         }
 
         cardShippingAddress.setOnClickListener {

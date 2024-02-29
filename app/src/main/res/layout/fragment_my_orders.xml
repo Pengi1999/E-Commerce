@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.MyOrdersFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_default">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/ic_chevron_left" />
+
+        <ImageButton
+            android:id="@+id/btnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/ic_search" />
+
+        <TextView
+            android:id="@+id/txtMyOrders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/btnSearch"
+            android:text="My Orders"
+            android:textColor="@color/black_custom"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtDeliveredStatus"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:text="Delivered"
+            android:textSize="14sp"
+            android:layout_below="@+id/txtMyOrders"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_order_status"/>
+
+        <TextView
+            android:id="@+id/txtProcessingStatus"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:text="Processing"
+            android:textSize="14sp"
+            android:layout_below="@+id/txtMyOrders"
+            android:layout_marginTop="24dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textColor="@color/black_custom" />
+
+        <TextView
+            android:id="@+id/txtCancelledStatus"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:text="Cancelled"
+            android:textSize="14sp"
+            android:layout_below="@+id/txtMyOrders"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:textColor="@color/black_custom" />
+        
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginHorizontal="16dp"
+            android:layout_below="@id/txtDeliveredStatus"/>
+    </RelativeLayout>
+
+</FrameLayout>
