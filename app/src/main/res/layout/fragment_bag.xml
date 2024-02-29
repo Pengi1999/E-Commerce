@@ -100,7 +100,7 @@
             android:layout_above="@+id/btnCheckOut"
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="24dp"
-            android:text="124$"
+            android:text=""
             android:textColor="@color/black_custom"
             android:textSize="18sp"
             android:textStyle="bold" />

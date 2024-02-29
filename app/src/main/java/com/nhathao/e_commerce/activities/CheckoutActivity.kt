@@ -18,10 +18,13 @@ import com.nhathao.e_commerce.adapters.RvAdapterBagItem
 import com.nhathao.e_commerce.adapters.RvAdapterShippingAddress
 import com.nhathao.e_commerce.databinding.ActivityCheckoutBinding
 import com.nhathao.e_commerce.models.Bag
+import com.nhathao.e_commerce.models.Order
+import com.nhathao.e_commerce.models.OrderDetail
 import com.nhathao.e_commerce.models.Product
 import com.nhathao.e_commerce.models.Quantity
 import com.nhathao.e_commerce.models.ShippingAddress
 import com.nhathao.e_commerce.models.User
+import java.util.Calendar
 
 private lateinit var binding: ActivityCheckoutBinding
 class CheckoutActivity : AppCompatActivity() {
@@ -29,12 +32,16 @@ class CheckoutActivity : AppCompatActivity() {
     private lateinit var dbRefProduct: DatabaseReference
     private lateinit var dbRefQuantity: DatabaseReference
     private lateinit var dbRefShippingAddress: DatabaseReference
+    private lateinit var dbRefOrder: DatabaseReference
+    private lateinit var dbRefOrderDetail: DatabaseReference
     private lateinit var dsBagByUser: MutableList<Bag>
     private lateinit var dsShippingAddressOfUser: MutableList<ShippingAddress>
-    private var totalPrice: Int = 0
+    private lateinit var shippingAddressUsedByUser: ShippingAddress
+    private var orderPrice: Int = 0
     private var deliveryPrice: Int = 0
     private var summaryPrice: Int = 0
     private var deliveryMethod: String? = null
+    private val calendar = Calendar.getInstance()
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,18 +50,25 @@ class CheckoutActivity : AppCompatActivity() {
 
         val bundleGet = intent.extras
         val user = bundleGet?.getSerializable("user") as User
+        val promoCode = bundleGet.getString("promoCode", "")
+        orderPrice = bundleGet.getInt("orderPrice", 0)
+
+        binding.txtOrderPrice.text = "$orderPrice$"
+        summaryPrice = orderPrice + deliveryPrice
+        binding.txtSummaryPrice.text = "$summaryPrice$"
 
         dbRefBag = FirebaseDatabase.getInstance().getReference("Bags")
         dbRefQuantity = FirebaseDatabase.getInstance().getReference("Quantities")
         dbRefProduct = FirebaseDatabase.getInstance().getReference("Products")
         dbRefShippingAddress = FirebaseDatabase.getInstance().getReference("ShippingAddresses")
+        dbRefOrder = FirebaseDatabase.getInstance().getReference("Orders")
+        dbRefOrderDetail = FirebaseDatabase.getInstance().getReference("OrderDetails")
 
         dsBagByUser = mutableListOf()
         dsShippingAddressOfUser = mutableListOf()
 
         dbRefBag.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                totalPrice = 0
                 dsBagByUser.clear()
                 if(snapshot.exists()){
                     for (bagSnap in snapshot.children){
@@ -66,48 +80,6 @@ class CheckoutActivity : AppCompatActivity() {
                                 bagSnap.child("quantity").value.toString().toInt()
                             )
                             dsBagByUser.add(bagData)
-                        }
-                    }
-                }
-                for (bag in dsBagByUser) {
-                    dbRefQuantity.child(bag.quantityId).get().addOnSuccessListener { it ->
-                        if (it.exists()){
-                            val quantity = Quantity(
-                                it.child("quantityId").value.toString(),
-                                it.child("productId").value.toString(),
-                                it.child("productColor").value.toString(),
-                                it.child("productSize").value.toString(),
-                                it.child("quantity").value.toString().toInt()
-                            )
-                            dbRefProduct.child(quantity.productId).get().addOnSuccessListener {
-                                if (it.exists()){
-                                    val product = Product(
-                                        it.child("productId").value.toString(),
-                                        it.child("productName").value.toString(),
-                                        it.child("productDescribe").value.toString(),
-                                        it.child("productImage").value.toString(),
-                                        it.child("productSex").value.toString(),
-                                        it.child("productType").value.toString(),
-                                        it.child("productCategory").value.toString(),
-                                        it.child("productBrand").value.toString(),
-                                        it.child("productMode").value.toString(),
-                                        it.child("productPrice").value.toString().toInt(),
-                                        it.child("productRating").value.toString().toFloat(),
-                                        it.child("productRatingQuantity").value.toString().toInt()
-                                    )
-                                    if (product.productMode != "" && product.productMode != "NEW"){
-                                        val saleValue = product.productMode.substring(1,3).toFloat() / 100
-                                        val salePrice = product.productPrice - (product.productPrice * saleValue).toInt()
-                                        totalPrice += salePrice * bag.quantity
-                                    }
-                                    else
-                                        totalPrice += product.productPrice * bag.quantity
-
-                                    binding.txtOrderPrice.text = "$totalPrice$"
-                                    summaryPrice = totalPrice + deliveryPrice
-                                    binding.txtSummaryPrice.text = "$summaryPrice$"
-                                }
-                            }
                         }
                     }
                 }
@@ -143,6 +115,7 @@ class CheckoutActivity : AppCompatActivity() {
                     }
                     for (shippingAddressChildren in dsShippingAddressOfUser) {
                         if (shippingAddressChildren.used) {
+                            shippingAddressUsedByUser = shippingAddressChildren
                             binding.txtFullName.text = shippingAddressChildren.fullName
                             binding.txtAddress.text = shippingAddressChildren.address
                             binding.txtAddress2.text = "${shippingAddressChildren.city}, ${shippingAddressChildren.region} ${shippingAddressChildren.zipCode}, ${shippingAddressChildren.country}"
@@ -181,7 +154,7 @@ class CheckoutActivity : AppCompatActivity() {
                 deliveryMethod = "FedEx"
                 deliveryPrice = 15
                 binding.txtDeliveryPrice.text = "$deliveryPrice$"
-                summaryPrice = totalPrice + deliveryPrice
+                summaryPrice = orderPrice + deliveryPrice
                 binding.txtSummaryPrice.text = "$summaryPrice$"
             }
         }
@@ -194,7 +167,7 @@ class CheckoutActivity : AppCompatActivity() {
                 deliveryMethod = "USPS"
                 deliveryPrice = 16
                 binding.txtDeliveryPrice.text = "$deliveryPrice$"
-                summaryPrice = totalPrice + deliveryPrice
+                summaryPrice = orderPrice + deliveryPrice
                 binding.txtSummaryPrice.text = "$summaryPrice$"
             }
         }
@@ -207,7 +180,7 @@ class CheckoutActivity : AppCompatActivity() {
                 deliveryMethod = "DHL"
                 deliveryPrice = 17
                 binding.txtDeliveryPrice.text = "$deliveryPrice$"
-                summaryPrice = totalPrice + deliveryPrice
+                summaryPrice = orderPrice + deliveryPrice
                 binding.txtSummaryPrice.text = "$summaryPrice$"
             }
         }
@@ -217,9 +190,33 @@ class CheckoutActivity : AppCompatActivity() {
                 val intent = Intent(this, SuccessActivity::class.java)
                 startActivity(intent)
 
-                //Clear bag của user
+                //Them Order
+                val order = Order(
+                    "",
+                    user.userAccountName,
+                    shippingAddressUsedByUser.shippingAddressId,
+                    "Cash",
+                    deliveryMethod!!,
+                    promoCode,
+                    summaryPrice,
+                    calendar.timeInMillis,
+                    "Processing"
+                )
+                order.orderId = dbRefOrder.push().key.toString()
+                dbRefOrder.child(order.orderId).setValue(order)
+
+                //Duyet Bag
                 for (bag in dsBagByUser){
-                    dbRefBag.child(bag.bagId).removeValue()
+                    //Them Order_Detail
+                    val orderDetail = OrderDetail(
+                        "",
+                        order.orderId,
+                        bag.quantityId,
+                        bag.quantity
+                    )
+                    orderDetail.orderDetailId = dbRefOrderDetail.push().key.toString()
+                    dbRefOrderDetail.child(orderDetail.orderDetailId).setValue(orderDetail)
+
                     //Giảm số lượng tồn kho
                     dbRefQuantity.child(bag.quantityId).get().addOnSuccessListener {
                         if (it.exists()) {
@@ -234,8 +231,10 @@ class CheckoutActivity : AppCompatActivity() {
                             dbRefQuantity.child(quantity.quantityId).setValue(quantity)
                         }
                     }
-                }
 
+                    //Clear bag của user
+                    dbRefBag.child(bag.bagId).removeValue()
+                }
                 finish()
             }
             else {

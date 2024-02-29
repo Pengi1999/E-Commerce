@@ -236,6 +236,8 @@ class BagFragment : Fragment() {
                     val intent = Intent(this.requireContext(), CheckoutActivity::class.java)
                     val bundlePassing = Bundle()
                     bundlePassing.putSerializable("user", user)
+                    bundlePassing.putString("promoCode", edtPromoCode.text.toString())
+                    bundlePassing.putInt("orderPrice", txtTotalPrice.text.toString().dropLast(1).toInt())
                     intent.putExtras(bundlePassing)
                     startActivity(intent)
                 }
