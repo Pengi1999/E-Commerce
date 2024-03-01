@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:focusable="false"
             android:inputType="text"
-            android:text="12/12/1989"
+            android:text=""
             android:textColor="@color/black_custom"
             android:textSize="14sp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -145,7 +145,7 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:inputType="textPassword"
-            android:text="123456789123"
+            android:text=""
             android:textColor="#222222"
             android:textSize="14sp" />
 
@@ -196,7 +196,7 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:inputType="textPassword"
-            android:text="1234"
+            android:text=""
             android:textColor="#222222"
             android:textSize="14sp" />
 

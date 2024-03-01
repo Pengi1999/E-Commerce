@@ -57,7 +57,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="50dp"
-                android:text="4.3"
+                android:text=""
                 android:textColor="@color/black_custom"
                 android:textSize="44sp"
                 android:textStyle="bold" />
@@ -70,7 +70,7 @@
                 android:layout_alignStart="@id/txtRatingStarAverage"
                 android:layout_alignEnd="@+id/txtRatingStarAverage"
                 android:gravity="center"
-                android:text="23 ratings"
+                android:text=""
                 android:textColor="@color/text_color_hint"
                 android:textSize="14sp" />
 
@@ -142,7 +142,7 @@
                 android:layout_alignBottom="@+id/ratingProductFiveStar"
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
-                android:text="12"
+                android:text=""
                 android:textColor="#4F4F4F"
                 android:textSize="14sp" />
 
@@ -155,7 +155,7 @@
                 android:layout_alignEnd="@+id/txtRatingQuantityFiveStar"
                 android:layout_alignBottom="@+id/ratingProductFourStar"
                 android:gravity="center"
-                android:text="5"
+                android:text=""
                 android:textColor="#4F4F4F"
                 android:textSize="14sp" />
 
@@ -168,7 +168,7 @@
                 android:layout_alignEnd="@+id/txtRatingQuantityFiveStar"
                 android:layout_alignBottom="@+id/ratingProductThreeStar"
                 android:gravity="center"
-                android:text="4"
+                android:text=""
                 android:textColor="#4F4F4F"
                 android:textSize="14sp" />
 
@@ -181,7 +181,7 @@
                 android:layout_alignEnd="@+id/txtRatingQuantityFiveStar"
                 android:layout_alignBottom="@+id/ratingProductTwoStar"
                 android:gravity="center"
-                android:text="2"
+                android:text=""
                 android:textColor="#4F4F4F"
                 android:textSize="14sp" />
 
@@ -194,7 +194,7 @@
                 android:layout_alignEnd="@+id/txtRatingQuantityFiveStar"
                 android:layout_alignBottom="@+id/ratingProductOneStar"
                 android:gravity="center"
-                android:text="0"
+                android:text=""
                 android:textColor="#4F4F4F"
                 android:textSize="14sp" />
 
@@ -262,13 +262,13 @@
                 android:id="@+id/txtReviewQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="8 reviews"
-                android:layout_marginTop="30dp"
                 android:layout_below="@+id/ratingLineOneStar"
                 android:layout_alignParentStart="true"
+                android:layout_marginTop="30dp"
+                android:text=""
+                android:textColor="@color/black_custom"
                 android:textSize="24sp"
-                android:textStyle="bold"
-                android:textColor="@color/black_custom"/>
+                android:textStyle="bold" />
 
             <CheckBox
                 android:id="@+id/chkReviewWithPhoto"
@@ -279,17 +279,17 @@
                 android:layout_alignParentEnd="true"
                 android:gravity="center_vertical"
                 android:text="With photo"
-                android:textSize="14sp"
-                android:textColor="@color/black_custom"/>
+                android:textColor="@color/black_custom"
+                android:textSize="14sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcvReview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/txtReviewQuantity"
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="45dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:nestedScrollingEnabled="false"/>
+                android:nestedScrollingEnabled="false" />
         </RelativeLayout>
     </ScrollView>
 

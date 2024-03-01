@@ -28,8 +28,7 @@
                 android:layout_width="104dp"
                 android:layout_height="match_parent"
                 android:contentDescription="New"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_new_category" />
+                android:scaleType="centerCrop" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -48,7 +47,7 @@
                         android:id="@+id/txtProductName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Blouse"
+                        android:text=""
                         android:textColor="@color/black_custom"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -57,7 +56,7 @@
                         android:id="@+id/txtProductDes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dorothy Perskins"
+                        android:text=""
                         android:textColor="@color/text_color_hint"
                         android:textSize="11sp" />
 
@@ -73,15 +72,15 @@
                             style="@style/Widget.AppCompat.RatingBar.Small"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:progressTint="#FFBA49"
-                            android:numStars="5" />
+                            android:numStars="5"
+                            android:progressTint="#FFBA49" />
 
                         <TextView
                             android:id="@+id/txtRatingQuantity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
-                            android:text="(0)"
+                            android:text=""
                             android:textColor="@color/text_color_hint"
                             android:textSize="10sp" />
                     </LinearLayout>
@@ -95,20 +94,20 @@
                             android:id="@+id/txtProductPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="34$"
+                            android:text=""
                             android:textColor="@color/black_custom"
                             android:textSize="14sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/txtProductPriceSale"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
                             android:layout_marginStart="4dp"
+                            android:text=""
                             android:textColor="@color/red_button"
                             android:textSize="14sp"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -122,10 +121,10 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/bg_new"
+                    android:elevation="2dp"
                     android:gravity="center"
                     android:text="NEW"
                     android:textColor="@color/white"
-                    android:elevation="2dp"
                     android:textSize="11sp" />
 
             </RelativeLayout>

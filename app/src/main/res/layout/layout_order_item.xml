@@ -41,8 +41,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/txtOrderId"
                 android:layout_alignBottom="@+id/txtOrderId"
-                android:gravity="center"
                 android:layout_alignParentEnd="true"
+                android:gravity="center"
                 android:text=""
                 android:textColor="@color/text_color_hint"
                 android:textSize="14sp" />
@@ -53,9 +53,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/txtQuantityValue"
                 android:layout_alignBottom="@+id/txtQuantityValue"
-                android:gravity="center"
                 android:layout_alignParentStart="true"
                 android:layout_marginEnd="12dp"
+                android:gravity="center"
                 android:text="Quantity:"
                 android:textColor="@color/text_color_hint"
                 android:textSize="14sp" />
@@ -78,9 +78,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/txtTotalAmountValue"
                 android:layout_alignBottom="@+id/txtTotalAmountValue"
-                android:gravity="center"
                 android:layout_marginEnd="12dp"
                 android:layout_toStartOf="@+id/txtTotalAmountValue"
+                android:gravity="center"
                 android:text="Total Amount:"
                 android:textColor="@color/text_color_hint"
                 android:textSize="14sp" />
@@ -101,12 +101,12 @@
                 android:id="@+id/btnDetails"
                 android:layout_width="98dp"
                 android:layout_height="36dp"
-                android:text="Details"
-                android:textAllCaps="false"
-                android:layout_marginTop="12dp"
-                android:layout_alignParentStart="true"
                 android:layout_below="@+id/txtQuantityValue"
-                android:background="@drawable/bg_button_discard"/>
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_button_discard"
+                android:text="Details"
+                android:textAllCaps="false" />
 
             <TextView
                 android:id="@+id/txtOrderStatus"
@@ -114,12 +114,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/btnDetails"
                 android:layout_alignBottom="@+id/btnDetails"
-                android:gravity="center"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="2dp"
+                android:gravity="center"
                 android:text=""
-                android:textSize="14sp"
-                android:textColor="#2AA952" />
+                android:textColor="#2AA952"
+                android:textSize="14sp" />
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

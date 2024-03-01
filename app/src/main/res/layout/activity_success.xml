@@ -18,29 +18,29 @@
             android:layout_height="208dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/img_order_success"/>
+            android:src="@drawable/img_order_success" />
 
         <TextView
             android:id="@+id/txtSuccess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Success!"
-            android:textSize="34sp"
-            android:layout_marginTop="50dp"
             android:layout_below="@+id/imgOrderSuccess"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:text="Success!"
             android:textColor="@color/black_custom"
-            android:textStyle="bold"/>
+            android:textSize="34sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Your order will be delivered soon.\n Thank you for choosing our app!"
-            android:textSize="14sp"
-            android:layout_marginTop="12dp"
             android:layout_below="@+id/txtSuccess"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/black_custom" />
+            android:layout_marginTop="12dp"
+            android:text="Your order will be delivered soon.\n Thank you for choosing our app!"
+            android:textColor="@color/black_custom"
+            android:textSize="14sp" />
     </RelativeLayout>
 
     <androidx.appcompat.widget.AppCompatButton

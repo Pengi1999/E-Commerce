@@ -40,227 +40,227 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/blockSearch"
-        android:layout_below="@+id/blockActionBar"
-        android:elevation="5dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:startIconDrawable="@drawable/ic_search"
-        app:endIconMode="clear_text"
-        app:boxStrokeWidth="0dp"
+        android:layout_below="@+id/blockActionBar"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:elevation="5dp"
         app:boxBackgroundColor="@color/white"
-        app:boxCornerRadiusBottomStart="20dp"
         app:boxCornerRadiusBottomEnd="20dp"
+        app:boxCornerRadiusBottomStart="20dp"
+        app:boxCornerRadiusTopEnd="20dp"
         app:boxCornerRadiusTopStart="20dp"
-        app:boxCornerRadiusTopEnd="20dp">
+        app:boxStrokeWidth="0dp"
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/ic_search">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="40dp"/>
+            android:layout_height="40dp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/txtAdidas"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/chkAdidas"
-        android:layout_alignBottom="@+id/chkAdidas"
-        android:layout_marginHorizontal="16dp"
-        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/chkAdidas"
+        android:layout_alignBottom="@+id/chkAdidas"
+        android:layout_alignParentStart="true"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
         android:text="adidas"
-        android:textSize="16sp"
-        android:textColor="@color/black_custom"/>
+        android:textColor="@color/black_custom"
+        android:textSize="16sp" />
 
     <CheckBox
         android:id="@+id/chkAdidas"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/blockSearch"
-        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/blockSearch"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp" />
 
     <TextView
         android:id="@+id/txtAdidasOrigin"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/chkAdidasOrigin"
-        android:layout_alignBottom="@+id/chkAdidasOrigin"
-        android:layout_marginHorizontal="16dp"
-        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/chkAdidasOrigin"
+        android:layout_alignBottom="@+id/chkAdidasOrigin"
+        android:layout_alignParentStart="true"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
         android:text="adidas Originals"
-        android:textSize="16sp"
-        android:textColor="@color/black_custom"/>
+        android:textColor="@color/black_custom"
+        android:textSize="16sp" />
 
     <CheckBox
         android:id="@+id/chkAdidasOrigin"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/chkAdidas"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkAdidas"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/txtBlend"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/chkBlend"
-        android:layout_alignBottom="@+id/chkBlend"
-        android:layout_marginHorizontal="16dp"
-        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/chkBlend"
+        android:layout_alignBottom="@+id/chkBlend"
+        android:layout_alignParentStart="true"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
         android:text="Blend"
-        android:textSize="16sp"
-        android:textColor="@color/black_custom"/>
+        android:textColor="@color/black_custom"
+        android:textSize="16sp" />
 
     <CheckBox
         android:id="@+id/chkBlend"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/chkAdidasOrigin"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkAdidasOrigin"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/txtBoutique"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/chkBoutique"
-        android:layout_alignBottom="@+id/chkBoutique"
-        android:layout_marginHorizontal="16dp"
-        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/chkBoutique"
+        android:layout_alignBottom="@+id/chkBoutique"
+        android:layout_alignParentStart="true"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
         android:text="Boutique Moschino"
-        android:textSize="16sp"
-        android:textColor="@color/black_custom"/>
+        android:textColor="@color/black_custom"
+        android:textSize="16sp" />
 
     <CheckBox
         android:id="@+id/chkBoutique"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/chkBlend"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkBlend"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/txtChampion"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/chkChampion"
-        android:layout_alignBottom="@+id/chkChampion"
-        android:layout_marginHorizontal="16dp"
-        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/chkChampion"
+        android:layout_alignBottom="@+id/chkChampion"
+        android:layout_alignParentStart="true"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
         android:text="Champion"
-        android:textSize="16sp"
-        android:textColor="@color/black_custom"/>
+        android:textColor="@color/black_custom"
+        android:textSize="16sp" />
 
     <CheckBox
         android:id="@+id/chkChampion"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/chkBoutique"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkBoutique"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/txtDiesel"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/chkDiesel"
-        android:layout_alignBottom="@+id/chkDiesel"
-        android:layout_marginHorizontal="16dp"
-        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/chkDiesel"
+        android:layout_alignBottom="@+id/chkDiesel"
+        android:layout_alignParentStart="true"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
         android:text="Diesel"
-        android:textSize="16sp"
-        android:textColor="@color/black_custom"/>
+        android:textColor="@color/black_custom"
+        android:textSize="16sp" />
 
     <CheckBox
         android:id="@+id/chkDiesel"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/chkChampion"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkChampion"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/txtJJ"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/chkJJ"
-        android:layout_alignBottom="@+id/chkJJ"
-        android:layout_marginHorizontal="16dp"
-        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/chkJJ"
+        android:layout_alignBottom="@+id/chkJJ"
+        android:layout_alignParentStart="true"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
         android:text="Jack &amp; Jones"
-        android:textSize="16sp"
-        android:textColor="@color/black_custom"/>
+        android:textColor="@color/black_custom"
+        android:textSize="16sp" />
 
     <CheckBox
         android:id="@+id/chkJJ"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/chkDiesel"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkDiesel"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/txtNaf"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/chkNaf"
-        android:layout_alignBottom="@+id/chkNaf"
-        android:layout_marginHorizontal="16dp"
-        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/chkNaf"
+        android:layout_alignBottom="@+id/chkNaf"
+        android:layout_alignParentStart="true"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
         android:text="Naf Naf"
-        android:textSize="16sp"
-        android:textColor="@color/black_custom"/>
+        android:textColor="@color/black_custom"
+        android:textSize="16sp" />
 
     <CheckBox
         android:id="@+id/chkNaf"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/chkJJ"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkJJ"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/txtValentino"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/chkValentino"
-        android:layout_alignBottom="@+id/chkValentino"
-        android:layout_marginHorizontal="16dp"
-        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/chkValentino"
+        android:layout_alignBottom="@+id/chkValentino"
+        android:layout_alignParentStart="true"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
         android:text="Red Valentino"
-        android:textSize="16sp"
-        android:textColor="@color/black_custom"/>
+        android:textColor="@color/black_custom"
+        android:textSize="16sp" />
 
     <CheckBox
         android:id="@+id/chkValentino"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/chkNaf"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkNaf"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/txtOliver"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/chkOliver"
-        android:layout_alignBottom="@+id/chkOliver"
-        android:layout_marginHorizontal="16dp"
-        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/chkOliver"
+        android:layout_alignBottom="@+id/chkOliver"
+        android:layout_alignParentStart="true"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
         android:text="s.Oliver"
-        android:textSize="16sp"
-        android:textColor="@color/black_custom"/>
+        android:textColor="@color/black_custom"
+        android:textSize="16sp" />
 
     <CheckBox
         android:id="@+id/chkOliver"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/chkValentino"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chkValentino"
+        android:layout_alignParentEnd="true" />
 
     <LinearLayout
         android:id="@+id/blockButton"

@@ -56,7 +56,7 @@
                     android:id="@+id/txtFullName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Matilda Brown"
+                    android:text=""
                     android:textColor="@color/black_custom"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -65,7 +65,7 @@
                     android:id="@+id/txtEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="matildabrown@gmail.com"
+                    android:text=""
                     android:textColor="#9B9B9B"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -103,7 +103,7 @@
                         android:id="@+id/txtOrderQuantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Already have 12 orders"
+                        android:text=""
                         android:textColor="#9B9B9B"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -155,7 +155,7 @@
                         android:id="@+id/txtShippingAddressQuantity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="3 addresses"
+                        android:text=""
                         android:textColor="#9B9B9B"
                         android:textSize="11sp" />
                 </LinearLayout>

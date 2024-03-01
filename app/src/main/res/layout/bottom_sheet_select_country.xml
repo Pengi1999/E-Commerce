@@ -20,19 +20,19 @@
 
     <SearchView
         android:id="@+id/searchViewCountry"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:queryHint="Your country"
         android:layout_height="64dp"
+        android:layout_below="@+id/txtAction"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/txtAction"/>
+        android:layout_marginTop="20dp"
+        android:queryHint="Your country" />
 
     <ListView
         android:id="@+id/lvCountry"
         android:layout_width="match_parent"
         android:layout_height="400dp"
+        android:layout_below="@+id/searchViewCountry"
         android:layout_alignParentStart="true"
-        android:nestedScrollingEnabled="true"
-        android:layout_below="@+id/searchViewCountry" />
+        android:nestedScrollingEnabled="true" />
 
 </RelativeLayout>

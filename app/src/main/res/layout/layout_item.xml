@@ -18,8 +18,7 @@
             android:id="@+id/imgProduct"
             android:layout_width="148dp"
             android:layout_height="184dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/blouse1" />
+            android:scaleType="centerCrop" />
 
     </androidx.cardview.widget.CardView>
 
@@ -40,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="(0)"
+        android:text=""
         android:textColor="@color/text_color_hint"
         android:textSize="10sp"
         app:layout_constraintLeft_toRightOf="@id/ratingProduct"
@@ -51,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
-        android:text="OVS"
+        android:text=""
         android:textColor="@color/text_color_hint"
         android:textSize="11sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Blouse"
+        android:text=""
         android:textColor="@color/black_custom"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -74,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
-        android:text="30$"
+        android:text=""
         android:textColor="@color/black_custom"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -101,11 +100,11 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/bg_new"
+        android:elevation="2dp"
         android:gravity="center"
         android:text="NEW"
         android:textColor="@color/white"
         android:textSize="11sp"
-        android:elevation="2dp"
         app:layout_constraintStart_toStartOf="@id/cardImage"
         app:layout_constraintTop_toTopOf="@+id/cardImage" />
 

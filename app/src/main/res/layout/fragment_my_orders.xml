@@ -15,10 +15,10 @@
             android:id="@+id/blockActionBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="30dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="30dp"
             android:gravity="center_vertical">
 
             <ImageButton
@@ -43,10 +43,10 @@
             android:id="@+id/txtMyOrders"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/blockActionBar"
+            android:layout_alignParentStart="true"
             android:layout_marginStart="14dp"
             android:layout_marginTop="30dp"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/blockActionBar"
             android:text="My Orders"
             android:textColor="@color/black_custom"
             android:textSize="34sp"
@@ -56,49 +56,49 @@
             android:id="@+id/txtDeliveredStatus"
             android:layout_width="100dp"
             android:layout_height="30dp"
-            android:text="Delivered"
-            android:textSize="14sp"
             android:layout_below="@+id/txtMyOrders"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="16dp"
             android:layout_alignParentStart="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_order_status"
             android:gravity="center"
+            android:text="Delivered"
             android:textColor="@color/white"
-            android:background="@drawable/bg_order_status"/>
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/txtProcessingStatus"
             android:layout_width="100dp"
             android:layout_height="30dp"
-            android:text="Processing"
-            android:textSize="14sp"
             android:layout_below="@+id/txtMyOrders"
-            android:layout_marginTop="24dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"
             android:gravity="center"
-            android:textColor="@color/black_custom" />
+            android:text="Processing"
+            android:textColor="@color/black_custom"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/txtCancelledStatus"
             android:layout_width="100dp"
             android:layout_height="30dp"
-            android:text="Cancelled"
-            android:textSize="14sp"
             android:layout_below="@+id/txtMyOrders"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
-            android:layout_alignParentEnd="true"
             android:gravity="center"
-            android:textColor="@color/black_custom" />
-        
+            android:text="Cancelled"
+            android:textColor="@color/black_custom"
+            android:textSize="14sp" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvOrder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_below="@id/txtDeliveredStatus"
             android:layout_alignParentStart="true"
             android:layout_marginHorizontal="16dp"
-            android:layout_below="@id/txtDeliveredStatus"/>
+            android:layout_marginTop="30dp" />
     </RelativeLayout>
 
 </FrameLayout>

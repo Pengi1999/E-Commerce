@@ -8,11 +8,11 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardProduct"
         android:layout_width="match_parent"
-        android:layout_marginTop="2dp"
-        android:layout_marginHorizontal="2dp"
         android:layout_height="140dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginHorizontal="2dp"
+        android:layout_marginTop="2dp"
         android:layout_marginBottom="22dp"
         android:background="@color/white"
         app:cardCornerRadius="8dp">
@@ -30,30 +30,30 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:text="Jane Doe"
+                android:text=""
                 android:textColor="@color/black_custom"
                 android:textSize="14sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
                 android:text="Edit"
                 android:textColor="@color/red_button"
                 android:textSize="14sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txtFullName"
-                android:layout_marginTop="7dp"
                 android:layout_alignParentStart="true"
-                android:text="3 Newbridge Court"
+                android:layout_marginTop="7dp"
+                android:text=""
                 android:textColor="@color/black_custom"
                 android:textSize="14sp" />
 
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txtAddress"
                 android:layout_alignParentStart="true"
-                android:text="Chino Hills, CA 91709, United States"
+                android:text=""
                 android:textColor="@color/black_custom"
                 android:textSize="14sp" />
 
@@ -72,8 +72,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtAddress2"
-                android:text="Use as the shipping address"
-                android:paddingStart="8dp" />
+                android:paddingStart="8dp"
+                android:text="Use as the shipping address" />
 
         </RelativeLayout>
 

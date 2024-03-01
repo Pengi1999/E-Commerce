@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:text="Jane Doe"
+                android:text=""
                 android:textColor="@color/black_custom"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -96,7 +96,7 @@
                 android:layout_below="@+id/txtFullName"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="7dp"
-                android:text="3 Newbridge Court"
+                android:text=""
                 android:textColor="@color/black_custom"
                 android:textSize="14sp" />
 
@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txtAddress"
                 android:layout_alignParentStart="true"
-                android:text="Chino Hills, CA 91709, United States"
+                android:text=""
                 android:textColor="@color/black_custom"
                 android:textSize="14sp" />
         </RelativeLayout>
@@ -208,15 +208,15 @@
                 android:id="@+id/imgSelectedFedEx"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
-                android:background="@drawable/bg_color_red"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="6dp"
                 android:layout_marginEnd="6dp"
-                android:visibility="invisible"
+                android:background="@drawable/bg_color_red"
                 android:contentDescription="Selected"
                 android:elevation="5dp"
-                android:src="@drawable/ic_check_white" />
+                android:src="@drawable/ic_check_white"
+                android:visibility="invisible" />
 
             <ImageView
                 android:layout_width="60dp"
@@ -254,15 +254,15 @@
                 android:id="@+id/imgSelectedUSPS"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
-                android:background="@drawable/bg_color_red"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="6dp"
                 android:layout_marginEnd="6dp"
-                android:visibility="invisible"
+                android:background="@drawable/bg_color_red"
                 android:contentDescription="Selected"
                 android:elevation="5dp"
-                android:src="@drawable/ic_check_white" />
+                android:src="@drawable/ic_check_white"
+                android:visibility="invisible" />
 
             <ImageView
                 android:layout_width="80dp"
@@ -302,15 +302,15 @@
                 android:id="@+id/imgSelectedDHL"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
-                android:background="@drawable/bg_color_red"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="6dp"
                 android:layout_marginEnd="6dp"
-                android:visibility="invisible"
+                android:background="@drawable/bg_color_red"
                 android:contentDescription="Selected"
                 android:elevation="5dp"
-                android:src="@drawable/ic_check_white" />
+                android:src="@drawable/ic_check_white"
+                android:visibility="invisible" />
 
             <ImageView
                 android:layout_width="70dp"
@@ -351,7 +351,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="16dp"
-        android:text="112$"
+        android:text=""
         android:textColor="@color/black_custom"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -401,7 +401,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:text="127$"
+        android:text=""
         android:textColor="@color/black_custom"
         android:textSize="18sp"
         android:textStyle="bold" />

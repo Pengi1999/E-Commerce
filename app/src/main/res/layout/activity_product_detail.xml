@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Filters"
+            android:text=""
             android:textColor="@color/black_custom"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -40,10 +40,10 @@
     </RelativeLayout>
 
     <ScrollView
-        android:layout_below="@+id/blockActionBar"
-        android:layout_above="@+id/blockBottom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/blockBottom"
+        android:layout_below="@+id/blockActionBar">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -51,69 +51,69 @@
 
             <ImageView
                 android:id="@+id/imgProduct"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_width="match_parent"
-                android:scaleType="centerCrop"
                 android:layout_marginBottom="12dp"
-                android:layout_height="400dp"/>
+                android:scaleType="centerCrop" />
 
             <RelativeLayout
                 android:id="@+id/blockSizeSelect"
+                android:layout_width="140dp"
+                android:layout_height="40dp"
                 android:layout_below="@+id/imgProduct"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="16dp"
-                android:paddingHorizontal="12dp"
-                android:layout_width="140dp"
-                android:layout_height="40dp"
-                android:background="@drawable/bg_sizeandcolor_productdetail">
+                android:background="@drawable/bg_sizeandcolor_productdetail"
+                android:paddingHorizontal="12dp">
 
                 <TextView
                     android:id="@+id/txtSize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
                     android:text="Size"
-                    android:textStyle="bold"
+                    android:textColor="@color/black_custom"
                     android:textSize="14sp"
-                    android:textColor="@color/black_custom"/>
+                    android:textStyle="bold" />
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
-                    android:background="@drawable/ic_keyboard_arrow_down"/>
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_keyboard_arrow_down" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/blockColorSelect"
-                android:layout_below="@+id/imgProduct"
-                android:layout_toEndOf="@+id/blockSizeSelect"
                 android:layout_width="140dp"
                 android:layout_height="40dp"
+                android:layout_below="@+id/imgProduct"
                 android:layout_marginStart="16dp"
-                android:paddingHorizontal="12dp"
-                android:background="@drawable/bg_sizeandcolor_productdetail">
+                android:layout_toEndOf="@+id/blockSizeSelect"
+                android:background="@drawable/bg_sizeandcolor_productdetail"
+                android:paddingHorizontal="12dp">
 
                 <TextView
                     android:id="@+id/txtColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
                     android:text="Color"
-                    android:textStyle="bold"
+                    android:textColor="@color/black_custom"
                     android:textSize="14sp"
-                    android:textColor="@color/black_custom"/>
+                    android:textStyle="bold" />
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
-                    android:background="@drawable/ic_keyboard_arrow_down"/>
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_keyboard_arrow_down" />
 
             </RelativeLayout>
 
@@ -122,8 +122,8 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_below="@+id/imgProduct"
-                android:layout_marginTop="2dp"
                 android:layout_alignParentEnd="true"
+                android:layout_marginTop="2dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/bg_btn_favorite"
                 android:contentDescription="Favorite"
@@ -136,26 +136,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/blockSizeSelect"
-                android:layout_marginTop="22dp"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="16dp"
-                android:text="H&amp;M"
-                android:textSize="24sp"
+                android:layout_marginTop="22dp"
+                android:text=""
                 android:textColor="@color/black_custom"
-                android:textStyle="bold"/>
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtProductPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/blockSizeSelect"
-                android:layout_marginTop="22dp"
                 android:layout_alignParentEnd="true"
+                android:layout_marginTop="22dp"
                 android:layout_marginEnd="16dp"
-                android:text="$20"
-                android:textSize="24sp"
+                android:text=""
                 android:textColor="@color/black_custom"
-                android:textStyle="bold"/>
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtProductPriceSale"
@@ -164,9 +164,9 @@
                 android:layout_below="@id/txtProductPrice"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="16dp"
-                android:textSize="24sp"
                 android:textColor="@color/red_button"
-                android:textStyle="bold"/>
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtProductDes"
@@ -175,43 +175,43 @@
                 android:layout_below="@id/txtProductName"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="16dp"
-                android:text="Short black dress"
-                android:textSize="11sp"
-                android:textColor="@color/text_color_hint" />
+                android:text=""
+                android:textColor="@color/text_color_hint"
+                android:textSize="11sp" />
 
             <RatingBar
                 android:id="@+id/ratingProduct"
                 style="@style/Widget.AppCompat.RatingBar.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
                 android:layout_below="@+id/txtProductDes"
-                android:progressTint="#FFBA49"
-                android:layout_marginTop="8dp"
+                android:layout_alignParentStart="true"
                 android:layout_marginStart="16dp"
-                android:numStars="5" />
+                android:layout_marginTop="8dp"
+                android:numStars="5"
+                android:progressTint="#FFBA49" />
 
             <TextView
                 android:id="@+id/txtRatingQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/ratingProduct"
                 android:layout_alignTop="@+id/ratingProduct"
                 android:layout_alignBottom="@+id/ratingProduct"
                 android:layout_marginStart="5dp"
+                android:layout_toEndOf="@id/ratingProduct"
                 android:gravity="center"
-                android:text="(0)"
+                android:text=""
                 android:textColor="@color/text_color_hint"
                 android:textSize="10sp" />
 
             <View
                 android:id="@+id/outlineTopReview"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_below="@+id/ratingProduct"
                 android:layout_alignParentStart="true"
-                android:layout_width="match_parent"
                 android:layout_marginTop="16dp"
-                android:layout_height="1dp"
-                android:background="@color/text_color_hint"/>
+                android:background="@color/text_color_hint" />
 
             <RelativeLayout
                 android:id="@+id/blockReview"
@@ -242,11 +242,11 @@
 
             <View
                 android:id="@+id/outlineBottomReview"
-                android:layout_below="@+id/blockReview"
-                android:layout_alignParentStart="true"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/text_color_hint"/>
+                android:layout_below="@+id/blockReview"
+                android:layout_alignParentStart="true"
+                android:background="@color/text_color_hint" />
 
             <RelativeLayout
                 android:id="@+id/blockItemDetails"
@@ -277,11 +277,11 @@
 
             <View
                 android:id="@+id/outlineBottomItemDetails"
-                android:layout_below="@+id/blockItemDetails"
-                android:layout_alignParentStart="true"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/text_color_hint"/>
+                android:layout_below="@+id/blockItemDetails"
+                android:layout_alignParentStart="true"
+                android:background="@color/text_color_hint" />
 
             <RelativeLayout
                 android:id="@+id/blockShippingInfo"
@@ -312,19 +312,19 @@
 
             <View
                 android:id="@+id/outlineBottomShippingInfo"
-                android:layout_below="@+id/blockShippingInfo"
-                android:layout_alignParentStart="true"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/text_color_hint"/>
+                android:layout_below="@+id/blockShippingInfo"
+                android:layout_alignParentStart="true"
+                android:background="@color/text_color_hint" />
 
             <RelativeLayout
                 android:id="@+id/blockSuggest"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/blockShippingInfo"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="20dp"
-                android:layout_height="wrap_content">
+                android:layout_marginTop="20dp">
 
                 <TextView
                     android:id="@+id/txtSuggest"
@@ -342,9 +342,9 @@
                     android:id="@+id/txtNumberOfItem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="6dp"
-                    android:layout_alignParentTop="true"
                     android:layout_marginEnd="16dp"
                     android:text="12 items"
                     android:textColor="@color/text_color_hint"
