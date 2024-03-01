@@ -84,8 +84,7 @@ class CatalogFragment : Fragment() {
     private var sortMode: String = "Ascending"
     private lateinit var user: User
     private var isLogin: Boolean = false
-    private var requestCodeFilter = 2
-    private var requestCodeSelectItem = 1
+    private val requestCodeFilter = 2
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null

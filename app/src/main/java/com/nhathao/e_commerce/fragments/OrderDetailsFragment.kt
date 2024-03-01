@@ -167,6 +167,7 @@ class OrderDetailsFragment : Fragment() {
             "personalpromocode10" -> txtDiscount.text = "10%, Personal promo code"
             "summer2024" -> txtDiscount.text = "15%, Summer Sale promo code"
             "personalpromocode22" -> txtDiscount.text = "22%, Personal promo code"
+            else -> txtDiscount.text = ""
         }
 
         txtTotalAmount.text = "${selectedOrder.totalPrice}$"

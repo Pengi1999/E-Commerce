@@ -1,6 +1,7 @@
 package com.nhathao.e_commerce.activities
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -41,6 +42,7 @@ class CheckoutActivity : AppCompatActivity() {
     private var deliveryPrice: Int = 0
     private var summaryPrice: Int = 0
     private var deliveryMethod: String? = null
+    private val requestCodeSubmitOrderSuccess = 1001
     private val calendar = Calendar.getInstance()
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -235,6 +237,11 @@ class CheckoutActivity : AppCompatActivity() {
 
                 val intent = Intent(this, SuccessActivity::class.java)
                 startActivity(intent)
+                val data = Intent()
+                val bundlePassing = Bundle()
+                bundlePassing.putInt("requestCode", requestCodeSubmitOrderSuccess)
+                data.putExtras(bundlePassing)
+                setResult(Activity.RESULT_OK, data)
                 finish()
             }
             else {

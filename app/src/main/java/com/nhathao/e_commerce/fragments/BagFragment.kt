@@ -1,5 +1,6 @@
 package com.nhathao.e_commerce.fragments
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Paint
@@ -15,9 +16,12 @@ import android.widget.ImageButton
 import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -68,6 +72,7 @@ class BagFragment : Fragment() {
     private var isLogin: Boolean = false
     private var totalPrice: Int = 0
     private var shippingAddressOfUser: ShippingAddress? = null
+    private val requestCodeSubmitOrderSuccess = 1001
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -239,7 +244,7 @@ class BagFragment : Fragment() {
                     bundlePassing.putString("promoCode", edtPromoCode.text.toString())
                     bundlePassing.putInt("orderPrice", txtTotalPrice.text.toString().dropLast(1).toInt())
                     intent.putExtras(bundlePassing)
-                    startActivity(intent)
+                    startForResult.launch(intent)
                 }
                 else {
                     val intent = Intent(this.requireContext(), ShippingAddressActivity::class.java)
@@ -315,4 +320,23 @@ class BagFragment : Fragment() {
                 }
             }
     }
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                val bundleGet = intent?.extras
+                if (bundleGet != null) {
+                    val requestCode = bundleGet.getInt("requestCode")
+                    // Nếu mở màn hình Filter
+                    if (requestCode == requestCodeSubmitOrderSuccess) {
+                        this.activity?.supportFragmentManager?.beginTransaction()?.apply {
+                            replace(R.id.frame_layout, ShopFragment())
+                            commit()
+                        }
+                        val bottomNavigationViewMain = this.activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+                        bottomNavigationViewMain?.menu?.findItem(R.id.shop)?.setChecked(true)
+                    }
+                }
+            }
+        }
 }
