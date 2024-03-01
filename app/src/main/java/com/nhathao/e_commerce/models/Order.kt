@@ -1,5 +1,7 @@
 package com.nhathao.e_commerce.models
 
+import java.io.Serializable
+
 class Order (
     var orderId: String,
     var userAccountName: String,
@@ -10,5 +12,5 @@ class Order (
     var totalPrice: Int,
     var createTime: Long,
     var status: String
-) {
+) :Serializable {
 }

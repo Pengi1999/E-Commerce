@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_default"
+    tools:context=".fragments.OrderDetailsFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:id="@+id/blockActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:elevation="5dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/ic_chevron_left"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:id="@+id/txtActionBarName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Order Details"
+            android:textColor="@color/black_custom"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="11dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/ic_search"
+            android:contentDescription="Search" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtOrderId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:text="Order "
+                android:textColor="@color/black_custom"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtCreateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/txtOrderId"
+                android:layout_alignBottom="@+id/txtOrderId"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="05-12-2019"
+                android:textColor="@color/text_color_hint"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtItemQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtOrderId"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="15dp"
+                android:text="3 items"
+                android:textColor="@color/black_custom"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtOrderStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtCreateTime"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="Delivered"
+                android:textColor="#2AA952"
+                android:textSize="14sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvOrderDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/txtItemQuantity"/>
+
+            <TextView
+                android:id="@+id/txtOrderInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rcvOrderDetail"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="34dp"
+                android:text="Order information"
+                android:textColor="@color/black_custom"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:id="@+id/blockShippingAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/txtOrderInfo"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Shipping Address:"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_color_hint"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="3 Newbridge Court, Chino Hills, CA 91709, United States"
+                    android:textSize="14sp"
+                    android:textColor="@color/black_custom"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/blockPaymentMethod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/blockShippingAddress"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:weightSum="6">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Payment method:"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_color_hint"/>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4">
+
+                    <ImageView
+                        android:id="@+id/imgPayment"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/dollars" />
+
+                    <TextView
+                        android:layout_toEndOf="@+id/imgPayment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/imgPayment"
+                        android:layout_alignBottom="@+id/imgPayment"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="15dp"
+                        android:text="Cash"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_custom"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/blockDeliveryMethod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/blockPaymentMethod"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Delivery method:"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_color_hint"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="FedEx, 3 days, 15$"
+                    android:textSize="14sp"
+                    android:textColor="@color/black_custom"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/blockDiscount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/blockDeliveryMethod"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Discount:"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_color_hint"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="10%, Personal promo code"
+                    android:textSize="14sp"
+                    android:textColor="@color/black_custom"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/blockTotalAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/blockDiscount"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                android:weightSum="6">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Total Amount:"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_color_hint"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="133$"
+                    android:textSize="14sp"
+                    android:textColor="@color/black_custom"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/blockButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/blockTotalAmount"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="34dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnReorder"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="12dp"
+                    android:text="Reorder"
+                    android:textAllCaps="false"
+                    android:background="@drawable/bg_button_discard"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnLeaveFeedback"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:text="Leave feedback"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"
+                    android:background="@drawable/bg_button_maxwidth"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+</FrameLayout>

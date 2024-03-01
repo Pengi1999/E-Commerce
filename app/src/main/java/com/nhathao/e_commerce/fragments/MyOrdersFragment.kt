@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.nhathao.e_commerce.Interfaces.EventMyOrderItemListening
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.adapters.RvAdapterOrderItem
 import com.nhathao.e_commerce.models.Order
@@ -110,7 +111,16 @@ class MyOrdersFragment : Fragment() {
                                 dsProcessingOrderOfUser.add(order)
                         }
                     }
-                    val orderAdapter = RvAdapterOrderItem(dsDeliveredOrderOfUser)
+                    val orderAdapter = RvAdapterOrderItem(dsDeliveredOrderOfUser, object : EventMyOrderItemListening{
+                        override fun onClickDetailsItemListening(pos: Int) {
+                            this@MyOrdersFragment.activity?.intent?.putExtra("selectedOrder", dsDeliveredOrderOfUser[pos])
+                            this@MyOrdersFragment.activity?.supportFragmentManager?.beginTransaction()?.apply {
+                                addToBackStack(null)
+                                replace(R.id.frame_layout, OrderDetailsFragment())
+                                commit()
+                            }
+                        }
+                    })
                     rcvOrder.adapter = orderAdapter
                     rcvOrder.layoutManager = LinearLayoutManager(
                         this@MyOrdersFragment.requireContext(),
@@ -134,7 +144,16 @@ class MyOrdersFragment : Fragment() {
         }
 
         txtDeliveredStatus.setOnClickListener {
-            val orderAdapter = RvAdapterOrderItem(dsDeliveredOrderOfUser)
+            val orderAdapter = RvAdapterOrderItem(dsDeliveredOrderOfUser, object : EventMyOrderItemListening{
+                override fun onClickDetailsItemListening(pos: Int) {
+                    this@MyOrdersFragment.activity?.intent?.putExtra("selectedOrder", dsDeliveredOrderOfUser[pos])
+                    this@MyOrdersFragment.activity?.supportFragmentManager?.beginTransaction()?.apply {
+                        addToBackStack(null)
+                        replace(R.id.frame_layout, OrderDetailsFragment())
+                        commit()
+                    }
+                }
+            })
             rcvOrder.adapter = orderAdapter
 
             txtDeliveredStatus.setBackgroundResource(R.drawable.bg_order_status)
@@ -148,7 +167,16 @@ class MyOrdersFragment : Fragment() {
         }
 
         txtProcessingStatus.setOnClickListener {
-            val orderAdapter = RvAdapterOrderItem(dsProcessingOrderOfUser)
+            val orderAdapter = RvAdapterOrderItem(dsProcessingOrderOfUser, object : EventMyOrderItemListening{
+                override fun onClickDetailsItemListening(pos: Int) {
+                    this@MyOrdersFragment.activity?.intent?.putExtra("selectedOrder", dsProcessingOrderOfUser[pos])
+                    this@MyOrdersFragment.activity?.supportFragmentManager?.beginTransaction()?.apply {
+                        addToBackStack(null)
+                        replace(R.id.frame_layout, OrderDetailsFragment())
+                        commit()
+                    }
+                }
+            })
             rcvOrder.adapter = orderAdapter
 
             txtProcessingStatus.setBackgroundResource(R.drawable.bg_order_status)
@@ -162,7 +190,16 @@ class MyOrdersFragment : Fragment() {
         }
 
         txtCancelledStatus.setOnClickListener {
-            val orderAdapter = RvAdapterOrderItem(dsCancelledOrderOfUser)
+            val orderAdapter = RvAdapterOrderItem(dsCancelledOrderOfUser, object : EventMyOrderItemListening{
+                override fun onClickDetailsItemListening(pos: Int) {
+                    this@MyOrdersFragment.activity?.intent?.putExtra("selectedOrder", dsCancelledOrderOfUser[pos])
+                    this@MyOrdersFragment.activity?.supportFragmentManager?.beginTransaction()?.apply {
+                        addToBackStack(null)
+                        replace(R.id.frame_layout, OrderDetailsFragment())
+                        commit()
+                    }
+                }
+            })
             rcvOrder.adapter = orderAdapter
 
             txtCancelledStatus.setBackgroundResource(R.drawable.bg_order_status)

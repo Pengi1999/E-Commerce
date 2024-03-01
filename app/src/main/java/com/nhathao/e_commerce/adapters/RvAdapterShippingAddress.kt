@@ -55,7 +55,7 @@ class RvAdapterShippingAddress (private var ds:List<ShippingAddress>, private va
             }
 
             txtEdit.setOnClickListener {
-                eventShippingAddressItemListening.OnClickEditItemListening(position)
+                eventShippingAddressItemListening.onClickEditItemListening(position)
             }
         }
     }

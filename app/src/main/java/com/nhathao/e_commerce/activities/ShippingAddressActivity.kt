@@ -58,7 +58,7 @@ class ShippingAddressActivity : AppCompatActivity() {
                         }
                     }
                     val shippingAddressAdapter = RvAdapterShippingAddress(dsShippingAddressOfUser, object : EventShippingAddressItemListening{
-                        override fun OnClickEditItemListening(pos: Int) {
+                        override fun onClickEditItemListening(pos: Int) {
                             val intent = Intent(this@ShippingAddressActivity, EditingShippingAddressActivity::class.java)
                             val bundlePassing = Bundle()
                             bundlePassing.putSerializable("shippingAddress", dsShippingAddressOfUser[pos])

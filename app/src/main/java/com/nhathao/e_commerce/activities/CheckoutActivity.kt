@@ -228,10 +228,11 @@ class CheckoutActivity : AppCompatActivity() {
                             dbRefQuantity.child(quantity.quantityId).setValue(quantity)
                         }
                     }
-
-                    //Clear bag của user
-                    dbRefBag.child(bag.bagId).removeValue()
                 }
+                //Clear bag của user
+                for (bag in dsBagByUser)
+                    dbRefBag.child(bag.bagId).removeValue()
+
                 val intent = Intent(this, SuccessActivity::class.java)
                 startActivity(intent)
                 finish()

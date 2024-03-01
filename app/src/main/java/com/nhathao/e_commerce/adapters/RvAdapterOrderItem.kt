@@ -1,29 +1,21 @@
 package com.nhathao.e_commerce.adapters
 
 import android.annotation.SuppressLint
-import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.Paint
-import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.nhathao.e_commerce.Interfaces.EventMyOrderItemListening
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.models.Order
 import java.text.SimpleDateFormat
 
-class RvAdapterOrderItem (private var ds:List<Order>): RecyclerView.Adapter<RvAdapterOrderItem.OrderItemViewHolder>() {
-//    private val dbRefBag: DatabaseReference = FirebaseDatabase.getInstance().getReference("Bags")
-//    private val dbRefProduct: DatabaseReference = FirebaseDatabase.getInstance().getReference("Products")
-//    private val dbRefQuantity: DatabaseReference = FirebaseDatabase.getInstance().getReference("Quantities")
+class RvAdapterOrderItem (private var ds:List<Order>, private val eventMyOrderItemListening: EventMyOrderItemListening): RecyclerView.Adapter<RvAdapterOrderItem.OrderItemViewHolder>() {
     private val dbRefOrderDetail: DatabaseReference = FirebaseDatabase.getInstance().getReference("OrderDetails")
     @SuppressLint("SimpleDateFormat")
     private val dateFormat = SimpleDateFormat("dd-MM-yyyy")
@@ -70,6 +62,10 @@ class RvAdapterOrderItem (private var ds:List<Order>): RecyclerView.Adapter<RvAd
                     }
                     txtQuantityValue.text = quantityValue.toString()
                 }
+            }
+
+            btnDetails.setOnClickListener {
+                eventMyOrderItemListening.onClickDetailsItemListening(position)
             }
         }
     }
