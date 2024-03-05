@@ -39,7 +39,7 @@ class ShopFragment : Fragment() {
     private lateinit var cardClothes: CardView
     private lateinit var cardShoes: CardView
     private lateinit var cardAccessories: CardView
-    private var sex: String = "Women"
+    private lateinit var sex: String
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -73,6 +73,8 @@ class ShopFragment : Fragment() {
         cardClothes = view.findViewById(R.id.cardClothes)
         cardShoes = view.findViewById(R.id.cardShoes)
         cardAccessories = view.findViewById(R.id.cardAccessories)
+
+        sex = txtWomen.text.toString()
 
         btnBack.setOnClickListener {
             this.activity?.supportFragmentManager?.popBackStack()
@@ -120,7 +122,7 @@ class ShopFragment : Fragment() {
         }
 
         cardNew.setOnClickListener {
-            replaceFragment("New")
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
         }
 
         cardClothes.setOnClickListener {
@@ -128,11 +130,11 @@ class ShopFragment : Fragment() {
         }
 
         cardShoes.setOnClickListener {
-            replaceFragment("Shoes")
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
         }
 
         cardAccessories.setOnClickListener {
-            replaceFragment("Accessories")
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
         }
         return view
     }

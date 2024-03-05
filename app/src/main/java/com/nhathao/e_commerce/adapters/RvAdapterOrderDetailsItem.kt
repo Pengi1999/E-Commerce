@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -19,7 +18,6 @@ import com.nhathao.e_commerce.models.Product
 import com.nhathao.e_commerce.models.Quantity
 
 class RvAdapterOrderDetailsItem (private var ds:List<OrderDetail>): RecyclerView.Adapter<RvAdapterOrderDetailsItem.OrderDetailsItemViewHolder>() {
-    private val dbRefBag: DatabaseReference = FirebaseDatabase.getInstance().getReference("Bags")
     private val dbRefProduct: DatabaseReference = FirebaseDatabase.getInstance().getReference("Products")
     private val dbRefQuantity: DatabaseReference = FirebaseDatabase.getInstance().getReference("Quantities")
     private lateinit var quantity: Quantity

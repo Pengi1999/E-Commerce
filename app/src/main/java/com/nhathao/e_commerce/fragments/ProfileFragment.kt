@@ -243,8 +243,26 @@ class ProfileFragment : Fragment() {
             val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
             imgAvatar.setImageBitmap(bitmap)
         }
-        txtFullName.text = user.userName
-        txtEmail.text = user.email
+        dbRefUser.child(user.userAccountName).addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    user.userAccountName = snapshot.child("userAccountName").value.toString()
+                    user.userPWD = snapshot.child("userPWD").value.toString()
+                    user.userName = snapshot.child("userName").value.toString()
+                    user.secretCode = snapshot.child("secretCode").value.toString()
+                    user.birthday = snapshot.child("birthday").value.toString()
+                    user.avatar = snapshot.child("avatar").value.toString()
+                    user.email = snapshot.child("email").value.toString()
+                    txtFullName.text = user.userName
+                    txtEmail.text = user.email
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+
     }
 
     private val startForResult =

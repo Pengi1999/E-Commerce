@@ -1,5 +1,6 @@
 package com.nhathao.e_commerce.fragments
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -20,14 +21,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.nhathao.e_commerce.Interfaces.RvInterface
+import com.nhathao.e_commerce.Interfaces.EventCategoryItemListening
+import com.nhathao.e_commerce.Interfaces.EventProductItemListening
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.activities.FilterActivity
 import com.nhathao.e_commerce.activities.LoginActivity
@@ -98,6 +99,7 @@ class CatalogFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -130,7 +132,7 @@ class CatalogFragment : Fragment() {
         val type = this.activity?.intent?.getStringExtra("Type")
         val category = this.activity?.intent?.getStringExtra("Category")
 
-        txtCategory.setText("$sex's $category")
+        txtCategory.text = "$sex's $category"
 
         dsCategory = mutableListOf()
         dsQuantity = mutableListOf()
@@ -196,14 +198,11 @@ class CatalogFragment : Fragment() {
                     dsProduct.sortBy { it.productPrice }
                     hienProductViewList()
 
-                    adapterCategory = RvAdapterCategory(dsCategory, object : RvInterface {
-                        override fun OnItemClick(pos: Int) {
-                            txtCategory.setText("$sex's ${dsCategory[pos]}")
+                    adapterCategory = RvAdapterCategory(dsCategory, object : EventCategoryItemListening {
+                        @SuppressLint("SetTextI18n")
+                        override fun onClickItemListening(pos: Int) {
+                            txtCategory.text = "$sex's ${dsCategory[pos]}"
                             xuLyClickCategory(dsCategory[pos])
-                        }
-
-                        override fun OnItemLongClick(pos: Int) {
-                            TODO("Not yet implemented")
                         }
                     })
 
@@ -304,11 +303,13 @@ class CatalogFragment : Fragment() {
 
         txtSortByPopular.setOnClickListener {
             txtViewSort.text = txtSortByPopular.text
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 
         txtSortByNewest.setOnClickListener {
             txtViewSort.text = txtSortByNewest.text
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 
@@ -737,6 +738,7 @@ class CatalogFragment : Fragment() {
         dialog.show()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun eventOnTouchForBottomSheetSort(txtView: TextView?) {
         txtView!!.setOnTouchListener(object : OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
@@ -770,7 +772,7 @@ class CatalogFragment : Fragment() {
     }
 
     private fun hienProductViewMode() {
-        adapterProduct = RvAdapterProduct(dsProduct, R.layout.layout_item, object : RvInterface {
+        adapterProduct = RvAdapterProduct(dsProduct, R.layout.layout_item, object : EventProductItemListening {
             override fun OnItemClick(pos: Int) {
                 val intent =
                     Intent(this@CatalogFragment.requireContext(), ProductDetailActivity::class.java)
@@ -786,6 +788,10 @@ class CatalogFragment : Fragment() {
 
             override fun OnItemLongClick(pos: Int) {
                 showBottomSheetSelectColorAndSize(dsProduct[pos])
+            }
+
+            override fun onClickBtnFavoriteItem(pos: Int) {
+                Toast.makeText(this@CatalogFragment.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
             }
         })
         rcvProduct.adapter = adapterProduct
@@ -798,7 +804,7 @@ class CatalogFragment : Fragment() {
     }
 
     private fun hienProductViewList() {
-        adapterProduct = RvAdapterProduct(dsProduct, R.layout.layout_item2, object : RvInterface {
+        adapterProduct = RvAdapterProduct(dsProduct, R.layout.layout_item2, object : EventProductItemListening {
             override fun OnItemClick(pos: Int) {
                 val intent =
                     Intent(this@CatalogFragment.requireContext(), ProductDetailActivity::class.java)
@@ -816,6 +822,10 @@ class CatalogFragment : Fragment() {
                 showBottomSheetSelectColorAndSize(dsProduct[pos])
             }
 
+            override fun onClickBtnFavoriteItem(pos: Int) {
+                Toast.makeText(this@CatalogFragment.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+            }
+
         })
         rcvProduct.adapter = adapterProduct
         rcvProduct.layoutManager = LinearLayoutManager(
@@ -825,6 +835,7 @@ class CatalogFragment : Fragment() {
         )
     }
 
+    @SuppressLint("SetTextI18n")
     private fun xuLyClickCategory(categorySelected: String) {
         dsProduct.clear()
         if (categorySelected == "All")

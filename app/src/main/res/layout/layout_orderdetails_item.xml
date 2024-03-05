@@ -53,7 +53,7 @@
                     android:layout_below="@+id/txtProductName"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="12dp"
-                    android:text="M"
+                    android:text=""
                     android:textColor="@color/text_color_hint"
                     android:textSize="11sp" />
 

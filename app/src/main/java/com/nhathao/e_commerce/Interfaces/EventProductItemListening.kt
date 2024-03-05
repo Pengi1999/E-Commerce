@@ -1,6 +1,8 @@
 package com.nhathao.e_commerce.Interfaces
 
-interface RvInterface {
+interface EventProductItemListening {
     fun OnItemClick (pos: Int)
     fun OnItemLongClick (pos: Int)
+
+    fun onClickBtnFavoriteItem (pos: Int)
 }

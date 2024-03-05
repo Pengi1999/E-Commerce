@@ -139,7 +139,7 @@
         android:layout_alignEnd="@+id/cardProduct"
         android:layout_alignParentTop="true"
         android:layout_marginTop="80dp"
-        android:background="@drawable/bg_btn_favorite"
+        android:background="@drawable/bg_white_circle"
         android:contentDescription="Favorite"
         android:elevation="5dp"
         android:src="@drawable/ic_favorite_gray" />

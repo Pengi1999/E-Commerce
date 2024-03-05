@@ -12,14 +12,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.models.Product
+import com.nhathao.e_commerce.models.User
 import java.io.ByteArrayOutputStream
 
 // TODO: Rename parameter arguments, choose names that match
@@ -33,9 +38,15 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class FavoriteFragment : Fragment() {
-    private lateinit var dbRef: DatabaseReference
-    private lateinit var imageProduct : ImageView
-    private lateinit var product: Product
+    private lateinit var txtActionBar: TextView
+    private lateinit var txtFavorites: TextView
+    private lateinit var btnSearch: ImageButton
+    private lateinit var btnStyleShowList: ImageButton
+    private lateinit var blockFilters: LinearLayout
+    private lateinit var blockSort: LinearLayout
+    private lateinit var rcvFavorite: RecyclerView
+    private lateinit var user: User
+    private var isLogin: Boolean = false
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -54,44 +65,26 @@ class FavoriteFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_favorite, container, false)
-        imageProduct = view.findViewById<ImageView>(R.id.imageView)
-        val edtName = view.findViewById<EditText>(R.id.editTextText)
-        val edtDescribe = view.findViewById<EditText>(R.id.editTextText8)
-        val edtSex = view.findViewById<EditText>(R.id.editTextText2)
-        val edtType = view.findViewById<EditText>(R.id.editTextText3)
-        val edtCategory = view.findViewById<EditText>(R.id.editTextText4)
-        val edtBrand = view.findViewById<EditText>(R.id.editTextText7)
-        val edtMode = view.findViewById<EditText>(R.id.editTextText6)
-        val edtPrice = view.findViewById<EditText>(R.id.editTextText5)
-        val buttonInsert = view.findViewById<Button>(R.id.button)
-        val buttonKhoiTao = view.findViewById<Button>(R.id.button2)
 
-        dbRef = FirebaseDatabase.getInstance().getReference("Products")
+        txtActionBar = view.findViewById(R.id.txtActionBar)
+        txtFavorites = view.findViewById(R.id.txtFavorites)
+        btnSearch = view.findViewById(R.id.btnSearch)
+        btnStyleShowList = view.findViewById(R.id.btnStyleShowList)
+        blockFilters = view.findViewById(R.id.blockFilters)
+        blockSort = view.findViewById(R.id.blockSort)
+        rcvFavorite = view.findViewById(R.id.rcvFavorite)
 
-        imageProduct.setOnClickListener {
-            val myFileIntent = Intent(Intent.ACTION_GET_CONTENT)
-            myFileIntent.setType("image/*")
-            startForResult.launch(myFileIntent)
+        val bundleGetData = this.activity?.intent?.extras
+        if (bundleGetData != null) {
+            isLogin = bundleGetData.getBoolean("isLogin")
+            if (isLogin)
+                user = bundleGetData.getSerializable("user") as User
         }
 
-        buttonInsert.setOnClickListener {
-            product.productId = dbRef.push().key.toString()
-            dbRef.child(product.productId).setValue(product)
+        btnSearch.setOnClickListener {
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
         }
 
-        buttonKhoiTao.setOnClickListener {
-            product = Product(
-                "",
-                edtName.text.toString(),
-                edtDescribe.text.toString(),
-                "",
-                edtSex.text.toString(),
-                edtType.text.toString(),
-                edtCategory.text.toString(),
-                edtBrand.text.toString(),
-                edtMode.text.toString(),
-                edtPrice.text.toString().toInt())
-        }
         return view
     }
 
@@ -115,22 +108,4 @@ class FavoriteFragment : Fragment() {
             }
     }
 
-    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val uri = result.data?.data
-            try {
-                val inputStream = this.context?.contentResolver?.openInputStream(uri!!)
-                val myBitmap = BitmapFactory.decodeStream(inputStream)
-                val steam = ByteArrayOutputStream()
-                myBitmap.compress(Bitmap.CompressFormat.PNG, 100, steam)
-                val bytes = steam.toByteArray()
-                product.productImage = Base64.encodeToString(bytes, Base64.DEFAULT)
-                imageProduct.setImageBitmap(myBitmap)
-                inputStream?.close()
-            }
-            catch (ex: Exception) {
-                Toast.makeText(this.context, ex.message.toString(), Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 }

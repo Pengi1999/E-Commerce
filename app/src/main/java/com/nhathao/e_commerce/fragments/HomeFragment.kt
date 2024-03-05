@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.nhathao.e_commerce.Interfaces.RvInterface
+import com.nhathao.e_commerce.Interfaces.EventProductItemListening
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.activities.LoginActivity
 import com.nhathao.e_commerce.activities.ProductDetailActivity
@@ -86,13 +86,6 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        val bundleGetData = this.activity?.intent?.extras
-        if (bundleGetData != null) {
-            isLogin = bundleGetData.getBoolean("isLogin")
-            if (isLogin)
-                user = bundleGetData.getSerializable("user") as User
-        }
-
         bigBanner = view.findViewById(R.id.bigBanner)
         smallBanner = view.findViewById(R.id.smallBanner)
         btnCheckSale = view.findViewById(R.id.btnCheckSale)
@@ -113,6 +106,13 @@ class HomeFragment : Fragment() {
         dsProductNew = arrayListOf<Product>()
         dsQuantity = mutableListOf()
         dsBag = mutableListOf()
+
+        val bundleGetData = this.activity?.intent?.extras
+        if (bundleGetData != null) {
+            isLogin = bundleGetData.getBoolean("isLogin")
+            if (isLogin)
+                user = bundleGetData.getSerializable("user") as User
+        }
 
         dbRefProduct.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -143,7 +143,7 @@ class HomeFragment : Fragment() {
                         }
                     }
                     val mAdapterNew =
-                        RvAdapterProduct(dsProductNew, R.layout.layout_item, object : RvInterface {
+                        RvAdapterProduct(dsProductNew, R.layout.layout_item, object : EventProductItemListening {
                             override fun OnItemClick(pos: Int) {
                                 val intent = Intent(
                                     this@HomeFragment.requireContext(),
@@ -162,9 +162,13 @@ class HomeFragment : Fragment() {
                             override fun OnItemLongClick(pos: Int) {
                                 showBottomSheetSelectColorAndSize(dsProductNew[pos])
                             }
+
+                            override fun onClickBtnFavoriteItem(pos: Int) {
+                                Toast.makeText(this@HomeFragment.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+                            }
                         })
                     val mAdapterSale =
-                        RvAdapterProduct(dsProductSale, R.layout.layout_item, object : RvInterface {
+                        RvAdapterProduct(dsProductSale, R.layout.layout_item, object : EventProductItemListening {
                             override fun OnItemClick(pos: Int) {
                                 val intent = Intent(
                                     this@HomeFragment.requireContext(),
@@ -182,6 +186,10 @@ class HomeFragment : Fragment() {
 
                             override fun OnItemLongClick(pos: Int) {
                                 showBottomSheetSelectColorAndSize(dsProductSale[pos])
+                            }
+
+                            override fun onClickBtnFavoriteItem(pos: Int) {
+                                Toast.makeText(this@HomeFragment.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
                             }
                         })
                     rvSale.adapter = mAdapterSale
@@ -225,6 +233,7 @@ class HomeFragment : Fragment() {
                 TODO("Not yet implemented")
             }
         })
+
         dbRefBag.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 dsBag.clear()
@@ -283,8 +292,7 @@ class HomeFragment : Fragment() {
         val outlineWhiteSelected = dialogView.findViewById<LinearLayout>(R.id.outlineWhiteSelected)
         val outlineRedSelected = dialogView.findViewById<LinearLayout>(R.id.outlineRedSelected)
         val outlineGraySelected = dialogView.findViewById<LinearLayout>(R.id.outlineGraySelected)
-        val outlineOrangeSelected =
-            dialogView.findViewById<LinearLayout>(R.id.outlineOrangeSelected)
+        val outlineOrangeSelected = dialogView.findViewById<LinearLayout>(R.id.outlineOrangeSelected)
         val outlineBlueSelected = dialogView.findViewById<LinearLayout>(R.id.outlineBlueSelected)
 
         val txtSizeXS = dialogView.findViewById<TextView>(R.id.txtSizeXS)

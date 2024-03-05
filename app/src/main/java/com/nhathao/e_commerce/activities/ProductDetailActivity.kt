@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.nhathao.e_commerce.Interfaces.RvInterface
+import com.nhathao.e_commerce.Interfaces.EventProductItemListening
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.adapters.RvAdapterProduct
 import com.nhathao.e_commerce.databinding.ActivityProductDetailBinding
@@ -106,7 +106,7 @@ class ProductDetailActivity : AppCompatActivity() {
                     }
                     binding.txtNumberOfItem.text = "${dsProduct.size} items"
                     val mAdapter =
-                        RvAdapterProduct(dsProduct, R.layout.layout_item, object : RvInterface {
+                        RvAdapterProduct(dsProduct, R.layout.layout_item, object : EventProductItemListening {
                             override fun OnItemClick(pos: Int) {
                                 val intent = Intent(this@ProductDetailActivity, ProductDetailActivity::class.java)
                                 val productSelected = dsProduct[pos]
@@ -121,6 +121,10 @@ class ProductDetailActivity : AppCompatActivity() {
 
                             override fun OnItemLongClick(pos: Int) {
                                 showBottomSheetSelectColorAndSize(dsProduct[pos])
+                            }
+
+                            override fun onClickBtnFavoriteItem(pos: Int) {
+                                Toast.makeText(this@ProductDetailActivity, "Do it later", Toast.LENGTH_SHORT).show()
                             }
                         })
                     binding.rvSuggest.adapter = mAdapter

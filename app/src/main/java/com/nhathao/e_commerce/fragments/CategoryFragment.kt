@@ -32,6 +32,7 @@ private const val ARG_PARAM2 = "param2"
 class CategoryFragment : Fragment() {
     private lateinit var dbRef: DatabaseReference
     private lateinit var btnBack: ImageButton
+    private lateinit var btnSearch: ImageButton
     private lateinit var btnViewAll: Button
     private lateinit var listViewCategory: ListView
     private lateinit var listCategory: MutableList<String>
@@ -58,6 +59,7 @@ class CategoryFragment : Fragment() {
         dbRef = FirebaseDatabase.getInstance().getReference("Products")
 
         btnBack = view.findViewById(R.id.btnBack)
+        btnSearch = view.findViewById(R.id.btnSearch)
         btnViewAll = view.findViewById(R.id.btnViewAll)
         listViewCategory = view.findViewById(R.id.listViewCategory)
 
@@ -99,6 +101,10 @@ class CategoryFragment : Fragment() {
 
         btnBack.setOnClickListener {
             this.activity?.supportFragmentManager?.popBackStack()
+        }
+
+        btnSearch.setOnClickListener {
+            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
         }
 
         btnViewAll.setOnClickListener {

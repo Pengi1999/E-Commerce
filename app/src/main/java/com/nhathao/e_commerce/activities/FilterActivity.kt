@@ -6,6 +6,7 @@ import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.slider.RangeSlider.OnChangeListener
 import com.google.android.material.slider.RangeSlider.OnSliderTouchListener
@@ -200,8 +201,7 @@ class FilterActivity : AppCompatActivity() {
         }
 
         binding.blockBrand.setOnClickListener {
-            val intent = Intent(this, BrandSelectActivity::class.java)
-            startActivity(intent)
+            Toast.makeText(this, "Do it later", Toast.LENGTH_SHORT).show()
         }
 
         binding.btnDiscard.setOnClickListener {

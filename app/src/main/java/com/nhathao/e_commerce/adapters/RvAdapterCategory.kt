@@ -5,10 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.nhathao.e_commerce.Interfaces.RvInterface
+import com.nhathao.e_commerce.Interfaces.EventCategoryItemListening
+import com.nhathao.e_commerce.Interfaces.EventProductItemListening
 import com.nhathao.e_commerce.R
 
-class RvAdapterCategory (private var ds:List<String>, private val onCategoryClick:RvInterface): RecyclerView.Adapter<RvAdapterCategory.CategoryViewHolder>() {
+class RvAdapterCategory (private var ds:List<String>, private val eventCategoryItemListening:EventCategoryItemListening): RecyclerView.Adapter<RvAdapterCategory.CategoryViewHolder>() {
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
@@ -26,7 +27,7 @@ class RvAdapterCategory (private var ds:List<String>, private val onCategoryClic
             txtCategory.text = ds[position]
 
             holder.itemView.setOnClickListener {
-                onCategoryClick.OnItemClick(position)
+                eventCategoryItemListening.onClickItemListening(position)
             }
         }
     }
