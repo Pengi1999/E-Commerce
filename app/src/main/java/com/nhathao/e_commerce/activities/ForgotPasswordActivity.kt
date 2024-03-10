@@ -59,7 +59,10 @@ class ForgotPasswordActivity : AppCompatActivity() {
                         it.child("userPWD").value.toString(),
                         it.child("userName").value.toString(),
                         it.child("secretCode").value.toString(),
-                        it.child("birthday").value.toString()
+                        it.child("birthday").value.toString(),
+                        it.child("avatar").value.toString(),
+                        it.child("email").value.toString(),
+                        it.child("typeAccount").value.toString()
                     )
                     if (user.secretCode == secretCode) {
                         val intent = Intent(this, ResetPasswordActivity::class.java)

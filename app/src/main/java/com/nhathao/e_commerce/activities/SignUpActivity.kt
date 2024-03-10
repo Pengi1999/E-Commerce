@@ -47,7 +47,7 @@ class SignUpActivity : AppCompatActivity() {
             val confirmPWD = binding.layoutEdtConfirmPWD.editText?.text.toString()
             val userSecretCode = binding.layoutEdtSecretCode.editText?.text.toString()
 
-            val user = User(userAccountName, userPWD, userName, userSecretCode)
+            val user = User(userAccountName, userPWD, userName, userSecretCode, typeAccount = "Normal")
 
             val isNotEmpty =
                 checkEmpty(userName, userAccountName, userPWD, confirmPWD, userSecretCode)
@@ -93,13 +93,13 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun insertUser(user: User) {
         // Check Account already exists
-        dbRef.child(user.userAccountName).get()
+        dbRef.child(user.userAccountName!!).get()
             .addOnSuccessListener {
                 if (it.exists())
                     binding.layoutEdtAccountName.error = "Account already exists"
                 else {
                     //Insert User
-                    dbRef.child(user.userAccountName).setValue(user)
+                    dbRef.child(user.userAccountName!!).setValue(user)
                         .addOnCompleteListener {
                             val data = Intent()
                             val bundlePassing = Bundle()

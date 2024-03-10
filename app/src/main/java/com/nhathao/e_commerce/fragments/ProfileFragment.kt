@@ -243,7 +243,7 @@ class ProfileFragment : Fragment() {
             val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
             imgAvatar.setImageBitmap(bitmap)
         }
-        dbRefUser.child(user.userAccountName).addValueEventListener(object : ValueEventListener{
+        dbRefUser.child(user.userAccountName!!).addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     user.userAccountName = snapshot.child("userAccountName").value.toString()
@@ -255,6 +255,11 @@ class ProfileFragment : Fragment() {
                     user.email = snapshot.child("email").value.toString()
                     txtFullName.text = user.userName
                     txtEmail.text = user.email
+                    if (user.avatar != "") {
+                        val bytes = Base64.decode(user.avatar, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                        imgAvatar.setImageBitmap(bitmap)
+                    }
                 }
             }
 
@@ -293,7 +298,7 @@ class ProfileFragment : Fragment() {
                         myBitmap.compress(Bitmap.CompressFormat.PNG, 100, steam)
                         val bytes = steam.toByteArray()
                         user.avatar = Base64.encodeToString(bytes, Base64.DEFAULT)
-                        dbRefUser.child(user.userAccountName).child("avatar").setValue(user.avatar)
+                        dbRefUser.child(user.userAccountName!!).child("avatar").setValue(user.avatar)
                         imgAvatar.setImageBitmap(myBitmap)
                         inputStream?.close()
                     } catch (ex: Exception) {

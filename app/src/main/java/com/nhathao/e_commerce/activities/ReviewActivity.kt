@@ -256,7 +256,7 @@ class ReviewActivity : AppCompatActivity() {
                 if (ratingUserSelectedProductGetList.isEmpty()) {
                     val rating = Rating(
                         "",
-                        user.userAccountName,
+                        user.userAccountName!!,
                         productSelected.productId,
                         ratingBar.rating
                     )
@@ -291,7 +291,7 @@ class ReviewActivity : AppCompatActivity() {
                 if (edtReviewContent.text.isNotEmpty()) {
                     val review = Review(
                         "",
-                        user.userAccountName,
+                        user.userAccountName!!,
                         productSelected.productId,
                         edtReviewContent.text.toString(),
                         calendar.timeInMillis

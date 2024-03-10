@@ -4,41 +4,78 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.opengl.Visibility
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.doOnTextChanged
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.databinding.ActivityLoginBinding
 import com.nhathao.e_commerce.models.User
-
-private lateinit var binding: ActivityLoginBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.io.ByteArrayOutputStream
+import java.util.concurrent.Executors
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var dbRef: DatabaseReference
+    private lateinit var binding: ActivityLoginBinding
+    private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var dbRefUser: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var user: User
     private var accountName: String? = null
     private var password: String? = null
     private var isRemember: Boolean? = null
-    private var requestCodeSignUp = 1
-    private var requestCodeHaveAccount = 2
-    private var requestCodeForgotPWD = 3
-    private var requestCodeChangeAccount = 4
+    private val requestCodeSignUp = 1
+    private val requestCodeHaveAccount = 2
+    private val requestCodeForgotPWD = 3
+    private val requestCodeChangeAccount = 4
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        auth = Firebase.auth
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        googleSignInClient.revokeAccess()
+
         loadAccount()
 
-        dbRef = FirebaseDatabase.getInstance().getReference("Users")
+        dbRefUser = FirebaseDatabase.getInstance().getReference("Users")
+
         binding.layoutEdtAccountName.isEndIconVisible = false
+
         binding.btnBack.setOnClickListener {
             val data = Intent()
             val bundlePassing = Bundle()
@@ -60,16 +97,16 @@ class LoginActivity : AppCompatActivity() {
             val isNotEmpty = checkEmpty(userAccountName, userPWD)
 
             if (isNotEmpty) {
-                Login(userAccountName, userPWD)
+                login(userAccountName, userPWD)
             }
         }
 
-        binding.btnLoginByFacebook.setOnClickListener {
-
+        binding.btnLoginByGoogle.setOnClickListener {
+            signInWithGoogle()
         }
 
-        binding.btnLoginByGoogle.setOnClickListener {
-
+        binding.btnLoginByFacebook.setOnClickListener {
+            Firebase.auth.signOut()
         }
 
         binding.txtSignUp.setOnClickListener {
@@ -86,8 +123,8 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun Login(userAccountName: String, userPWD: String) {
-        dbRef.child(userAccountName).get()
+    private fun login(userAccountName: String, userPWD: String) {
+        dbRefUser.child(userAccountName).get()
             .addOnSuccessListener {
                 if (it.exists()) {
                     val user = User(
@@ -97,7 +134,8 @@ class LoginActivity : AppCompatActivity() {
                         it.child("secretCode").value.toString(),
                         it.child("birthday").value.toString(),
                         it.child("avatar").value.toString(),
-                        it.child("email").value.toString()
+                        it.child("email").value.toString(),
+                        it.child("typeAccount").value.toString()
                     )
                     if (user.userPWD == userPWD) {
                         saveAccount()
@@ -167,6 +205,102 @@ class LoginActivity : AppCompatActivity() {
             binding.layoutEdtPWD.error = ""
         }
         return isNotEmpty
+    }
+
+    private fun signInWithGoogle() {
+        val signInInTent = googleSignInClient.signInIntent
+        activityResultLauncher.launch(signInInTent)
+    }
+
+    private val activityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                handleResults(task)
+            }
+        }
+
+    private fun handleResults(task: Task<GoogleSignInAccount>) {
+        if (task.isSuccessful) {
+            val account: GoogleSignInAccount? = task.result
+            if (account != null) {
+                val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                auth.signInWithCredential(credential).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        val userFromGoogle = auth.currentUser
+                        if (userFromGoogle != null) {
+                            val emailName = userFromGoogle.email?.split("@")?.get(0)
+                            dbRefUser.child(emailName!!).get()
+                                .addOnCompleteListener { userSnapShot ->
+                                    if (userSnapShot.isSuccessful) {
+                                        if (userSnapShot.result.exists()) {
+                                            user = User(
+                                                userSnapShot.result.child("userAccountName").value.toString(),
+                                                userSnapShot.result.child("userPWD").value.toString(),
+                                                userSnapShot.result.child("userName").value.toString(),
+                                                userSnapShot.result.child("secretCode").value.toString(),
+                                                userSnapShot.result.child("birthday").value.toString(),
+                                                userSnapShot.result.child("avatar").value.toString(),
+                                                userSnapShot.result.child("email").value.toString(),
+                                                userSnapShot.result.child("typeAccount").value.toString()
+                                            )
+                                        }
+                                        else {
+                                            user = User(
+                                                emailName,
+                                                "",
+                                                userFromGoogle.displayName,
+                                                "",
+                                                "",
+                                                "",
+                                                userFromGoogle.email,
+                                                "Google"
+                                            )
+                                            val uri = userFromGoogle.photoUrl
+                                            val executorService = Executors.newSingleThreadExecutor()
+                                            executorService.execute {
+                                                try {
+                                                    val inputStream = java.net.URL(uri.toString()).openStream()
+                                                    val myBitmap = BitmapFactory.decodeStream(inputStream)
+                                                    val steam = ByteArrayOutputStream()
+                                                    myBitmap.compress(Bitmap.CompressFormat.PNG, 100, steam)
+                                                    val bytes = steam.toByteArray()
+                                                    user.avatar = Base64.encodeToString(bytes, Base64.DEFAULT)
+                                                    inputStream?.close()
+                                                    //Insert User
+                                                    dbRefUser.child(user.userAccountName!!).setValue(user)
+                                                } catch (ex: Exception) {
+                                                    Toast.makeText(
+                                                        this,
+                                                        ex.message.toString(),
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                }
+                                            }
+                                        }
+                                        Toast.makeText(this, "Sign In Success", Toast.LENGTH_SHORT).show()
+                                        val data = Intent()
+                                        val bundlePassing = Bundle()
+                                        bundlePassing.putInt("requestCode", requestCodeChangeAccount)
+                                        bundlePassing.putSerializable("user", user)
+                                        bundlePassing.putBoolean("isLogin", true)
+                                        data.putExtras(bundlePassing)
+                                        setResult(Activity.RESULT_OK, data)
+                                        finish()
+                                    }
+                                }
+                                .addOnFailureListener { err ->
+                                    Toast.makeText(this, "Error ${err.message}", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                        }
+                    } else
+                        Toast.makeText(this, "Can't login currently. Try after sometime", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(this, "Sign In Failed, Try again later", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private val startForResult =

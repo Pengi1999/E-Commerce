@@ -62,7 +62,7 @@ class SettingActivity : AppCompatActivity() {
                 if (binding.layoutEdtFullName.editText!!.text.isEmpty()) {
                     binding.layoutEdtFullName.editText!!.setText(user.userName)
                 } else {
-                    dbRef.child(user.userAccountName).child("userName")
+                    dbRef.child(user.userAccountName!!).child("userName")
                         .setValue(binding.layoutEdtFullName.editText?.text.toString())
                     user.userName = binding.layoutEdtFullName.editText?.text.toString()
                 }
@@ -77,7 +77,7 @@ class SettingActivity : AppCompatActivity() {
             val dp = DatePickerDialog(
                 this,
                 DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                    dbRef.child(user.userAccountName).child("birthday")
+                    dbRef.child(user.userAccountName!!).child("birthday")
                         .setValue("$dayOfMonth/${month + 1}/$year")
                     binding.layoutEdtBirthday.editText?.setText("$dayOfMonth/${month + 1}/$year")
                     user.birthday = binding.layoutEdtBirthday.editText?.text.toString()
@@ -91,11 +91,17 @@ class SettingActivity : AppCompatActivity() {
         }
 
         binding.txtChangePWD.setOnClickListener {
-            showBottomSheetChangePWD()
+            if (user.typeAccount == "Normal")
+                showBottomSheetChangePWD()
+            else
+                Toast.makeText(this, "You can't do it because this is ${user.typeAccount} account", Toast.LENGTH_SHORT).show()
         }
 
         binding.txtChangeSecretCode.setOnClickListener {
-            showBottomSheetChangeSecretCode()
+            if (user.typeAccount == "Normal")
+                showBottomSheetChangeSecretCode()
+            else
+                Toast.makeText(this, "You can't do it because this is ${user.typeAccount} account", Toast.LENGTH_SHORT).show()
         }
 
         binding.switchSales.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -134,7 +140,7 @@ class SettingActivity : AppCompatActivity() {
             if (isNotEmpty) {
                 if (user.secretCode == oldSecretCode) {
                     if (newSecretCode == repeatNewSecretCode) {
-                        dbRef.child(user.userAccountName).child("secretCode")
+                        dbRef.child(user.userAccountName!!).child("secretCode")
                             .setValue(newSecretCode)
                         user.secretCode = newSecretCode
                         binding.layoutEdtSecretCode.editText?.setText(newSecretCode)
@@ -182,7 +188,7 @@ class SettingActivity : AppCompatActivity() {
             if (isNotEmpty) {
                 if (user.userPWD == oldPWD) {
                     if (newPWD == repeatNewPWD) {
-                        dbRef.child(user.userAccountName).child("userPWD").setValue(newPWD)
+                        dbRef.child(user.userAccountName!!).child("userPWD").setValue(newPWD)
                         user.userPWD = newPWD
                         binding.layoutEdtPWD.editText?.setText(newPWD)
                         dialog.dismiss()

@@ -37,7 +37,7 @@ class ResetPasswordActivity : AppCompatActivity() {
 
             if (isNotEmpty) {
                 if (newPWD == confirmNewPWD) {
-                    dbRef.child(user.userAccountName).child("userPWD").setValue(confirmNewPWD)
+                    dbRef.child(user.userAccountName!!).child("userPWD").setValue(confirmNewPWD)
                     val data = Intent()
                     val bundlePassing = Bundle()
                     bundlePassing.putSerializable("user", user)

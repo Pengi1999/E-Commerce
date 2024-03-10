@@ -166,7 +166,7 @@ class AddingShippingAddressActivity : AppCompatActivity() {
         }
         val shippingAddress = ShippingAddress(
             "",
-            user.userAccountName,
+            user.userAccountName!!,
             binding.layoutEdtFullName.editText?.text.toString(),
             binding.layoutEdtAddress.editText?.text.toString(),
             binding.layoutEdtCity.editText?.text.toString(),

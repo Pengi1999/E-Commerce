@@ -13,7 +13,20 @@
           "package_name": "com.nhathao.e_commerce"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1003327570463-poo93rn23oamrtppoqqnupqiketrqmdp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nhathao.e_commerce",
+            "certificate_hash": "88430ae6666349b0a8de36c31c32734577666bc0"
+          }
+        },
+        {
+          "client_id": "1003327570463-q93kejdeg35hguphcethlmh0tjvvv4ti.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBg-hqMyb-qs6AbWCVTthsZeFFfttlq3zs"
@@ -21,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1003327570463-q93kejdeg35hguphcethlmh0tjvvv4ti.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

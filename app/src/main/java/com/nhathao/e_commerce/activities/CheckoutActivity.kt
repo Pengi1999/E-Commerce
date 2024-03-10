@@ -192,7 +192,7 @@ class CheckoutActivity : AppCompatActivity() {
                 //Them Order
                 val order = Order(
                     "",
-                    user.userAccountName,
+                    user.userAccountName!!,
                     shippingAddressUsedByUser.shippingAddressId,
                     "Cash",
                     deliveryMethod!!,

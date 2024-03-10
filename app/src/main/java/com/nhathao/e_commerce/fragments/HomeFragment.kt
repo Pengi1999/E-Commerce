@@ -630,7 +630,7 @@ class HomeFragment : Fragment() {
                             val bag = Bag(
                                 "",
                                 quantitySelectedProduct.quantityId,
-                                user.userAccountName,
+                                user.userAccountName!!,
                                 1
                             )
                             bag.bagId = dbRefBag.push().key.toString()

@@ -53,7 +53,8 @@ class RvAdapterReview (private var ds:List<Review>): RecyclerView.Adapter<RvAdap
                         it.child("secretCode").value.toString(),
                         it.child("birthday").value.toString(),
                         it.child("avatar").value.toString(),
-                        it.child("email").value.toString()
+                        it.child("email").value.toString(),
+                        it.child("typeAccount").value.toString()
                     )
                     val bytes = Base64.decode(user.avatar, Base64.DEFAULT)
                     val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
