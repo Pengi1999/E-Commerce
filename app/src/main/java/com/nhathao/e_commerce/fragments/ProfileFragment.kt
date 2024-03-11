@@ -23,12 +23,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.cardview.widget.CardView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.values
+import com.google.firebase.ktx.Firebase
 import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.activities.LoginActivity
 import com.nhathao.e_commerce.activities.SettingActivity
@@ -209,6 +211,7 @@ class ProfileFragment : Fragment() {
         }
 
         btnLogOut.setOnClickListener {
+            Firebase.auth.signOut()
             val intent = Intent(this.activity, LoginActivity::class.java)
             startForResult.launch(intent)
         }

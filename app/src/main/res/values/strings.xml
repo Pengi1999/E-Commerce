@@ -9,7 +9,13 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
     <string name="default_web_client_id">1003327570463-poo93rn23oamrtppoqqnupqiketrqmdp.apps.googleusercontent.com</string>
+
+    <string name="facebook_app_id">392270060245173</string>
+    <string name="fb_login_protocol_scheme">6556c28e90c6c996900c9848177ab870</string>
+    <string name="facebook_client_token">VzSiQcXRmi2kyjzcA+mYLEtbGVs=</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
