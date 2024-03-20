@@ -1,5 +1,6 @@
 package com.nhathao.e_commerce.fragments
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import androidx.cardview.widget.CardView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DatabaseReference
 import com.nhathao.e_commerce.R
+import com.nhathao.e_commerce.activities.VisualSearchActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -81,7 +83,8 @@ class ShopFragment : Fragment() {
         }
 
         btnSearch.setOnClickListener {
-            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this.requireContext(), VisualSearchActivity::class.java)
+            startActivity(intent)
         }
 
         txtWomen.setOnClickListener {

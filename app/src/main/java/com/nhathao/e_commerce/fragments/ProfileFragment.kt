@@ -35,6 +35,7 @@ import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.activities.LoginActivity
 import com.nhathao.e_commerce.activities.SettingActivity
 import com.nhathao.e_commerce.activities.ShippingAddressActivity
+import com.nhathao.e_commerce.activities.VisualSearchActivity
 import com.nhathao.e_commerce.models.ShippingAddress
 import com.nhathao.e_commerce.models.User
 import java.io.ByteArrayOutputStream
@@ -165,7 +166,8 @@ class ProfileFragment : Fragment() {
         })
 
         btnSearch.setOnClickListener {
-            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this.requireContext(), VisualSearchActivity::class.java)
+            startActivity(intent)
         }
 
         imgAvatar.setOnClickListener {

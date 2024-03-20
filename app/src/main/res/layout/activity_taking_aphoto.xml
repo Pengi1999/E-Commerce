@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_default"
+    tools:context=".activities.TakingAPhotoActivity">
+
+    <RelativeLayout
+        android:id="@+id/blockActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        android:elevation="5dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/ic_chevron_left"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Search by taking a photo"
+            android:textColor="@color/black_custom"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/previewView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/blockActionBar"
+        android:layout_above="@+id/blockBottomActionBar"
+        android:layout_centerInParent="true"/>
+
+    <RelativeLayout
+        android:id="@+id/blockBottomActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:elevation="5dp">
+
+        <ImageButton
+            android:id="@+id/btnFlashToggle"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/btnCapture"
+            android:layout_marginEnd="47dp"
+            android:backgroundTintMode="screen"
+            android:src="@drawable/ic_flash_on_black" />
+
+        <ImageButton
+            android:id="@+id/btnCapture"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_photo_camera_white"
+            android:background="@drawable/bg_red_circle"/>
+
+        <ImageButton
+            android:id="@+id/btnFlipCamera"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/btnCapture"
+            android:layout_marginStart="47dp"
+            android:backgroundTintMode="screen"
+            android:src="@drawable/ic_flip_camera_android_black" />
+
+    </RelativeLayout>
+</RelativeLayout>

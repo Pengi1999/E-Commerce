@@ -1,5 +1,6 @@
 package com.nhathao.e_commerce.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nhathao.e_commerce.R
+import com.nhathao.e_commerce.activities.VisualSearchActivity
 import com.nhathao.e_commerce.models.User
 
 // TODO: Rename parameter arguments, choose names that match
@@ -104,7 +106,8 @@ class CategoryFragment : Fragment() {
         }
 
         btnSearch.setOnClickListener {
-            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this.requireContext(), VisualSearchActivity::class.java)
+            startActivity(intent)
         }
 
         btnViewAll.setOnClickListener {

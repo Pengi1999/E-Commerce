@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.nhathao.e_commerce.R
+import com.nhathao.e_commerce.activities.VisualSearchActivity
 import com.nhathao.e_commerce.models.Product
 import com.nhathao.e_commerce.models.User
 import java.io.ByteArrayOutputStream
@@ -82,7 +83,8 @@ class FavoriteFragment : Fragment() {
         }
 
         btnSearch.setOnClickListener {
-            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this.requireContext(), VisualSearchActivity::class.java)
+            startActivity(intent)
         }
 
         return view

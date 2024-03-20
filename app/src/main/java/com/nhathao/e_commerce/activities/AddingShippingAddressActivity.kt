@@ -23,8 +23,8 @@ import com.nhathao.e_commerce.models.Rating
 import com.nhathao.e_commerce.models.ShippingAddress
 import com.nhathao.e_commerce.models.User
 
-private lateinit var binding: ActivityAddingShippingAddressBinding
 class AddingShippingAddressActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityAddingShippingAddressBinding
     private lateinit var dialog: BottomSheetDialog
     private lateinit var dbRefShippingAddress: DatabaseReference
     private lateinit var dsShippingAddressOfUser: MutableList<ShippingAddress>

@@ -1,6 +1,7 @@
 package com.nhathao.e_commerce.fragments
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nhathao.e_commerce.Interfaces.EventMyOrderItemListening
 import com.nhathao.e_commerce.R
+import com.nhathao.e_commerce.activities.VisualSearchActivity
 import com.nhathao.e_commerce.adapters.RvAdapterOrderItem
 import com.nhathao.e_commerce.models.Order
 import com.nhathao.e_commerce.models.User
@@ -140,7 +142,8 @@ class MyOrdersFragment : Fragment() {
         }
 
         btnSearch.setOnClickListener {
-            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this.requireContext(), VisualSearchActivity::class.java)
+            startActivity(intent)
         }
 
         txtDeliveredStatus.setOnClickListener {

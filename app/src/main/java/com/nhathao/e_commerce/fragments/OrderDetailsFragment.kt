@@ -1,6 +1,7 @@
 package com.nhathao.e_commerce.fragments
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.nhathao.e_commerce.R
+import com.nhathao.e_commerce.activities.VisualSearchActivity
 import com.nhathao.e_commerce.adapters.RvAdapterBagItem
 import com.nhathao.e_commerce.adapters.RvAdapterOrderDetailsItem
 import com.nhathao.e_commerce.models.Bag
@@ -177,7 +179,8 @@ class OrderDetailsFragment : Fragment() {
         }
 
         btnSearch.setOnClickListener {
-            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this.requireContext(), VisualSearchActivity::class.java)
+            startActivity(intent)
         }
 
         btnReorder.setOnClickListener {

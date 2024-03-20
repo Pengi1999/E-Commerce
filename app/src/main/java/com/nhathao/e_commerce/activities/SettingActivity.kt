@@ -53,7 +53,8 @@ class SettingActivity : AppCompatActivity() {
         }
 
         binding.btnSearch.setOnClickListener {
-            Toast.makeText(this, "Do it later", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, VisualSearchActivity::class.java)
+            startActivity(intent)
         }
 
         binding.layoutEdtFullName.editText?.setOnFocusChangeListener { v, hasFocus ->

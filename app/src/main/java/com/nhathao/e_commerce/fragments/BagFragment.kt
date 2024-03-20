@@ -33,6 +33,7 @@ import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.activities.CheckoutActivity
 import com.nhathao.e_commerce.activities.EditingShippingAddressActivity
 import com.nhathao.e_commerce.activities.ShippingAddressActivity
+import com.nhathao.e_commerce.activities.VisualSearchActivity
 import com.nhathao.e_commerce.adapters.RvAdapterBagItem
 import com.nhathao.e_commerce.adapters.RvAdapterReview
 import com.nhathao.e_commerce.adapters.RvAdapterShippingAddress
@@ -217,7 +218,8 @@ class BagFragment : Fragment() {
         })
 
         btnSearch.setOnClickListener {
-            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this.requireContext(), VisualSearchActivity::class.java)
+            startActivity(intent)
         }
 
         btnChoosePromoCode.setOnClickListener {

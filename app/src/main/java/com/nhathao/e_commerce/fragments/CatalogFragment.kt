@@ -33,6 +33,7 @@ import com.nhathao.e_commerce.R
 import com.nhathao.e_commerce.activities.FilterActivity
 import com.nhathao.e_commerce.activities.LoginActivity
 import com.nhathao.e_commerce.activities.ProductDetailActivity
+import com.nhathao.e_commerce.activities.VisualSearchActivity
 import com.nhathao.e_commerce.adapters.RvAdapterCategory
 import com.nhathao.e_commerce.adapters.RvAdapterProduct
 import com.nhathao.e_commerce.models.Bag
@@ -266,7 +267,8 @@ class CatalogFragment : Fragment() {
         }
 
         btnSearch.setOnClickListener {
-            Toast.makeText(this.requireContext(), "Do it later", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this.requireContext(), VisualSearchActivity::class.java)
+            startActivity(intent)
         }
 
         btnStyleShowList.setOnClickListener {
